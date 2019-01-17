@@ -61,7 +61,7 @@ namespace Bam.Net
             string user = GetCurrentWebUserName(includeDomain);
             if (string.IsNullOrEmpty(user))
             {
-                user = GetCurrentWindowsUser(includeDomain);
+                user = Environment.UserName;//GetCurrentWindowsUser(includeDomain);
             }
 
             return user;
