@@ -373,6 +373,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\MethodComment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\NamespaceComment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\PropertyComment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeDomCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ArgumentInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ArgumentInfoHash.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\CommandLineArgumentConfigurer.cs" />
@@ -418,7 +419,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\IDynamicTypeNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\PropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SettingSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SourcedConfigurationSetting.cs" />

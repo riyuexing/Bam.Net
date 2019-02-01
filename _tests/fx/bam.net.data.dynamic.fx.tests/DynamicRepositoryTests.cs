@@ -17,6 +17,7 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Test.DataBanana;
 using Bam.Net.Test.DataBanana.Dao;
+using Bam.Net.Data.Dynamic.Tests.Data;
 
 namespace Bam.Net.Data.Dynamic.Tests
 {
@@ -51,6 +52,23 @@ namespace Bam.Net.Data.Dynamic.Tests
                 string value = "commit_author";
                 Expect.AreEqual("CommitAuthor", GetClrPropertyName(value));
             }
+        }
+
+        [UnitTest]
+        public void TestDaoRepoSaveAndRetrieve()
+        {
+            DaoRepository repo = new DaoRepository();
+            repo.AddType<TestData>();
+
+            TestData d = new TestData
+            {
+                Value = "This is a value",
+                LongValue = 9223372036854775807,
+                ULongValue = 18446744073709551615
+            };
+
+            d = repo.Save(d);
+            Expect.IsTrue(d.Id > 0);
         }
 
         [UnitTest]

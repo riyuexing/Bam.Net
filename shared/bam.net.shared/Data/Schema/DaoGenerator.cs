@@ -593,18 +593,7 @@ namespace Bam.Net.Data.Schema
 		public FileInfo DaoAssemblyFile { get; set; }
 
         public string Namespace { get; set; }
-
-        public CompilerResults Compile(string directoryPath)
-        {
-            return Compile(new DirectoryInfo(directoryPath));
-        }
-
-        public CompilerResults Compile(DirectoryInfo directory, string assemblyFileName = null)
-        {
-            assemblyFileName = assemblyFileName ?? directory.Name;
-			return Compile(directory, assemblyFileName, DefaultReferenceAssemblies.ToArray());
-        }
-
+        
         public CompilerResults Compile(DirectoryInfo[] directories, string assemblyFileName)
         {
 			return Compile(directories, assemblyFileName, DefaultReferenceAssemblies.ToArray());
