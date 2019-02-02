@@ -68,34 +68,16 @@ namespace Bam.Net.Application
             WriteBaseAppModules(csprojFile);          
         }
 
-        [ConsoleAction("addPage", "Add a page to the current BamFramework project")]
-        public void AddPage()
+        [ConsoleAction("import", "Import data files from AppData (csv, json and yaml)")]
+        public void ImportDataFiles()
         {
-            string pageName = GetArgument("addPage", "Please enter the name of the page to create");
-            if (string.IsNullOrEmpty(pageName))
-            {
-                OutLine("Page name not specified", ConsoleColor.Magenta);
-                Exit(1);
-            }
-
-            // find the first csproj file by looking first in the current directory then going up
-            // using the parent of the csproj as the root, add the files
-            // - Pages/[pagePath].cshtml
-            // - Pages/[pagePath].cshtml.cs
-            // - wwwroot/bam.js/pages/[pagePath].js
-            // - wwwroot/bam.js/configs/[pagePath]/webpack.config.js
-            DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
-            if (csprojFile == null)
-            {
-                OutLine("Can't find csproj file", ConsoleColor.Magenta);
-                Exit(1);
-            }
-            AddPage(csprojFile, pageName);
+            DynamicTypeManager mgr = new DynamicTypeManager();
+            mgr.ProcessDataFiles(AppData);
         }
 
         [ConsoleAction("gen", "src|bin|dbjs|repo|all", "Generate a dynamic type assembly for json and yaml data")]
         public void GenerateDataModels()
-        {   
+        {
             GenerationTargets target = Arguments["gen"].ToEnum<GenerationTargets>();
             switch (target)
             {
@@ -121,7 +103,6 @@ namespace Bam.Net.Application
                     GenerateSchemaRepository();
                     break;
             }
-
         }
 
         [ConsoleAction("clean", "Clear all dynamic types and namespaces from the dynamic type manager")]
@@ -134,7 +115,32 @@ namespace Bam.Net.Application
             mgr.DynamicTypeDataRepository.Query<DynamicNamespaceDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
             OutLine("Done", ConsoleColor.DarkYellow);
         }
-        
+
+        [ConsoleAction("addPage", "Add a page to the current BamFramework project")]
+        public void AddPage()
+        {
+            string pageName = GetArgument("addPage", "Please enter the name of the page to create");
+            if (string.IsNullOrEmpty(pageName))
+            {
+                OutLine("Page name not specified", ConsoleColor.Magenta);
+                Exit(1);
+            }
+
+            // find the first csproj file by looking first in the current directory then going up
+            // using the parent of the csproj as the root, add the files
+            // - Pages/[pagePath].cshtml
+            // - Pages/[pagePath].cshtml.cs
+            // - wwwroot/bam.js/pages/[pagePath].js
+            // - wwwroot/bam.js/configs/[pagePath]/webpack.config.js
+            DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
+            if (csprojFile == null)
+            {
+                OutLine("Can't find csproj file", ConsoleColor.Magenta);
+                Exit(1);
+            }
+            AddPage(csprojFile, pageName);
+        }
+
         [ConsoleAction("webpack", "WebPack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs")]
         public void WebPack()
         {

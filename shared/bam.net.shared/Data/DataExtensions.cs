@@ -285,5 +285,27 @@ namespace Bam.Net.Data
                 yield return db.CreateParameter(key, parameters[key]);
             }         
         }
+
+        public static List<Dictionary<object, object>> ToDictionaries(this DataTable dataTable)
+        {
+            List<Dictionary<object, object>> results = new List<Dictionary<object, object>>();
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Dictionary<object, object> result = ToDictionary(row);
+                results.Add(result);
+            }
+            return results;
+        }
+
+        public static Dictionary<object, object> ToDictionary(this DataRow row)
+        {
+            Dictionary<object, object> result = new Dictionary<object, object>();
+            foreach (DataColumn column in row.Table.Columns)
+            {
+                result.Add(column.ColumnName, row[column]);
+            }
+
+            return result;
+        }
     }
 }

@@ -20,8 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AppData\csv\" />
-    <Folder Include="AppData\xml\" />
     <Folder Include="AppData\txt\" />
     <Folder Include="AppModules\WebServices\Rest\" />
     <Folder Include="wwwroot\handlebars\" />

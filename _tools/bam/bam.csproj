@@ -35,12 +35,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\nuget\packages\CsvHelper.12.1.2\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\nuget\packages\System.Data.SQLite.Core.1.0.109.2\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
@@ -49,12 +56,19 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\nuget\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="YamlDotNet, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\nuget\packages\YamlDotNet.5.3.0\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
@@ -73,6 +87,7 @@
     <Compile Include="LocalUserAdministrationActions.cs" />
     <Compile Include="RemoteRegistrationActions.cs" />
     <Compile Include="ServiceTools.cs" />
+    <None Include="AppData\csv\test.csv" />
     <None Include="AppData\json\test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -86,7 +101,6 @@
     <None Include="Templates\Page.cshtml.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="Test\YamlTest.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="WebActions.cs" />
   </ItemGroup>

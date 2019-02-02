@@ -15,6 +15,7 @@ namespace Bam.Net
         public RoslynCompiler()
         {
             OutputKind = OutputKind.DynamicallyLinkedLibrary;
+            ReferenceAssemblies = DefaultReferenceAssemblies;
         }
 
         public Assembly[] ReferenceAssemblies { get; set; }
@@ -31,26 +32,50 @@ namespace Bam.Net
             {
                 sourceCode.AppendLine(file.ReadAllText());
             }
-            return Compile(sourceCode.ToString(), assemblyFileName);
+            return Assembly.Load(Compile(sourceCode.ToString(), assemblyFileName));
         }
 
-        public Assembly Compile(string sourceCode, string assemblyFileName)
+        public byte[] Compile(string sourceCode, string assemblyName)
         {
             SyntaxTree tree = SyntaxFactory.ParseSyntaxTree(sourceCode);
-            CSharpCompilation compilation = CSharpCompilation.Create(assemblyFileName, new SyntaxTree[] { tree }, GetMetadataReferences(), new CSharpCompilationOptions(this.OutputKind));
-            Assembly compiledAssembly;
-            // TODO: handle diagnostics (errors); compilation.GetDiagnostics();
+            CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, new SyntaxTree[] { tree }, GetMetadataReferences(), new CSharpCompilationOptions(this.OutputKind));
             using(MemoryStream stream = new MemoryStream())
             {
                 EmitResult compileResult = compilation.Emit(stream);
-                compiledAssembly = Assembly.Load(stream.GetBuffer());
+                if (!compileResult.Success)
+                {
+                    throw new RoslynCompilationException(compilation.GetDiagnostics());
+                }
+                return stream.GetBuffer();
             }
-            return compiledAssembly;
+        }
+
+        static Assembly[] _defaultReferenceAssemblies = new Assembly[] { };
+        public static Assembly[] DefaultReferenceAssemblies
+        {
+            get
+            {
+                if (_defaultReferenceAssemblies.Length == 0)
+                {
+                    List<Assembly> defaultAssemblies = new List<Assembly>
+                    {
+                        typeof(object).Assembly,
+                        typeof(System.Dynamic.DynamicObject).Assembly,
+                        typeof(System.Xml.XmlDocument).Assembly,
+                        typeof(System.Data.DataTable).Assembly,
+                        Assembly.GetExecutingAssembly()
+                    };
+                    _defaultReferenceAssemblies = defaultAssemblies.ToArray();
+                }
+
+                return _defaultReferenceAssemblies;
+            }
         }
 
         private MetadataReference[] GetMetadataReferences()
         {
-            return ReferenceAssemblies.Select(ass => MetadataReference.CreateFromFile(ass.Location)).ToArray();
+            MetadataReference[] metaDataReferences = ReferenceAssemblies.Select(ass => MetadataReference.CreateFromFile(ass.Location)).ToArray();
+            return metaDataReferences;
         }
     }
 }

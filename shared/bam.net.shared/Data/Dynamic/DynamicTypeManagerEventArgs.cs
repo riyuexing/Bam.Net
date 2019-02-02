@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Data.Dynamic
 {
     [Serializable]
-    public class DynamicTypeManagerEventArgs: EventArgs
+    public class DynamicTypeManagerEventArgs : EventArgs
     {
         public DynamicTypeDescriptor[] DynamicTypeDescriptors { get; set; }
         public DynamicTypePropertyDescriptor[] DynamicTypePropertyDescriptors { get; set; }

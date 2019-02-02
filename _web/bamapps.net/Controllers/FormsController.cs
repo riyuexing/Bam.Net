@@ -11,7 +11,7 @@ namespace Bam.Net.Web.Controllers
     [Route("[controller]")]
     public class FormsController : Controller
     {
-        // GET: /<controller>/
+         // GET: /<controller>/
         public IActionResult Index()
         {
             return View();

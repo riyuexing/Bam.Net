@@ -3,12 +3,14 @@
   "name": "test json file",
   "arrayProperty": [
     {
+      "type": "DynamicType",
       "name": "one",
       "id": 1
     },
     {
+      "type":  "DynamicType",
       "name": "two",
-      "id":  2
+      "id": 2
     }
   ]
 }

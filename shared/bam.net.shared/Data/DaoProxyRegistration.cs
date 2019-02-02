@@ -138,7 +138,7 @@ namespace Bam.Net.Data
                 results = tmp.ToArray();
             }
 
-            return results;//.ToArray();
+            return results;
         }
 
         public static DaoProxyRegistration Register(FileInfo daoDll)

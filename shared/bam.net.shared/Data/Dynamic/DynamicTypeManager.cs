@@ -2,12 +2,15 @@
 using Bam.Net.Data.Dynamic.Data.Dao.Repository;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
+using Bam.Net.Logging.Counters;
+using CsvHelper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,34 +18,35 @@ using System.Text;
 using System.Threading;
 using System.Yaml;
 using YamlDotNet.Serialization;
+using Timer = Bam.Net.Logging.Counters.Timer;
 
 namespace Bam.Net.Data.Dynamic
 {
     /// <summary>
     /// Creates type definitions for json and yaml strings.
     /// </summary>
-    public class DynamicTypeManager: Loggable
+    public partial class DynamicTypeManager: Loggable
     {
         public DynamicTypeManager() : this(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Current)
         { }
 
-        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, IDataDirectoryProvider settings) 
+        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, IDataDirectoryProvider settings, ICompiler compiler = null)
         {
             DataSettings = settings;
-            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "json");
-            if (!JsonDirectory.Exists)
-            {
-                JsonDirectory.Create();
-            }
-            YamlDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "yaml");
-            if (!YamlDirectory.Exists)
-            {
-                YamlDirectory.Create();
-            }
-            
+            Compiler = compiler ?? new RoslynCompiler();
+            SetReferenceAssemblies();
+            EnsureDataDirectories(settings);
+
             descriptorRepository.EnsureDaoAssemblyAndSchema();
             DynamicTypeNameResolver = new DynamicTypeNameResolver();
             DynamicTypeDataRepository = descriptorRepository;
+            CsvFileProcessor = new BackgroundThreadQueue<DataFile>()
+            {
+                Process = (df) =>
+                {
+                    ProcessCsvFile(df.TypeName, df.FileInfo);
+                }
+            };
             JsonFileProcessor = new BackgroundThreadQueue<DataFile>()
             {
                 Process = (df) =>
@@ -59,11 +63,33 @@ namespace Bam.Net.Data.Dynamic
             };
         }
 
+        private void EnsureDataDirectories(IDataDirectoryProvider settings)
+        {
+            CsvDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "csv");
+            if (!CsvDirectory.Exists)
+            {
+                CsvDirectory.Create();
+            }
+            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "json");
+            if (!JsonDirectory.Exists)
+            {
+                JsonDirectory.Create();
+            }
+            YamlDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "yaml");
+            if (!YamlDirectory.Exists)
+            {
+                YamlDirectory.Create();
+            }
+        }
+
+        public ICompiler Compiler { get; set; }
         public IDataDirectoryProvider DataSettings { get; set; }
         public DynamicTypeNameResolver DynamicTypeNameResolver { get; set; }
         public DynamicTypeDataRepository DynamicTypeDataRepository { get; set; }
+        public DirectoryInfo CsvDirectory { get; set; }
         public DirectoryInfo JsonDirectory { get; set; }
         public DirectoryInfo YamlDirectory { get; set; }
+        public BackgroundThreadQueue<DataFile> CsvFileProcessor { get; }
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
         public BackgroundThreadQueue<DataFile> YamlFileProcessor { get; }
 
@@ -77,7 +103,6 @@ namespace Bam.Net.Data.Dynamic
         public string GenerateSource(DirectoryInfo appData, string nameSpace = null)
         {
             nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
-            List<DynamicDataSaveResult>  results = ProcessDataFiles(appData, nameSpace);
 
             string source = GenerateSource(nameSpace);
             WriteSource(appData, source);
@@ -97,36 +122,37 @@ namespace Bam.Net.Data.Dynamic
             nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
             ProcessDataFiles(appData, nameSpace);
 
-            Assembly assembly = GenerateAssembly(out string src, nameSpace);
-            FileInfo assemblyFile = assembly.GetFileInfo();
+            byte[] assembly = GenerateAssembly(out string src, nameSpace);            
             WriteSource(appData, src);
 
-            WriteAssembly(appData, assemblyFile);
+            WriteAssembly(appData, assembly, $"{nameSpace}.dll");
 
-            return assembly;
+            return Assembly.Load(assembly);
+        }
+
+        public List<DynamicDataSaveResult> ProcessDataFiles(DirectoryInfo appData)
+        {
+            return ProcessDataFiles(appData, DynamicNamespaceDescriptor.DefaultNamespace);
         }
 
         private List<DynamicDataSaveResult> ProcessDataFiles(DirectoryInfo appData, string nameSpace)
         {
             List<DynamicDataSaveResult> results = new List<DynamicDataSaveResult>();
+            results.AddRange(ProcessCsv(appData, nameSpace));
             results.AddRange(ProcessJson(appData, nameSpace));
             results.AddRange(ProcessYaml(appData, nameSpace));
             return results;
         }
 
-        private static void WriteAssembly(DirectoryInfo appData, FileInfo assemblyFile)
+        private static void WriteAssembly(DirectoryInfo appData, byte[] assemblyFile, string assemblyFileName)
         {
             DirectoryInfo binDir = new DirectoryInfo(Path.Combine(appData.FullName, "_gen", "bin"));
             if (!binDir.Exists)
             {
                 binDir.Create();
             }
-            string dllFilePath = Path.Combine(binDir.FullName, assemblyFile.Name);
-            if (File.Exists(dllFilePath))
-            {
-                File.Move(dllFilePath, dllFilePath.GetNextFileName());
-            }
-            assemblyFile.MoveTo(dllFilePath);
+            string dllFilePath = Path.Combine(binDir.FullName, assemblyFileName);
+            File.WriteAllBytes(dllFilePath, assemblyFile);
         }
 
         private static void WriteSource(DirectoryInfo appData, string src)
@@ -138,6 +164,18 @@ namespace Bam.Net.Data.Dynamic
             }
             FileInfo sourceFile = new FileInfo(Path.Combine(srcDir.FullName, $"{src.Sha256()}.cs"));
             src.SafeWriteToFile(sourceFile.FullName, true);
+        }
+
+        public List<DynamicDataSaveResult> ProcessCsv(DirectoryInfo appData, string nameSpace = null)
+        {
+            DirectoryInfo csvDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "csv"));
+            List<DynamicDataSaveResult> results = new List<DynamicDataSaveResult>();
+            foreach(FileInfo csvFile in csvDirectory.GetFiles("*.csv"))
+            {
+                string typeName = Path.GetFileNameWithoutExtension(csvFile.Name);
+                results.Add(ProcessCsvFile(typeName, csvFile, nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace));
+            }
+            return results;
         }
 
         public List<DynamicDataSaveResult> ProcessJson(DirectoryInfo appData, string nameSpace = null)
@@ -269,21 +307,28 @@ namespace Bam.Net.Data.Dynamic
             return result;
         }
 
-        public Assembly GenerateAssembly(string nameSpace = null)
+        public Assembly GenerateAssembly()
+        {
+            string source = GenerateSource();
+            return Assembly.Load(Compiler.Compile(source, source.Sha256()));
+        }
+        
+        public byte[] GenerateAssembly(string nameSpace)
         {
             return GenerateAssembly(out string ignore, nameSpace);
         }
 
-        public Assembly GenerateAssembly(out string source, string nameSpace = null)
+        public byte[] GenerateAssembly(out string source, string nameSpace = null)
         {
             source = GenerateSource(nameSpace, out DynamicNamespaceDescriptor ns);
-            CompilerResults results = AdHocCSharpCompiler.CompileSource(source, $"{ns.Namespace}.dll");
-            if (results.Errors.Count > 0)
-            {
-                throw new CompilationException(results);
-            }
+            return Compiler.Compile(source, ns.Namespace);
+        }
 
-            return results.CompiledAssembly;
+        public string GenerateSource()
+        {
+            StringBuilder src = new StringBuilder();
+            DynamicTypeDataRepository.BatchAllDynamicTypeDescriptors(5, types => src.AppendLine(GenerateSource(types))).Wait();
+            return src.ToString();
         }
 
         public string GenerateSource(string nameSpace)
@@ -305,12 +350,17 @@ namespace Bam.Net.Data.Dynamic
             }
             ulong id = ns.Id;
             types = DynamicTypeDataRepository.DynamicTypeDescriptorsWhere(t => t.DynamicNamespaceDescriptorId == id).ToList();
+            return GenerateSource(types);
+        }
+
+        public string GenerateSource(IEnumerable<DynamicTypeDescriptor> types)
+        {
             StringBuilder src = new StringBuilder();
             foreach (DynamicTypeDescriptor typeDescriptor in types)
             {
                 DtoModel dto = new DtoModel
                 (
-                    ns.Namespace,
+                    typeDescriptor.DynamicNamespaceDescriptor.Namespace,
                     GetClrTypeName(typeDescriptor.TypeName),
                     typeDescriptor.Properties.Select(p => new DtoPropertyModel { PropertyName = GetClrPropertyName(p.PropertyName), PropertyType = GetClrTypeName(p.PropertyType) }).ToArray()
                 );
@@ -338,6 +388,9 @@ namespace Bam.Net.Data.Dynamic
             return jsonPropertyName.PascalCase(true, new string[] { " ", "_", "-" });
         }
 
+        public event EventHandler ProcessingYamlFile;
+        public event EventHandler ProcessedYamlFile;
+
         protected DynamicDataSaveResult ProcessYamlFile(string typeName, FileInfo yamlFile, string nameSpace = null)
         {
             string yaml = yamlFile.ReadAllText();
@@ -347,29 +400,68 @@ namespace Bam.Net.Data.Dynamic
             
             JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
             Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
-            return SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
+            FireEvent(ProcessingYamlFile, new DynamicDataSaveResultEventArgs { File = yamlFile });
+            Timer yamlTimer = Stats.Start($"{typeName}::{yamlFile.FullName}");
+            DynamicDataSaveResult saveResult = SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
+            Stats.End(yamlTimer, timer => FireEvent(ProcessedYamlFile, new DynamicDataSaveResultEventArgs { Result = saveResult, Timer = timer }));
+            return saveResult;
         }
+
+        public event EventHandler ProcessingCsvFile;
+        public event EventHandler ProcessedCsvFile;
+
+        protected DynamicDataSaveResult ProcessCsvFile(string typeName, FileInfo csvFile, string nameSpace = null)
+        {
+            string content = csvFile.ReadAllText();
+            string rootHash = content.Sha256();
+            DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = csvFile.Name, Content = content, ContentHash = rootHash });
+            using (StreamReader sr = new StreamReader(csvFile.FullName))
+            using (CsvReader csvReader = new CsvReader(sr))
+            using (CsvDataReader csvDataReader = new CsvDataReader(csvReader))
+            {
+                DataTable dataTable = new DataTable();
+                dataTable.Load(csvDataReader);
+                FireEvent(ProcessingCsvFile, new DynamicDataSaveResultEventArgs { File = csvFile });
+                Timer csvTimer = Stats.Start($"{typeName}::{csvFile.FullName}");
+                DynamicDataSaveResult saveResult = SaveRootData(rootHash, typeName, dataTable.ToDictionaries(), nameSpace);
+                Stats.End(csvTimer, timer => FireEvent(ProcessedCsvFile, new DynamicDataSaveResultEventArgs { Result = saveResult, Timer = timer }));
+                return saveResult;
+            }
+        }
+
+        public event EventHandler ProcessingJsonFile;
+        public event EventHandler ProcessedJsonFile;
 
         protected DynamicDataSaveResult ProcessJsonFile(string typeName, FileInfo jsonFile, string nameSpace = null)
         {
-            // read the json
             string json = jsonFile.ReadAllText();
             string rootHash = json.Sha256();
             DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = jsonFile.Name, Content = json, ContentHash = rootHash });
             JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
             Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
-            return SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
+            FireEvent(ProcessingJsonFile, new DynamicDataSaveResultEventArgs { File = jsonFile });
+            Timer jsonTimer = Stats.Start($"{typeName}::{jsonFile.FullName}");
+            DynamicDataSaveResult saveResult = SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
+            Stats.End(jsonTimer, timer => FireEvent(ProcessedJsonFile, new DynamicDataSaveResultEventArgs { Result = saveResult, Timer = timer }));
+            return saveResult;            
         }
- 
+
+        protected DynamicDataSaveResult SaveRootData(string rootHash, string typeName, List<Dictionary<object, object>> valueDictionary, string nameSpace = null)
+        {
+            DynamicDataSaveResult result = new DynamicDataSaveResult()
+            {
+                DynamicTypeDescriptor = SaveTypeDescriptor(typeName, valueDictionary.First(), nameSpace),
+                DataInstances = valueDictionary.Select(d => SaveDataInstance(rootHash, typeName, d)).ToList()
+            };
+            return result;
+        }
+
         protected DynamicDataSaveResult SaveRootData(string rootHash, string typeName, Dictionary<object, object> valueDictionary, string nameSpace = null)
         {
-            DynamicDataSaveResult result = new DynamicDataSaveResult
-            {
-                // 1. save parent descriptor            
-                DynamicTypeDescriptor = SaveTypeDescriptor(typeName, valueDictionary, nameSpace),
-                // 2. save data
-                DataInstance = SaveDataInstance(rootHash, typeName, valueDictionary)
-            };
+            DynamicDataSaveResult result = new DynamicDataSaveResult(
+                SaveTypeDescriptor(typeName, valueDictionary, nameSpace),
+                SaveDataInstance(rootHash, typeName, valueDictionary)
+            );
             return result;
         }
 

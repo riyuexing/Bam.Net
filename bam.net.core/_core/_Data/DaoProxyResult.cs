@@ -1,20 +1,12 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Text;
-using System.Web.Mvc;
-using System.Collections;
-using Bam.Net;
-using Bam.Net.Data;
-using Bam.Net.Incubation;
 using Yahoo.Yui.Compressor;
 
 namespace Bam.Net.Data
 {
-    public class DaoProxyResult: JavaScriptResult
+    public class DaoProxyResult: ActionResult
     {
         public DaoProxyResult(bool min)
         {
@@ -22,11 +14,12 @@ namespace Bam.Net.Data
             if (min) Compress();
         }
 
+        public string Script { get; set; }
+
         private void Compress()
         {
             JavaScriptCompressor jsc = new JavaScriptCompressor();
             this.Script = jsc.Compress(this.Script);
         }
-
     }
 }

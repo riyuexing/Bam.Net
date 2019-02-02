@@ -414,6 +414,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\RequiredPropertiesNotSetException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataSaveResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataSaveResultEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeFormats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameResolver.cs" />
@@ -421,6 +422,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\PropertyDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynCompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SettingSource.cs" />
