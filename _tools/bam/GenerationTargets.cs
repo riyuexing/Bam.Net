@@ -10,6 +10,7 @@ namespace Bam.Net.Application
         src,
         bin,
         dbjs,
+        models,
         repo,
         all
     }

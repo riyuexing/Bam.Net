@@ -19,6 +19,7 @@ namespace Bam.Net.Data.Dynamic
     {
         public DynamicDataManager() : this(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Current, new DynamicTypeManager())
         { }
+
         public DynamicDataManager(DynamicTypeDataRepository descriptorRepository, IDataDirectoryProvider settings, DynamicTypeManager dynamicTypeManager)
         {
             DynamicTypeDataRepository = descriptorRepository;
@@ -131,7 +132,7 @@ namespace Bam.Net.Data.Dynamic
             return saveResult;
         }
 
-        protected DynamicDataSaveResult SaveRootData(string rootHash, string typeName, List<Dictionary<object, object>> valueDictionary, string nameSpace = null)
+        protected internal DynamicDataSaveResult SaveRootData(string rootHash, string typeName, List<Dictionary<object, object>> valueDictionary, string nameSpace = null)
         {
             DynamicDataSaveResult result = new DynamicDataSaveResult()
             {

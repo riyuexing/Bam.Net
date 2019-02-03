@@ -1,10 +1,10 @@
-/*
+﻿/*
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Bam.Net.Html.Js;
 using Bam.Net.ServiceProxy;
 using System.ComponentModel;
@@ -45,7 +45,7 @@ namespace Bam.Net.Presentation.Html
                 this.invocationType = value;
             }
         }
-        
+
         TagBuilderDelegate numberOrStringBuilder;
         public TagBuilderDelegate NumberBuilder
         {
@@ -217,16 +217,16 @@ namespace Bam.Net.Presentation.Html
             return MethodForm(invocationType, wrapperTagName, methodName, defaults, out paramCount);
         }
 
-		public TagBuilder MethodForm(Type type, string methodName)
-		{
-			int ignore = -1;
-			return MethodForm(type, "fieldset", methodName, null, out ignore);
-		}
+        public TagBuilder MethodForm(Type type, string methodName)
+        {
+            int ignore = -1;
+            return MethodForm(type, "fieldset", methodName, null, out ignore);
+        }
 
-		public TagBuilder MethodForm(Type type, string wrapperTagName, string methodName, Dictionary<string, object> defaults, out int paramCount)
-		{
-			return MethodForm(type, wrapperTagName, methodName, defaults, false, out paramCount);
-		}
+        public TagBuilder MethodForm(Type type, string wrapperTagName, string methodName, Dictionary<string, object> defaults, out int paramCount)
+        {
+            return MethodForm(type, wrapperTagName, methodName, defaults, false, out paramCount);
+        }
 
         /// <summary>
         /// Build a form to be used as parameters for the specified method
@@ -241,10 +241,10 @@ namespace Bam.Net.Presentation.Html
         public TagBuilder MethodForm(Type type, string wrapperTagName, string methodName, Dictionary<string, object> defaults, bool registerProxy, out int paramCount)
         {
             Args.ThrowIfNull(type, "InvocationType");
-			if(registerProxy)
-			{
-				ServiceProxySystem.Register(type);
-			}
+            if (registerProxy)
+            {
+                ServiceProxySystem.Register(type);
+            }
 
             MethodInfo method = type.GetMethod(methodName);
             defaults = defaults ?? new Dictionary<string, object>();
@@ -258,11 +258,11 @@ namespace Bam.Net.Presentation.Html
                 System.Reflection.ParameterInfo parameter = parameters[i];
                 object defaultValue = defaults.ContainsKey(parameter.Name) ? defaults[parameter.Name] : null;
                 string defaultString = defaultValue == null ? string.Empty : defaultValue.ToString();
-                
+
                 TagBuilder label = new TagBuilder("label")
                     .Html(string.Format(this.LabelFormat, parameter.Name.PascalSplit(" ")))
                     .Css(this.LabelCssClass);
-                
+
                 bool addLabel = this.AddLabels;
                 bool addValue = true;
                 bool wasObject = false;
@@ -288,7 +288,7 @@ namespace Bam.Net.Presentation.Html
                 }
 
                 form.Child(toAdd).BrIf(
-                    this.Layout != ParameterLayouts.NoBreaks && 
+                    this.Layout != ParameterLayouts.NoBreaks &&
                     i != parameters.Length - 1 &&
                     !wasObject);
             }
@@ -298,18 +298,17 @@ namespace Bam.Net.Presentation.Html
                 .Text(GetLegend(method)));
         }
 
-		private string GetLegend(MethodInfo method)
-		{
-			Legend legend;
-			if(method.HasCustomAttributeOfType<Legend>(out legend))
-			{
-				return legend.Value;
-			}
-			else
-			{
-				return method.Name.PascalSplit(" ");
-			}
-		}
+        private string GetLegend(MethodInfo method)
+        {
+            if (method.HasCustomAttributeOfType<Legend>(out Legend legend))
+            {
+                return legend.Value;
+            }
+            else
+            {
+                return method.Name.PascalSplit(" ");
+            }
+        }
 
         private string GetLegend(Type type)
         {
@@ -372,12 +371,12 @@ namespace Bam.Net.Presentation.Html
             return FieldsetFor(paramType, defaultValues, name, 0);
         }
 
-		/// <summary>
-		/// Get a form to input the properties of the specified instance
-		/// </summary>
-		/// <param name="param"></param>
-		/// <param name="name"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Get a form to input the properties of the specified instance
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public TagBuilder FieldsetFor(object param, string name = null)
         {
             if (param is Type)
@@ -461,7 +460,7 @@ namespace Bam.Net.Presentation.Html
             string paramTypeName = target.Name;
 
             foreach (PropertyDescriptor property in properties)
-            {                
+            {
                 string labelText = string.Format(this.LabelFormat, property.Name.PascalSplit(" "));
                 string id = "{0}_{1}"._Format(paramTypeName, property.Name);
 
@@ -514,12 +513,11 @@ namespace Bam.Net.Presentation.Html
                 }
                 else if (propType == typeof(bool))
                 {
-                    
+
                     toAdd = BooleanBuilder(property.Name);
                     if (defaultValue != null)
                     {
-                        bool bVal;
-                        Boolean.TryParse(defaultValue.ToString(), out bVal);
+                        bool.TryParse(defaultValue.ToString(), out bool bVal);
                         toAdd.CheckedIf(defaultValue != null && bVal);
                     }
                 }
@@ -618,23 +616,22 @@ namespace Bam.Net.Presentation.Html
                     propType = propType.GetGenericArguments()[0];
                 }
 
-                StringInput attr;
                 bool isHidden = false;
                 bool wasObject = false;
                 bool typeAdded = false;
 
                 TagBuilder toAdd = null;
 
-                if (property.HasCustomAttributeOfType<StringInput>(true, out attr))
+                if (property.HasCustomAttributeOfType<StringInput>(true, out StringInput attr))
                 {
-                    attr.Default = attr.Default == null ? defaultValue : attr.Default;
+                    attr.Default = attr.Default ?? defaultValue;
                     attr.PropertyName = property.Name;
                     toAdd = attr.CreateInput().DataSetIf(propType.IsEnum, "type", "string");
                     typeAdded = propType.IsEnum;
-                    addLabel = attr.AddLabel.HasValue ? attr.AddLabel.Value : addLabel;
-                    isHidden = attr.IsHidden.HasValue ? attr.IsHidden.Value : isHidden;
-                    breakAfterLabel = attr.BreakAfterLabel.HasValue ? attr.BreakAfterLabel.Value : breakAfterLabel;
-                    addValue = attr.AddValue.HasValue ? attr.AddValue.Value : addValue;
+                    addLabel = attr.AddLabel ?? addLabel;
+                    isHidden = attr.IsHidden ?? isHidden;
+                    breakAfterLabel = attr.BreakAfterLabel ?? breakAfterLabel;
+                    addValue = attr.AddValue ?? addValue;
                 }
                 else if (propType == typeof(int) || propType == typeof(long))
                 {
@@ -651,7 +648,7 @@ namespace Bam.Net.Presentation.Html
                     addValue = defaultDate > DateTime.MinValue;
                     toAdd = DateTimeBuilder(property.Name)
                         .ValueIf(addValue, defaultDate.ToShortDateString());
-                    
+
                     addValue = false;
                 }
                 else if (propType == typeof(bool))
@@ -688,7 +685,7 @@ namespace Bam.Net.Presentation.Html
                         .BrIf(labelAttr != null && labelAttr.PreBreak && addLabel)
                         .ChildIf(addLabel, label)
                         .BrIf(addLabel && breakAfterLabel)
-                        .Child(toAdd, toAdd.TagName.ToLowerInvariant().Equals("input") ? TagRenderMode.SelfClosing: TagRenderMode.Normal)
+                        .Child(toAdd, toAdd.TagName.ToLowerInvariant().Equals("input") ? TagRenderMode.SelfClosing : TagRenderMode.Normal)
                         .BrIf(!isHidden && !wasObject &&
                         (
                             this.Layout == ParameterLayouts.Default ||
@@ -720,12 +717,12 @@ namespace Bam.Net.Presentation.Html
             return defaultValue;
         }
 
-       
+
         internal static TagBuilder CreateInput(string type, string name)
         {
             return new TagBuilder("input")
                 .Type(type)
-                .Name(name);            
+                .Name(name);
         }
     }
 }

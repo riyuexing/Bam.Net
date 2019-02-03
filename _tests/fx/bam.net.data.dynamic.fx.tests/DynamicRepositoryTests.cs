@@ -26,8 +26,10 @@ namespace Bam.Net.Data.Dynamic.Tests
     {
         public class TestDynamicTypeManager: DynamicTypeManager
         {
+            DynamicDataManager dataManager;
             public TestDynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDataDirectoryProvider settings) : base(descriptorRepository, settings)
             {
+                dataManager = new DynamicDataManager();
             }
 
             public void TestSaveTypDescriptor(string typeName, Dictionary<object, object> data)
@@ -36,7 +38,7 @@ namespace Bam.Net.Data.Dynamic.Tests
             }
             public void TestSaveData(string sha1, string typeName, Dictionary<object, object> data)
             {
-                SaveRootData(sha1, typeName, data);
+                dataManager.SaveRootData(sha1, typeName, new List<Dictionary<object, object>>(new Dictionary<object, object>[] { data }));
             }
 
             public void TestGetClrTypeName()
@@ -159,19 +161,6 @@ namespace Bam.Net.Data.Dynamic.Tests
             datas[0].Properties.Each(p => OutLine($"{p.PropertyName} = {p.Value}"));
         }
         
-        [ConsoleAction]
-        [IntegrationTest]
-        public void SaveRealData()
-        {
-            AutoResetEvent wait = new AutoResetEvent(false);
-            string json = "\\\\core\\share\\events\\github\\04feeb057e9eba4a6ace6413af475f819b54ad0c.json".SafeReadFile();
-            DynamicTypeManager typeManager = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Instance);
-            typeManager.ProcessJson("GitHubEvent", json);
-            typeManager.JsonFileProcessor.QueueEmptied += (s, a) => wait.Set();
-            OutLine(typeManager.DynamicTypeDataRepository.Database.ConnectionString);            
-            wait.WaitOne();
-        }
-
         [ConsoleAction]
         [IntegrationTest]
         public void AssociationsAreMade()

@@ -653,6 +653,20 @@ namespace Bam.Net
             return found;
         }
 
+        public static Stream ReadResource(this Assembly assembly, string resourceName)
+        {
+            string[] fullResourceName = assembly.GetManifestResourceNames().Where(rn => rn.EndsWith(resourceName)).ToArray();
+            if(fullResourceName.Length > 1)
+            {
+                Args.Throw<InvalidOperationException>("Found more than one embedded resource with the specified name {0}, fully qualify the resourceName to find only the one you want.", resourceName);
+            }
+            if(fullResourceName.Length == 0)
+            {
+                Args.Throw<InvalidOperationException>("Specified embedded resource not found: {0}", resourceName);                
+            }
+            return assembly.GetManifestResourceStream(fullResourceName[0]);
+        }
+
         /// <summary>
         /// Unzips the resource.
         /// </summary>

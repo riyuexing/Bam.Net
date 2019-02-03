@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Bam.Net.Presentation.Html
+﻿namespace Bam.Net.Presentation.Html
 {
     public class HtmlMeta
     {

@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Web.Routing;
-using Bam.Net.Js;
+using Bam.Net.Html.Js;
 using Bam.Net.Presentation.Html.Js;
 using Bam.Net;
 using Bam.Net.ServiceProxy;

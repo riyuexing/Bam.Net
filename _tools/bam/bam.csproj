@@ -78,10 +78,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppModuleRenderModel.cs" />
     <Compile Include="GenerationTargets.cs" />
     <Compile Include="LocalEmailActions.cs" />
-    <Compile Include="PageRenderModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LocalUserAdministrationActions.cs" />
@@ -95,6 +93,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="README.md" />
+    <None Include="Templates\AppDataModel.cs.hbs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Templates\Page.cshtml.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

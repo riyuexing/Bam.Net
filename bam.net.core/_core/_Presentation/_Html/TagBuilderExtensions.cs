@@ -1,14 +1,16 @@
-/*
+﻿/*
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web.Mvc;
-using System.Web.Helpers;
 using System.Reflection;
 using Bam.Net.Html.Js;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Html;
 
 namespace Bam.Net.Presentation.Html
 {
@@ -77,24 +79,27 @@ namespace Bam.Net.Presentation.Html
             return tagBuilder;
         }
 
-        
+
         public static TagBuilder Html(this TagBuilder tagBuilder, string html)
         {
-            tagBuilder.InnerHtml = html;
+            tagBuilder.InnerHtml.Clear();
+            tagBuilder.InnerHtml.AppendHtml(html);
             return tagBuilder;
         }
 
         public static TagBuilder Text(this TagBuilder tagBuilder, string text)
         {
-            tagBuilder.SetInnerText(text);
+            tagBuilder.InnerHtml.Clear();
+            tagBuilder.InnerHtml.Append(text);
             return tagBuilder;
         }
 
         public static TagBuilder FirstChild(this TagBuilder tagBuilder, string html)
         {
             StringBuilder builder = new StringBuilder(html);
-            builder.A(tagBuilder.InnerHtml);
-            tagBuilder.InnerHtml = builder.ToString();
+            builder.Append(tagBuilder.InnerHtml);
+            tagBuilder.InnerHtml.Clear();
+            tagBuilder.InnerHtml.AppendHtml(builder.ToString());
             return tagBuilder;
         }
 
@@ -157,9 +162,16 @@ namespace Bam.Net.Presentation.Html
         /// <returns></returns>
         public static TagBuilder Child(this TagBuilder tagBuilder, string html)
         {
-            StringBuilder builder = new StringBuilder(tagBuilder.InnerHtml);
+            MemoryStream innerHtml = new MemoryStream();
+            using (TextWriter tw = new StreamWriter(innerHtml))
+            {
+                tagBuilder.WriteTo(tw, HtmlEncoder.Default);
+            }
+            innerHtml.Seek(0, SeekOrigin.Begin);            
+            StringBuilder builder = new StringBuilder(innerHtml.ReadToEnd());
             builder.Append(html);
-            tagBuilder.InnerHtml = builder.ToString();
+            tagBuilder.InnerHtml.Clear();
+            tagBuilder.InnerHtml.AppendHtml(builder.ToString());
             return tagBuilder;
         }
 
@@ -183,7 +195,20 @@ namespace Bam.Net.Presentation.Html
         /// <returns></returns>
         public static TagBuilder Child(this TagBuilder tagBuilder, TagBuilder child, TagRenderMode mode = TagRenderMode.Normal)
         {
-            return tagBuilder.Child(child.ToString(mode));
+            return tagBuilder.Child(child.Render());
+        }
+
+        public static string Render(this IHtmlContent content, HtmlEncoder encoder = null)
+        {
+            encoder = encoder ?? HtmlEncoder.Default;
+            MemoryStream result = new MemoryStream();
+            using (TextWriter tw = new StreamWriter(result))
+            {
+                content.WriteTo(tw, encoder);
+            }
+
+            result.Seek(0, SeekOrigin.Begin);
+            return result.ReadToEnd();
         }
 
         public static TagBuilder ChildIf(this TagBuilder tagBuilder, bool condition, string child)
@@ -209,7 +234,7 @@ namespace Bam.Net.Presentation.Html
 
         public static TagBuilder Select(this TagBuilder tagBuilder)
         {
-            return tagBuilder.Attr("selected", "selected");            
+            return tagBuilder.Attr("selected", "selected");
         }
 
         /// <summary>
@@ -334,7 +359,7 @@ namespace Bam.Net.Presentation.Html
             return select;
         }
 
-        public static TagBuilder DropDown(this TagBuilder tagBuilder, Dictionary<string, string> options,string selected = null)
+        public static TagBuilder DropDown(this TagBuilder tagBuilder, Dictionary<string, string> options, string selected = null)
         {
             return tagBuilder.Child(options.DropDown(selected));
         }
@@ -410,7 +435,7 @@ namespace Bam.Net.Presentation.Html
             );
             return tagBuilder;
         }
-        
+
         /// <summary>
         /// Applies all the attributes of the specified object
         /// </summary>
@@ -448,30 +473,15 @@ namespace Bam.Net.Presentation.Html
 
             return tagBuilder;
         }
-
-        /// <summary>
-        /// Returns the current TagBuilder as an MvcHtmlString
-        /// </summary>
-        /// <param name="tagBuilder"></param>
-        /// <returns></returns>
-        public static MvcHtmlString ToMvcHtml(this TagBuilder tagBuilder, TagRenderMode mode = TagRenderMode.Normal)
-        {
-            return MvcHtmlString.Create(tagBuilder.ToString(mode));
-        }
-
+        
         /// <summary>
         /// Shortcut for ToMvcHtml
         /// </summary>
         /// <param name="tagBuilder"></param>
         /// <returns></returns>
-        public static MvcHtmlString ToHtml(this TagBuilder tagBuilder)
+        public static string ToHtml(this TagBuilder tagBuilder)
         {
-            return tagBuilder.ToMvcHtml();
-        }
-
-        public static string Render(this TagBuilder tagBuilder)
-        {
-            return tagBuilder.ToString();
+            return tagBuilder.Render();
         }
     }
 }

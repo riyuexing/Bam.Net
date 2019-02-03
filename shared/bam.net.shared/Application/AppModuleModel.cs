@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class AppModuleRenderModel
+    public class AppModuleModel
     {
         public string BaseNamespace { get; set; }
         public string AppModuleName { get; set; }

@@ -1,7 +1,7 @@
-/*
+﻿/*
 	Copyright © Bryan Apellanes 2015  
 */
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bam.Net.Html.Js
 {
@@ -11,7 +11,7 @@ namespace Bam.Net.Html.Js
     {
         static string dataSetFormat = "data-{0}{1}";
         static string prefix = string.Empty;
-        public static string Prefix 
+        public static string Prefix
         {
             get
             {

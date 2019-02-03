@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AppData\txt\" />
+    <Folder Include="AppModels\Definitions\" />
     <Folder Include="AppModules\WebServices\Rest\" />
     <Folder Include="wwwroot\handlebars\" />
   </ItemGroup>

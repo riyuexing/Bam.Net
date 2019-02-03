@@ -191,6 +191,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationDiagnosticInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\AppDataModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\AppDataPropertyModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\AppModuleModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessEventArgs.cs" />
@@ -201,6 +204,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\DeployInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\PageRenderModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Args.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyResolve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\AssemblyReference.cs" />
@@ -422,6 +426,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\IDynamicTypeNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\PropertyDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\Component.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\ComponentOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\ComponentParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\ComponentRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\SplitKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Handlebars\HandlebarsEmbeddedResources.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\ParameterLayouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompiler.cs" />
@@ -2849,5 +2860,8 @@
     <Content Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)Translation\Translation.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)UserAccounts\UserAccounts.db.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Presentation\Components\Templates\" />
   </ItemGroup>
 </Project>

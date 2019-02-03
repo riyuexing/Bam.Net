@@ -77,6 +77,9 @@
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
+    <Reference Include="Markdig, Version=0.15.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\nuget\packages\Markdig.0.15.7\lib\net40\Markdig.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.Common.2.9.0\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
     </Reference>
@@ -522,7 +525,6 @@
     <Compile Include="_fx\_Presentation\_Html\Tag.cs" />
     <Compile Include="_fx\_Presentation\_Html\_Js\DataSetTagBuilderExtensions.cs" />
     <Compile Include="_fx\_Presentation\_Html\MethodFormResult.cs" />
-    <Compile Include="_fx\_Presentation\_Html\ParameterLayouts.cs" />
     <Compile Include="_fx\_Presentation\_Html\RadioList.cs" />
     <Compile Include="_fx\_Presentation\_Html\Select.cs" />
     <Compile Include="_fx\_Presentation\_Html\ServiceProxyWebViewPageExtensions.cs" />

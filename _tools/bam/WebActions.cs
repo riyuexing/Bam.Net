@@ -40,8 +40,8 @@ namespace Bam.Net.Application
             // find the first csproj file by looking first in the current directory then going up
             // using the parent of the csproj as the root
             // - clone bam.js into wwwroot/bam.js
-            // - add Pages/Api/V1.cshtml
-            // - add Pages/Api/V1.cshtml.cs
+            // - write Startup.cs (backing up existing)
+            // - write sample modules
             DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
             if(csprojFile == null)
             {
@@ -75,8 +75,8 @@ namespace Bam.Net.Application
             mgr.ProcessDataFiles(AppData);
         }
 
-        [ConsoleAction("gen", "src|bin|dbjs|repo|all", "Generate a dynamic type assembly for json and yaml data")]
-        public void GenerateDataModels()
+        [ConsoleAction("gen", "src|bin|models|dbjs|repo|all", "Generate a dynamic type assembly for json and yaml data")]
+        public void Generate()
         {
             GenerationTargets target = Arguments["gen"].ToEnum<GenerationTargets>();
             switch (target)
@@ -88,6 +88,9 @@ namespace Bam.Net.Application
                     break;
                 case GenerationTargets.bin:
                     GenerateDynamicTypeAssemblies();
+                    break;
+                case GenerationTargets.models:
+                    GenerateDataModels();
                     break;
                 case GenerationTargets.dbjs:
                     GenerateDaoFromDbJsFiles();
@@ -114,6 +117,21 @@ namespace Bam.Net.Application
             mgr.DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
             mgr.DynamicTypeDataRepository.Query<DynamicNamespaceDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
             OutLine("Done", ConsoleColor.DarkYellow);
+        }
+
+        [ConsoleAction("addModel", "[modelName],[type1:propertyName1],[type2:propertyName2]...", "Add a model with the specified name and properties")]
+        public void AddModel()
+        {
+            string modelArg = Arguments["addModel"];
+            AppDataModel dataModel = ParseDataModelArgument(modelArg);
+            DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
+            if (csprojFile == null)
+            {
+                OutLine("Can't find csproj file", ConsoleColor.Magenta);
+                Exit(1);
+            }
+            WriteDataModelDefinition(csprojFile, dataModel);
+            GenerateDataModels();
         }
 
         [ConsoleAction("addPage", "Add a page to the current BamFramework project")]
@@ -178,7 +196,9 @@ namespace Bam.Net.Application
                     configPath = configPath.TruncateFront(1);
                 }
                 OutLineFormat("Packing {0}", ConsoleColor.Green, configPath);
-                $"npx webpack --config {configPath}".Run(output => OutLine(output, ConsoleColor.Cyan));
+                string webPackCommand = $"npx webpack --config {configPath}";
+                OutLineFormat(webPackCommand);
+                webPackCommand.Run(output => OutLine(output, ConsoleColor.Cyan));
             }
             Environment.CurrentDirectory = startDir;
         }
@@ -275,6 +295,7 @@ namespace Bam.Net.Application
             {
                 EnsureDirectoryExists(csHtmlFilePath);
                 string pageContent = handlebarsDirectory.Render("Page.cshtml", pageRenderModel);
+                OutLineFormat("Writing page file {0}", ConsoleColor.Cyan, csHtmlFilePath);
                 pageContent.SafeWriteToFile(csHtmlFilePath, true);
             }
 
@@ -283,6 +304,7 @@ namespace Bam.Net.Application
             {
                 EnsureDirectoryExists(csHtmlcsFilePath);
                 string codeBehindContent = handlebarsDirectory.Render("Page.cshtml.cs", pageRenderModel);
+                OutLineFormat("Writing code behind file {0}", ConsoleColor.DarkCyan, csHtmlcsFilePath);
                 codeBehindContent.SafeWriteToFile(csHtmlcsFilePath, true);
             }
 
@@ -315,14 +337,88 @@ namespace Bam.Net.Application
             string webPackConfigPath = Path.Combine(wwwroot.FullName, "bam.js", "configs", pageName, "webpack.config.js");
             if (!File.Exists(pageJsPath))
             {
-                handlebarsDirectory.Render("PageJs", pageRenderModel).SafeWriteToFile(pageJsPath, true);
+                OutLineFormat("Writing page JavaScript file {0}", ConsoleColor.Blue, pageJsPath);
+                handlebarsDirectory.Render("Page.js", pageRenderModel).SafeWriteToFile(pageJsPath, true);
             }
             if (!File.Exists(webPackConfigPath))
             {
+                OutLineFormat("Writing web pack config file {0}", ConsoleColor.DarkBlue, webPackConfigPath);
                 handlebarsDirectory.Render("WebpackConfig", pageRenderModel).SafeWriteToFile(webPackConfigPath, true);
             }
         }
 
+        private void GenerateDataModels()
+        {
+            FileInfo csprojFile = FindProjectFile();
+            DirectoryInfo projectParent = csprojFile.Directory;
+            DirectoryInfo appModels = new DirectoryInfo(Path.Combine(projectParent.FullName, "AppModels"));
+            DirectoryInfo appModelDefinitions = new DirectoryInfo(Path.Combine(appModels.FullName, "Definitions"));
+
+            foreach(FileInfo yamlFile in appModelDefinitions.GetFiles("*.yaml"))
+            {
+                string dataModelName = Path.GetFileNameWithoutExtension(yamlFile.Name);
+                RenderDataModel(csprojFile, dataModelName);
+            }
+        }
+
+        private void RenderDataModel(FileInfo csprojFile, string dataModelName)
+        {
+            DirectoryInfo projectParent = csprojFile.Directory;
+            DirectoryInfo appModels = new DirectoryInfo(Path.Combine(projectParent.FullName, "AppModels"));
+            FileInfo modelCodeFile = new FileInfo(Path.Combine(appModels.FullName, $"{dataModelName}.cs"));
+
+            HandlebarsDirectory handlebarsDirectory = GetHandlebarsDirectory();
+            string appName = Path.GetFileNameWithoutExtension(csprojFile.Name);
+
+            AppDataModel dataModel = ReadDataModelDefinition(csprojFile, dataModelName);
+
+            handlebarsDirectory.Render("AppDataModel.cs", dataModel).SafeWriteToFile(modelCodeFile.FullName, true);
+        }
+
+        private void WriteDataModelDefinition(FileInfo csprojFile, AppDataModel appDataModel)
+        {
+            WriteDataModelDefinition(csprojFile, appDataModel.Name, appDataModel.Properties.ToArray());
+        }
+
+        private AppDataModel WriteDataModelDefinition(FileInfo csprojFile, string dataModelName, params AppDataPropertyModel[] properties)
+        {
+            AppDataModel model = ReadDataModelDefinition(csprojFile, dataModelName, out FileInfo dataModelFile);
+            List<AppDataPropertyModel> props = new List<AppDataPropertyModel>();
+            foreach(AppDataPropertyModel prop in properties)
+            {
+                props.Add(prop);
+            }
+            model.Properties = props.ToArray();
+            model.ToYamlFile(dataModelFile);
+            return model;
+        }
+
+        private AppDataModel ReadDataModelDefinition(FileInfo csprojFile, string dataModelName)
+        {
+            return ReadDataModelDefinition(csprojFile, dataModelName, out FileInfo ignore);
+        }
+
+        private AppDataModel ReadDataModelDefinition(FileInfo csprojFile, string dataModelName, out FileInfo modelFile)
+        {
+            DirectoryInfo projectParent = csprojFile.Directory;
+            DirectoryInfo appModels = new DirectoryInfo(Path.Combine(projectParent.FullName, "AppModels"));
+            DirectoryInfo appModelDefinitions = new DirectoryInfo(Path.Combine(appModels.FullName, "Definitions"));
+            FileInfo file = new FileInfo(Path.Combine(appModelDefinitions.FullName, $"{dataModelName}.yaml"));
+            string appName = Path.GetFileNameWithoutExtension(csprojFile.Name);
+            AppDataModel model = new AppDataModel { BaseNamespace = appName, Name = dataModelName };
+            modelFile = file;
+            if (file.Exists)
+            {
+                model = file.FromYamlFile<AppDataModel>();
+                if(model == null)
+                {
+                    OutLineFormat("{0} was empty or otherwise invalid", ConsoleColor.Yellow, file.FullName);
+                    return new AppDataModel { BaseNamespace = appName, Name = dataModelName };
+                }
+            }
+            return model;
+        }
+        
         private void WriteBaseAppModules(FileInfo csprojFile)
         {
             DirectoryInfo projectParent = csprojFile.Directory;
@@ -330,7 +426,7 @@ namespace Bam.Net.Application
             HandlebarsDirectory handlebarsDirectory = GetHandlebarsDirectory();
             string appName = Path.GetFileNameWithoutExtension(csprojFile.Name);
 
-            AppModuleRenderModel model = new AppModuleRenderModel { BaseNamespace = $"{appName}", AppModuleName = appName };
+            AppModuleModel model = new AppModuleModel { BaseNamespace = appName, AppModuleName = appName };
             foreach(string moduleType in new string[] { "AppModule", "ScopedAppModule", "SingletonAppModule", "TransientAppModule" })
             {
                 string moduleContent = handlebarsDirectory.Render($"{moduleType}.cs", model);
@@ -362,10 +458,15 @@ namespace Bam.Net.Application
             handlebarsDirectory.Render("Startup.cs", new { BaseNamespace = Path.GetFileNameWithoutExtension(csprojFile.Name) }).SafeWriteToFile(startupCs.FullName, true);
         }
 
-        private HandlebarsDirectory GetHandlebarsDirectory()
+        static HandlebarsDirectory _handlebarsDirectory;
+        static object _handlebarsLock = new object();
+        private static HandlebarsDirectory GetHandlebarsDirectory()
         {
-            DirectoryInfo bamDir = Assembly.GetExecutingAssembly().GetFileInfo().Directory;
-            return new HandlebarsDirectory(Path.Combine(bamDir.FullName, "Templates"));
+            return _handlebarsLock.DoubleCheckLock(ref _handlebarsDirectory, () =>
+            {
+                DirectoryInfo bamDir = Assembly.GetExecutingAssembly().GetFileInfo().Directory;
+                return new HandlebarsDirectory(Path.Combine(bamDir.FullName, "Templates"));
+            });
         }
 
         private FileInfo FindProjectFile()
@@ -418,5 +519,47 @@ namespace Bam.Net.Application
             return string.Empty;
         }
 
+        private static AppDataModel ParseDataModelArgument(string modelArg)
+        {
+            string[] split = modelArg.DelimitSplit(",", true);
+            string modelName = split[0];
+            AppDataModel dataModel = new AppDataModel { Name = modelName };
+            int num = 0;
+            List<AppDataPropertyModel> props = new List<AppDataPropertyModel>();
+            split.Rest(1, (modelProperty) =>
+            {
+                string[] parts = modelProperty.DelimitSplit(":", true);
+                bool key = false;
+                string type = "string";
+                string name = $"_Property_{++num}";
+                if (parts.Length == 2)
+                {
+                    type = parts[0];
+                    name = parts[1];
+                }
+                else if (parts.Length == 3)
+                {
+                    type = parts[1];
+                    name = parts[2];
+                    string[] keyParts = parts[0].DelimitSplit("=", true);
+                    if (keyParts.Length != 2)
+                    {
+                        OutLineFormat("Unrecognized key specification {0}: expected format key=[true|false].", ConsoleColor.Yellow, parts[0]);
+                    }
+                    else
+                    {
+                        key = keyParts[1].IsAffirmative();
+                    }
+                }
+                props.Add(new AppDataPropertyModel
+                {
+                    Key = key,
+                    Type = type,
+                    Name = name
+                });
+            });
+            dataModel.Properties = props.ToArray();
+            return dataModel;
+        }
     }
 }

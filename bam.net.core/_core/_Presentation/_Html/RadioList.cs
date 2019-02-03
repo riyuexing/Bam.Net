@@ -1,10 +1,10 @@
-/*
+﻿/*
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
 using System.Text;
-using System.Web.Mvc;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bam.Net.Presentation.Html
 {
@@ -50,7 +50,7 @@ namespace Bam.Net.Presentation.Html
             {
                 object enumValue = field.GetRawConstantValue();
                 string enumString = field.Name.PascalSplit(" ");
-                string radioId = new StringBuilder(field.Name).A("_".RandomString(4)).ToString();
+                string radioId = new StringBuilder(field.Name).Append("_".RandomString(4)).ToString();
 
                 bool selectedCondition = selected != null ? field.Name.Equals(selected.ToString()) : first;
                 TagBuilder li = new TagBuilder("li")
