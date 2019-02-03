@@ -413,6 +413,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IHasRequiredProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\RequiredPropertiesNotSetException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataSaveResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataSaveResultEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeFormats.cs" />

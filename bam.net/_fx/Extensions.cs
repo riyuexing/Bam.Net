@@ -642,6 +642,7 @@ namespace Bam.Net
                 return BuildDynamicType(dictionary, typeName, recursionThusFar, createdTypes, out assemblyBuilder);
             }
         }
+
         private static Type BuildDynamicType(Dictionary<object, object> dictionary, string typeName, int recursionThusFar, List<Type> createdTypes, out AssemblyBuilder assemblyBuilder)
         {
             lock (_buildDynamicTypeLock)

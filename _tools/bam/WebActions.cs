@@ -71,7 +71,7 @@ namespace Bam.Net.Application
         [ConsoleAction("import", "Import data files from AppData (csv, json and yaml)")]
         public void ImportDataFiles()
         {
-            DynamicTypeManager mgr = new DynamicTypeManager();
+            DynamicDataManager mgr = new DynamicDataManager();
             mgr.ProcessDataFiles(AppData);
         }
 
