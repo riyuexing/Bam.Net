@@ -426,10 +426,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\IDynamicTypeNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\PropertyDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\Component.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\InlineComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\ComponentOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\ComponentParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\ComponentRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\IComponentResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\SplitKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Handlebars\HandlebarsEmbeddedResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\ParameterLayouts.cs" />
