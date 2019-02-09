@@ -15,7 +15,7 @@ namespace Bam.Net.Presentation.Tests
     {
         public StringSlice CallReadUntil(StringSlice slice, char until)
         {
-            return ReadUntil(slice, until);
+            return ReadUntil(slice, until, out int ignore);
         }
     }
 

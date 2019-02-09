@@ -47,21 +47,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.data.core.tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.data.fx.tests", "_tests\fx\bam.net.data.fx.tests\bam.net.data.fx.tests.csproj", "{EB0AFE2F-701C-43ED-9C84-419777A6BE67}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_tools", "_tools", "{A40BC0F3-917C-490E-9336-06797D80CC56}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_tools.fx", "_tools.fx", "{A40BC0F3-917C-490E-9336-06797D80CC56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "heart", "_tools\heart\heart.csproj", "{5C61F66D-61C4-4D57-B079-6C8F2696F8F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "heart", "_tools.fx\heart\heart.csproj", "{5C61F66D-61C4-4D57-B079-6C8F2696F8F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gloo", "_tools\gloo\gloo.csproj", "{AA380B69-17E8-4FE3-B332-3E625E8B6036}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gloo", "_tools.fx\gloo\gloo.csproj", "{AA380B69-17E8-4FE3-B332-3E625E8B6036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "troo", "_tools\troo\troo.csproj", "{8902D911-2478-43D5-B198-207B3E088EE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "troo", "_tools.fx\troo\troo.csproj", "{8902D911-2478-43D5-B198-207B3E088EE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vyoo", "_tools\vyoo\vyoo.csproj", "{63A1008A-4B64-4B59-864C-44C615CEDEB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vyoo", "_tools.fx\vyoo\vyoo.csproj", "{63A1008A-4B64-4B59-864C-44C615CEDEB1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_web", "_web", "{319A73DA-888F-436C-BB8B-58E0E2F75CCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bamd", "_tools\bamd\bamd.csproj", "{86868807-C95B-4CEF-BA4D-3A4B5384298A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bamd", "_tools.fx\bamd\bamd.csproj", "{86868807-C95B-4CEF-BA4D-3A4B5384298A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bake", "_tools\bake\bake.csproj", "{823141D0-42B2-46D9-9B18-7A0F876D9960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bake", "_tools.fx\bake\bake.csproj", "{823141D0-42B2-46D9-9B18-7A0F876D9960}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.encryption.core.tests", "_tests\core\bam.net.encryption.core.tests\bam.net.encryption.core.tests.csproj", "{7BF76A35-6BC1-4BF9-A39C-144E45683F74}"
 EndProject
@@ -75,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.presentation.fx.tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.profiguration.core.tests", "_tests\core\bam.net.profiguration.core.tests\bam.net.profiguration.core.tests.csproj", "{996D81EB-C8D2-4973-9673-F3272FFCD674}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bsdo", "_tools\bsdo\bsdo.csproj", "{BDECBA42-731A-48A2-851F-8E4EC35FA419}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bsdo", "_tools.fx\bsdo\bsdo.csproj", "{BDECBA42-731A-48A2-851F-8E4EC35FA419}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.schema.org.core.tests", "_tests\core\bam.net.schema.org.core.tests\bam.net.schema.org.core.tests.csproj", "{B219F1FA-5A5B-41C3-99B8-3CD04295FF01}"
 EndProject
@@ -101,17 +101,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "breve", "_tools\breve\breve.csproj", "{C37CAAA3-CCA1-41AB-A497-F0FF9B050725}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "breve", "_tools.fx\breve\breve.csproj", "{C37CAAA3-CCA1-41AB-A497-F0FF9B050725}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "laotze", "_tools\laotze\laotze.csproj", "{1D45F12C-1A9E-469C-8467-E96D41761E1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "laotze", "_tools.fx\laotze\laotze.csproj", "{1D45F12C-1A9E-469C-8467-E96D41761E1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "laotzu", "_tools\laotzu\laotzu.csproj", "{45C4AA7D-B292-4537-AE58-0723647C4C52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "laotzu", "_tools.fx\laotzu\laotzu.csproj", "{45C4AA7D-B292-4537-AE58-0723647C4C52}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bamapps.net", "_web\bamapps.net\bamapps.net.csproj", "{9C6B220D-C5FB-4DFB-BC13-B3F6F2DBF1A1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{3B6711D4-73E8-4D42-8E61-2C0A6264E160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam", "_tools\bam\bam.csproj", "{8F469666-7FB3-48E5-A93F-7928EF87DE45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam", "_tools.fx\bam\bam.csproj", "{8F469666-7FB3-48E5-A93F-7928EF87DE45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net", "bam.net\bam.net.csproj", "{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}"
 EndProject
