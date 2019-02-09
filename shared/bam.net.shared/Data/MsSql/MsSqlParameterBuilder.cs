@@ -10,7 +10,6 @@ using System.Data.Common;
 using Bam.Net.Incubation;
 using Bam.Net;
 using Bam.Net.Data;
-using Bam.Net.Data;
 using System.Data;
 
 namespace Bam.Net.Data

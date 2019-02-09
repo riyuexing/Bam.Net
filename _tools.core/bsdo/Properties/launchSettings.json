@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "bsdo": {
+      "commandName": "Project",
+      "commandLineArgs": "/i"
+    }
+  }
+}

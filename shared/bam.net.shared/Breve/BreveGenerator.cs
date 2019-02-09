@@ -34,14 +34,14 @@ namespace Bam.Net.Breve
             {
                 properties.Append(Format.PropertyFormat.NamedFormat(new
                 {
-                    PropertyType = bp.PropertyType,
-                    PropertyField = bp.PropertyField,
-                    ClassName = bp.ClassName,
-                    PropertyName = bp.PropertyName
+                    bp.PropertyType,
+                    bp.PropertyField,
+                    bp.ClassName,
+                    bp.PropertyName
                 }));
             });
 
-            output.Append(Format.ClassFormat.NamedFormat(new { ClassName = Info.ClassName, Properties = properties.ToString() }));
+            output.Append(Format.ClassFormat.NamedFormat(new { Info.ClassName, Properties = properties.ToString() }));
 
             output.ToString().SafeWriteToFile(file.FullName);
         }

@@ -6,12 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.Common" Version="4.3.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
+    <None Remove="troo.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bam.net.core\bam.net.core.csproj" />
+    <Content Include="troo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\bam.net.core\bam.net.core.csproj" />
   </ItemGroup>
 
 </Project>
