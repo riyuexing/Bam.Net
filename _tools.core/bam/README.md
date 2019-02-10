@@ -10,7 +10,9 @@ TL;DR
 - bam /addPage:[path/to/newPage]
 - bam /addModel:[modelName],[type1:propertyName1],[type2:propertyName2]...
 - bam /webpack
-- dotnet build
+- bam /build
+- bam /push
+- bam /deploy
 
 ## /init
 The /init switch clones the bam.js repository into wwwroot/bam.js, writes Startup.cs and sample AppModule classes into the AppModules folder. Startup.cs is backed up if the file already exists; AppModules are only written if they do not already exist.
@@ -42,11 +44,24 @@ Specifying the /gen:all argument calls all generation operations in the order, s
 ## /addPage:[path/to/newPage]
 The /addPage:[path/to/newPage] switch adds the files that constitute a new page.  Files added are:
 
-## /addModel:[modelName],[type1:propertyName1],[type2:propertyName2]...
-The /addModel switch adds a model deifnition to AppModels/Definitions and re-generate all models from the current set of definitions.  Existing model source files are overwritten.
-
 - Pages/[path/to/newPage].cshtml
 - Pages/[path/to/newPage].cshtml.cs
 - wwwroot/bam.js/pages/[path/to/newPage].js
 - wwwroot/bam.js/configs/[path/to/newPage]/webpack.config.js
 
+## /addModel:[modelName],[type1:propertyName1],[type2:propertyName2]...
+The /addModel switch adds a model deifnition to AppModels/Definitions and re-generate all models from the current set of definitions.  Existing model source files are overwritten.
+
+## /webpack
+Use WebPack to pack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs.
+
+## /build
+Builds the project using "dotnet publish ...", then creates a docker image.
+
+## /push
+Tag the docker image and push it to the docker registry, for example, 
+
+```
+docker tag {{app-name}} bryanapellanes/bam:{{app-name}}
+docker push bryanapellanes/bam:{{app-name}}
+```

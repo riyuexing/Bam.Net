@@ -203,6 +203,8 @@ namespace Bam.Net.Application
             Environment.CurrentDirectory = startDir;
         }
 
+
+
         private void GenerateDaoFromDbJsFiles()
         {
             //laotze.exe / root:[PATH-TO-DIRECTORY-CONTAINING-DBJS] /keep /s
