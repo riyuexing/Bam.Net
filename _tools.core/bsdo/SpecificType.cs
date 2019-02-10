@@ -59,5 +59,12 @@ namespace Bam.Net
         {
             return ToString().GetHashCode();
         }
+
+        public SpecificType WithExtendsSuffix()
+        {
+            SpecificType result = this.CopyAs<SpecificType>();
+            result.ClassName = $"{result.ClassName}{result.Extends}";
+            return result;
+        }
     }
 }

@@ -82,11 +82,12 @@ namespace Bam.Net
         private void WriteCsCode(SpecificType currentType)
         {
             OutLine($"Writing code for {currentType.TypeName}: {currentType.Extends}", ConsoleColor.Cyan);
-            string specified = $"{_genDir}\\{currentType.TypeName.LettersOnly()}.cs";
+            string specified = $"{_genDir}\\{currentType.ClassName.LettersOnly()}.cs";
             string path = specified.GetNextFileName(out int num);
             if (num > 0)
             {
-                currentType.ClassName = $"{currentType.ClassName}_{num}";
+                WriteCsCode(currentType.WithExtendsSuffix());
+                return;
             }
             string code = GetCsCode(currentType);
             TryWrite(code, path);
@@ -192,7 +193,7 @@ namespace Bam.Net
         {
             string html = TryGetHtml(typeName);
             CQ cq = CQ.Create(html);
-            CQ propBody = cq[string.Format(".definition-table .supertype-name a[href='/{0}']", typeName)].First().ParentsUntil(".definition-table").Next();
+            CQ propBody = cq[string.Format(".definition-table .supertype-name a[href='./{0}']", typeName)].First().ParentsUntil(".definition-table").Next();
             List<SchemaDotOrgProperty> properties = new List<SchemaDotOrgProperty>();
             cq["tr", propBody].Each((row) =>
             {
