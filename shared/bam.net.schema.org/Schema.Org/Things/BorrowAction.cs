@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org.Things
 	public class BorrowAction: TransferAction
 	{
 		///<summary>A sub property of participant. The person that lends the object being borrowed.</summary>
-		public Person Lender {get; set;}
+		public OneOfThese<Organization,Person> Lender {get; set;}
 	}
 }

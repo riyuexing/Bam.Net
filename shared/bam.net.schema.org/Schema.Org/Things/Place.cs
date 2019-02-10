@@ -25,18 +25,44 @@ namespace Bam.Net.Schema.Org.Things
 		public Text FaxNumber {get; set;}
 		///<summary>The geo coordinates of the place.</summary>
 		public OneOfThese<GeoCoordinates,GeoShape> Geo {get; set;}
+		///<summary>Represents a relationship between two geometries (or the places they represent), relating a containing geometry to a contained geometry. "a contains b iff no points of b lie in the exterior of a, and at least one point of the interior of b lies in the interior of a". As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyContains {get; set;}
+		///<summary>Represents a relationship between two geometries (or the places they represent), relating a geometry to another that covers it. As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyCoveredBy {get; set;}
+		///<summary>Represents a relationship between two geometries (or the places they represent), relating a covering geometry to a covered geometry. "Every point of b is a point of (the interior or boundary of) a". As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyCovers {get; set;}
+		///<summary>Represents a relationship between two geometries (or the places they represent), relating a geometry to another that crosses it: "a crosses b: they have some but not all interior points in common, and the dimension of the intersection is less than that of at least one of them". As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyCrosses {get; set;}
+		///<summary>Represents spatial relations in which two geometries (or the places they represent) are topologically disjoint: they have no point in common. They form a set of disconnected geometries." (a symmetric relationship, as defined in DE-9IM)</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyDisjoint {get; set;}
+		///<summary>Represents spatial relations in which two geometries (or the places they represent) are topologically equal, as defined in DE-9IM. "Two geometries are topologically equal if their interiors intersect and no part of the interior or boundary of one geometry intersects the exterior of the other" (a symmetric relationship)</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyEquals {get; set;}
+		///<summary>Represents spatial relations in which two geometries (or the places they represent) have at least one point in common. As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyIntersects {get; set;}
+		///<summary>Represents a relationship between two geometries (or the places they represent), relating a geometry to another that geospatially overlaps it, i.e. they have some but not all points in common. As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyOverlaps {get; set;}
+		///<summary>Represents spatial relations in which two geometries (or the places they represent) touch: they have at least one boundary point in common, but no interior points." (a symmetric relationship, as defined in DE-9IM )</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyTouches {get; set;}
+		///<summary>Represents a relationship between two geometries (or the places they represent), relating a geometry to one that contains it, i.e. it is inside (i.e. within) its interior. As defined in DE-9IM.</summary>
+		public OneOfThese<GeospatialGeometry,Place> GeospatiallyWithin {get; set;}
 		///<summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
 		public Text GlobalLocationNumber {get; set;}
 		///<summary>A URL to a map of the place. Supersedes map, maps.</summary>
 		public OneOfThese<Map,Url> HasMap {get; set;}
+		///<summary>A flag to signal that the item, event, or place is accessible for free. Supersedes free.</summary>
+		public Boolean IsAccessibleForFree {get; set;}
 		///<summary>The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</summary>
 		public Text IsicV4 {get; set;}
 		///<summary>An associated logo.</summary>
 		public OneOfThese<ImageObject,Url> Logo {get; set;}
+		///<summary>The total number of individuals that may attend an event or venue.</summary>
+		public Integer MaximumAttendeeCapacity {get; set;}
 		///<summary>The opening hours of a certain place.</summary>
 		public OpeningHoursSpecification OpeningHoursSpecification {get; set;}
 		///<summary>A photograph of this place. Supersedes photos.</summary>
 		public OneOfThese<ImageObject,Photograph> Photo {get; set;}
+		///<summary>A flag to signal that the Place is open to public visitors.  If this property is omitted there is no assumed default boolean value</summary>
+		public Boolean PublicAccess {get; set;}
 		///<summary>A review of the item. Supersedes reviews.</summary>
 		public Review Review {get; set;}
 		///<summary>Indicates whether it is allowed to smoke in the place, e.g. in the restaurant, hotel or hotel room.</summary>

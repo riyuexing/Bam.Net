@@ -2,7 +2,7 @@ using Bam.Net.Schema.Org.DataTypes;
 
 namespace Bam.Net.Schema.Org.Things
 {
-	///<summary></summary>
+	///<summary>Systems of medical practice.</summary>
 	public class MedicineSystem: MedicalEnumeration
 	{
 	}

@@ -17,8 +17,10 @@ namespace Bam.Net.Schema.Org.Things
 		public Text Award {get; set;}
 		///<summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
 		public OneOfThese<Brand,Organization> Brand {get; set;}
+		///<summary>An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred. Supersedes bookingAgent.</summary>
+		public OneOfThese<Organization,Person> Broker {get; set;}
 		///<summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
-		public OneOfThese<Text,Thing> Category {get; set;}
+		public OneOfThese<PhysicalActivityCategory,Text,Thing> Category {get; set;}
 		///<summary>Indicates an OfferCatalog listing for this Organization, Person, or Service.</summary>
 		public OfferCatalog HasOfferCatalog {get; set;}
 		///<summary>The hours during which this service or contact is available.</summary>
@@ -41,5 +43,7 @@ namespace Bam.Net.Schema.Org.Things
 		public Thing ServiceOutput {get; set;}
 		///<summary>The type of service being offered, e.g. veterans' benefits, emergency relief, etc.</summary>
 		public Text ServiceType {get; set;}
+		///<summary>Human-readable terms of service documentation.</summary>
+		public OneOfThese<Text,Url> TermsOfService {get; set;}
 	}
 }

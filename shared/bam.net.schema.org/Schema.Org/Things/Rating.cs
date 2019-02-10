@@ -11,6 +11,8 @@ namespace Bam.Net.Schema.Org.Things
 		public OneOfThese<Number,Text> BestRating {get; set;}
 		///<summary>The rating for the content.</summary>
 		public OneOfThese<Number,Text> RatingValue {get; set;}
+		///<summary>This Review or Rating is relevant to this part or facet of the itemReviewed.</summary>
+		public Text ReviewAspect {get; set;}
 		///<summary>The lowest value allowed in this rating system. If worstRating is omitted, 1 is assumed.</summary>
 		public OneOfThese<Number,Text> WorstRating {get; set;}
 	}

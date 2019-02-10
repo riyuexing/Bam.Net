@@ -8,6 +8,6 @@ namespace Bam.Net.Schema.Org.Things
 		///<summary>A sub property of instrument. The method of delivery.</summary>
 		public DeliveryMethod DeliveryMethod {get; set;}
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public OneOfThese<Audience,Organization,Person> Recipient {get; set;}
+		public OneOfThese<Audience,ContactPoint,Organization,Person> Recipient {get; set;}
 	}
 }

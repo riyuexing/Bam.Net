@@ -2,7 +2,7 @@ using Bam.Net.Schema.Org.DataTypes;
 
 namespace Bam.Net.Schema.Org.Things
 {
-	///<summary>An offer to transfer some rights to an item or to provide a service â€” for example, an offer to sell tickets to an event, to rent the DVD of a movie, to stream a TV show over the internet, to repair a motorcycle, or to loan a book.For GTIN-related fields, see Check Digit calculator and validation guide from GS1.</summary>
+	///<summary>An offer to transfer some rights to an item or to provide a service — for example, an offer to sell tickets to an event, to rent the DVD of a movie, to stream a TV show over the internet, to repair a motorcycle, or to loan a book.For GTIN-related fields, see Check Digit calculator and validation guide from GS1.</summary>
 	public class Offer: Intangible
 	{
 		///<summary>The payment method(s) accepted by seller for this offer.</summary>
@@ -28,7 +28,7 @@ namespace Bam.Net.Schema.Org.Things
 		///<summary>The business function (e.g. sell, lease, repair, dispose) of the offer or component of a bundle (TypeAndQuantityNode). The default is http://purl.org/goodrelations/v1#Sell.</summary>
 		public BusinessFunction BusinessFunction {get; set;}
 		///<summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
-		public OneOfThese<Text,Thing> Category {get; set;}
+		public OneOfThese<PhysicalActivityCategory,Text,Thing> Category {get; set;}
 		///<summary>The typical delay between the receipt of the order and the goods either leaving the warehouse or being prepared for pickup, in case the delivery method is on site pickup.</summary>
 		public QuantitativeValue DeliveryLeadTime {get; set;}
 		///<summary>The type(s) of customers for which the given offer is valid.</summary>
@@ -63,9 +63,9 @@ namespace Bam.Net.Schema.Org.Things
 		public Text Mpn {get; set;}
 		///<summary>A pointer to the organization or person making the offer. Inverse property: makesOffer.</summary>
 		public OneOfThese<Organization,Person> OfferedBy {get; set;}
-		///<summary>The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.Usage guidelines:Use the priceCurrency property (with ISO 4217 codes e.g. "USD") instead of  including ambiguous symbols such as '$' in the value.Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.Note that both RDFa and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.</summary>
+		///<summary>The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.Usage guidelines:Use the priceCurrency property (with standard formats: ISO 4217 currency format e.g. "USD"; Ticker symbol for cryptocurrencies e.g. "BTC"; well known names for Local Exchange Tradings Systems (LETS) and other currency types e.g. "Ithaca HOUR") instead of including ambiguous symbols such as '$' in the value.Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.Note that both RDFa and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.</summary>
 		public OneOfThese<Number,Text> Price {get; set;}
-		///<summary>The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to PriceSpecification and its subtypes.</summary>
+		///<summary>The currency of the price, or a price component when attached to PriceSpecification and its subtypes.Use standard formats: ISO 4217 currency format e.g. "USD"; Ticker symbol for cryptocurrencies e.g. "BTC"; well known names for Local Exchange Tradings Systems (LETS) and other currency types e.g. "Ithaca HOUR".</summary>
 		public Text PriceCurrency {get; set;}
 		///<summary>One or more detailed price specifications, indicating the unit price and delivery or payment charges.</summary>
 		public PriceSpecification PriceSpecification {get; set;}

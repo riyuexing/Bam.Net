@@ -9,11 +9,13 @@ namespace Bam.Net.Schema.Org.Things
 		public OneOfThese<MonetaryAmount,Number,PriceSpecification> BaseSalary {get; set;}
 		///<summary>Publication date for the job posting.</summary>
 		public Bam.Net.Schema.Org.DataTypes.Date DatePosted {get; set;}
-		///<summary>Educational background needed for the position.</summary>
+		///<summary>Educational background needed for the position or Occupation.</summary>
 		public Text EducationRequirements {get; set;}
 		///<summary>Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).</summary>
 		public Text EmploymentType {get; set;}
-		///<summary>Description of skills and experience needed for the position.</summary>
+		///<summary>A property describing the estimated salary for a job posting based on a variety of variables including, but not limited to industry, job title, and location. The estimated salary is usually computed by outside organizations and therefore the hiring organization is not bound to this estimated salary.</summary>
+		public OneOfThese<MonetaryAmount,MonetaryAmountDistribution,Number,PriceSpecification> EstimatedSalary {get; set;}
+		///<summary>Description of skills and experience needed for the position or Occupation.</summary>
 		public Text ExperienceRequirements {get; set;}
 		///<summary>Organization offering the job position.</summary>
 		public Organization HiringOrganization {get; set;}
@@ -27,9 +29,11 @@ namespace Bam.Net.Schema.Org.Things
 		public Place JobLocation {get; set;}
 		///<summary>Category or categories describing the job. Use BLS O*NET-SOC taxonomy: http://www.onetcenter.org/taxonomy.html. Ideally includes textual label and formal code, with the property repeated for each applicable value.</summary>
 		public Text OccupationalCategory {get; set;}
-		///<summary>Specific qualifications required for this role.</summary>
+		///<summary>Specific qualifications required for this role or Occupation.</summary>
 		public Text Qualifications {get; set;}
-		///<summary>Responsibilities associated with this role.</summary>
+		///<summary>The Occupation for the JobPosting.</summary>
+		public Occupation RelevantOccupation {get; set;}
+		///<summary>Responsibilities associated with this role or Occupation.</summary>
 		public Text Responsibilities {get; set;}
 		///<summary>The currency (coded using ISO 4217 ) used for the main salary information in this job posting or for this employee.</summary>
 		public Text SalaryCurrency {get; set;}

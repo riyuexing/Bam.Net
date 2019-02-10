@@ -7,7 +7,7 @@ namespace Bam.Net.Schema.Org.Things
 	{
 		///<summary>A music album. Supersedes albums.</summary>
 		public MusicAlbum Album {get; set;}
-		///<summary>Genre of the creative work or group.</summary>
+		///<summary>Genre of the creative work, broadcast channel or group.</summary>
 		public OneOfThese<Text,Url> Genre {get; set;}
 		///<summary>A music recording (track)—usually a single song. If an ItemList is given, the list should contain items of type MusicRecording. Supersedes tracks.</summary>
 		public OneOfThese<ItemList,MusicRecording> Track {get; set;}

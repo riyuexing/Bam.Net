@@ -9,7 +9,7 @@ namespace Bam.Net.Schema.Org.Things
 		public LocationFeatureSpecification AmenityFeature {get; set;}
 		///<summary>An intended audience, i.e. a group for whom something was created. Supersedes serviceAudience.</summary>
 		public Audience Audience {get; set;}
-		///<summary>A language someone may use with the item. Please use one of the language codes from the IETF BCP 47 standard. See also inLanguage</summary>
+		///<summary>A language someone may use with or at the item, service or place. Please use one of the language codes from the IETF BCP 47 standard. See also inLanguage</summary>
 		public OneOfThese<Language,Text> AvailableLanguage {get; set;}
 		///<summary>The earliest someone may check into a lodging establishment.</summary>
 		public Bam.Net.Schema.Org.DataTypes.Date CheckinTime {get; set;}

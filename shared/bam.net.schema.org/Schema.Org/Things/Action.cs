@@ -17,7 +17,7 @@ namespace Bam.Net.Schema.Org.Things
 		public Thing Instrument {get; set;}
 		///<summary>The location of for example where the event is happening, an organization is located, or where an action takes place.</summary>
 		public OneOfThese<Place,PostalAddress,Text> Location {get; set;}
-		///<summary>The object upon the action is carried out, whose state is kept intact or changed. Also known as the semantic roles patient, affected or undergoer (which change their state) or theme (which doesn't). e.g. John read a book.</summary>
+		///<summary>The object upon which the action is carried out, whose state is kept intact or changed. Also known as the semantic roles patient, affected or undergoer (which change their state) or theme (which doesn't). e.g. John read a book.</summary>
 		public Thing Object {get; set;}
 		///<summary>Other co-agents that participated in the action indirectly. e.g. John wrote a book with Steve.</summary>
 		public OneOfThese<Organization,Person> Participant {get; set;}

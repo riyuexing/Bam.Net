@@ -19,10 +19,8 @@ namespace Bam.Net.Schema.Org.Things
 		public Url EmbedUrl {get; set;}
 		///<summary>The CreativeWork encoded by this media object.</summary>
 		public CreativeWork EncodesCreativeWork {get; set;}
-		///<summary>mp3, mpeg4, etc.</summary>
-		public Text EncodingFormat {get; set;}
-		///<summary>Date the content expires and is no longer useful or available. Useful for videos.</summary>
-		public Bam.Net.Schema.Org.DataTypes.Date Expires {get; set;}
+		///<summary>Media type typically expressed using a MIME format (see IANA site and MDN reference) e.g. application/zip for a SoftwareApplication binary, audio/mpeg for .mp3 etc.).In cases where a CreativeWork has several media type representations, encoding can be used to indicate each MediaObject alongside particular encodingFormat information.Unregistered or niche encoding and file formats can be indicated instead via the most appropriate URL, e.g. defining Web page or a Wikipedia/Wikidata entry. Supersedes fileFormat.</summary>
+		public OneOfThese<Text,Url> EncodingFormat {get; set;}
 		///<summary>The height of the item.</summary>
 		public OneOfThese<Distance,QuantitativeValue> Height {get; set;}
 		///<summary>Player type required—for example, Flash or Silverlight.</summary>
@@ -32,7 +30,7 @@ namespace Bam.Net.Schema.Org.Things
 		///<summary>The regions where the media is allowed. If not specified, then it's assumed to be allowed everywhere. Specify the countries in ISO 3166 format.</summary>
 		public Place RegionsAllowed {get; set;}
 		///<summary>Indicates if use of the media require a subscription  (either paid or free). Allowed values are true or false (note that an earlier version had 'yes', 'no').</summary>
-		public Boolean RequiresSubscription {get; set;}
+		public OneOfThese<Boolean,MediaSubscription> RequiresSubscription {get; set;}
 		///<summary>Date when this media object was uploaded to this site.</summary>
 		public Bam.Net.Schema.Org.DataTypes.Date UploadDate {get; set;}
 		///<summary>The width of the item.</summary>

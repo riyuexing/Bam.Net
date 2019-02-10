@@ -7,7 +7,7 @@ namespace Bam.Net.Schema.Org.Things
 	{
 		///<summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
 		public OneOfThese<AdministrativeArea,GeoShape,Place,Text> AreaServed {get; set;}
-		///<summary>A language someone may use with the item. Please use one of the language codes from the IETF BCP 47 standard. See also inLanguage</summary>
+		///<summary>A language someone may use with or at the item, service or place. Please use one of the language codes from the IETF BCP 47 standard. See also inLanguage</summary>
 		public OneOfThese<Language,Text> AvailableLanguage {get; set;}
 		///<summary>An option available on this contact point (e.g. a toll-free number or support for hearing-impaired callers).</summary>
 		public ContactPointOption ContactOption {get; set;}

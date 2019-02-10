@@ -11,7 +11,7 @@ namespace Bam.Net.Schema.Org.Things
 		public Bam.Net.Schema.Org.DataTypes.Date DateDeleted {get; set;}
 		///<summary>The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.</summary>
 		public OneOfThese<Bam.Net.Schema.Org.DataTypes.Date,Bam.Net.Schema.Org.DataTypes.Date> DateModified {get; set;}
-		///<summary>An entity represented by an entry in a list or data feed (e.g. an 'artist' in a list of 'artists')â€™.</summary>
+		///<summary>An entity represented by an entry in a list or data feed (e.g. an 'artist' in a list of 'artists')’.</summary>
 		public Thing Item {get; set;}
 	}
 }

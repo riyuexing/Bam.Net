@@ -9,7 +9,7 @@ namespace Bam.Net.Schema.Org.Things
 		public LocationFeatureSpecification AmenityFeature {get; set;}
 		///<summary>The size of the accommodation, e.g. in square meter or squarefoot.Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for square yard</summary>
 		public QuantitativeValue FloorSize {get; set;}
-		///<summary>The number of rooms (excluding bathrooms and closets) of the acccommodation or lodging business.Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.</summary>
+		///<summary>The number of rooms (excluding bathrooms and closets) of the accommodation or lodging business.Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.</summary>
 		public OneOfThese<Number,QuantitativeValue> NumberOfRooms {get; set;}
 		///<summary>Indications regarding the permitted usage of the accommodation.</summary>
 		public Text PermittedUsage {get; set;}

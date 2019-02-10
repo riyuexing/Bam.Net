@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org.Things
 	public class GiveAction: TransferAction
 	{
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public OneOfThese<Audience,Organization,Person> Recipient {get; set;}
+		public OneOfThese<Audience,ContactPoint,Organization,Person> Recipient {get; set;}
 	}
 }

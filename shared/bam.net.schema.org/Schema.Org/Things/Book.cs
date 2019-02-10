@@ -5,6 +5,8 @@ namespace Bam.Net.Schema.Org.Things
 	///<summary>A book.</summary>
 	public class Book: CreativeWork
 	{
+		///<summary>Indicates whether the book is an abridged edition.</summary>
+		public Boolean Abridged {get; set;}
 		///<summary>The edition of the book.</summary>
 		public Text BookEdition {get; set;}
 		///<summary>The format of the book.</summary>

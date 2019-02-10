@@ -16,7 +16,7 @@ namespace Bam.Net.Schema.Org.Things
 		///<summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
 		public OneOfThese<Brand,Organization> Brand {get; set;}
 		///<summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
-		public OneOfThese<Text,Thing> Category {get; set;}
+		public OneOfThese<PhysicalActivityCategory,Text,Thing> Category {get; set;}
 		///<summary>The color of the product.</summary>
 		public Text Color {get; set;}
 		///<summary>The depth of the item.</summary>
@@ -45,6 +45,8 @@ namespace Bam.Net.Schema.Org.Things
 		public OneOfThese<ImageObject,Url> Logo {get; set;}
 		///<summary>The manufacturer of the product.</summary>
 		public Organization Manufacturer {get; set;}
+		///<summary>A material that something is made from, e.g. leather, wool, cotton, paper.</summary>
+		public OneOfThese<Product,Text,Url> Material {get; set;}
 		///<summary>The model of the product. Use with the URL of a ProductModel or a textual representation of the model identifier. The URL of the ProductModel can be from an external source. It is recommended to additionally provide strong product identifiers via the gtin8/gtin13/gtin14 and mpn properties.</summary>
 		public OneOfThese<ProductModel,Text> Model {get; set;}
 		///<summary>The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.</summary>

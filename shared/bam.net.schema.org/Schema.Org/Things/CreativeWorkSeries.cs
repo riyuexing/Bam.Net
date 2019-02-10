@@ -7,6 +7,8 @@ namespace Bam.Net.Schema.Org.Things
 	{
 		///<summary>The end date and time of the item (in ISO 8601 date format).</summary>
 		public OneOfThese<Bam.Net.Schema.Org.DataTypes.Date,Bam.Net.Schema.Org.DataTypes.Date> EndDate {get; set;}
+		///<summary>The International Standard Serial Number (ISSN) that identifies this serial publication. You can repeat this property to identify different formats of, or the linking ISSN (ISSN-L) for, this serial publication.</summary>
+		public Text Issn {get; set;}
 		///<summary>The start date and time of the item (in ISO 8601 date format).</summary>
 		public OneOfThese<Bam.Net.Schema.Org.DataTypes.Date,Bam.Net.Schema.Org.DataTypes.Date> StartDate {get; set;}
 	}

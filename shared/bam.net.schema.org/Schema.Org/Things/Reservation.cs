@@ -11,7 +11,7 @@ namespace Bam.Net.Schema.Org.Things
 		public OneOfThese<Organization,Person> Broker {get; set;}
 		///<summary>The date and time the reservation was modified.</summary>
 		public Bam.Net.Schema.Org.DataTypes.Date ModifiedTime {get; set;}
-		///<summary>The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to PriceSpecification and its subtypes.</summary>
+		///<summary>The currency of the price, or a price component when attached to PriceSpecification and its subtypes.Use standard formats: ISO 4217 currency format e.g. "USD"; Ticker symbol for cryptocurrencies e.g. "BTC"; well known names for Local Exchange Tradings Systems (LETS) and other currency types e.g. "Ithaca HOUR".</summary>
 		public Text PriceCurrency {get; set;}
 		///<summary>Any membership in a frequent flyer, hotel loyalty program, etc. being applied to the reservation.</summary>
 		public ProgramMembership ProgramMembershipUsed {get; set;}

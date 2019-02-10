@@ -5,7 +5,7 @@ namespace Bam.Net.Schema.Org.Things
 	///<summary>A means for accessing a service, e.g. a government office location, web site, or phone number.</summary>
 	public class ServiceChannel: Intangible
 	{
-		///<summary>A language someone may use with the item. Please use one of the language codes from the IETF BCP 47 standard. See also inLanguage</summary>
+		///<summary>A language someone may use with or at the item, service or place. Please use one of the language codes from the IETF BCP 47 standard. See also inLanguage</summary>
 		public OneOfThese<Language,Text> AvailableLanguage {get; set;}
 		///<summary>Estimated processing time for the service using this channel.</summary>
 		public Duration ProcessingTime {get; set;}

@@ -49,6 +49,8 @@ namespace Bam.Net.Schema.Org.Things
 		public Text GivenName {get; set;}
 		///<summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
 		public Text GlobalLocationNumber {get; set;}
+		///<summary>The Person's occupation. For past professions, use Role for expressing dates.</summary>
+		public Occupation HasOccupation {get; set;}
 		///<summary>Indicates an OfferCatalog listing for this Organization, Person, or Service.</summary>
 		public OfferCatalog HasOfferCatalog {get; set;}
 		///<summary>Points-of-Sales operated by the organization or person.</summary>
@@ -67,6 +69,10 @@ namespace Bam.Net.Schema.Org.Things
 		public Text JobTitle {get; set;}
 		///<summary>The most generic bi-directional social/work relation.</summary>
 		public Person Knows {get; set;}
+		///<summary>Of a Person, and less typically of an Organization, to indicate a topic that is known about - suggesting possible expertise but not implying it. We do not distinguish skill levels here, or yet relate this to educational content, events, objectives or JobPosting descriptions.</summary>
+		public OneOfThese<Text,Thing,Url> KnowsAbout {get; set;}
+		///<summary>Of a Person, and less typically of an Organization, to indicate a known language. We do not distinguish skill levels or reading/writing/speaking/signing here. Use language codes from the IETF BCP 47 standard.</summary>
+		public OneOfThese<Language,Text> KnowsLanguage {get; set;}
 		///<summary>A pointer to products or services offered by the organization or person. Inverse property: offeredBy.</summary>
 		public Offer MakesOffer {get; set;}
 		///<summary>An Organization (or ProgramMembership) to which this Person or Organization belongs. Inverse property: member.</summary>
@@ -83,6 +89,8 @@ namespace Bam.Net.Schema.Org.Things
 		public Person Parent {get; set;}
 		///<summary>Event that this person is a performer or participant in.</summary>
 		public Event PerformerIn {get; set;}
+		///<summary>The publishingPrinciples property indicates (typically via URL) a document describing the editorial principles of an Organization (or individual e.g. a Person writing a blog) that relate to their activities as a publisher, e.g. ethics or diversity policies. When applied to a CreativeWork (e.g. NewsArticle) the principles are those of the party primarily responsible for the creation of the CreativeWork.While such policies are most typically expressed in natural language, sometimes related information (e.g. indicating a funder) can be expressed using schema.org terminology.</summary>
+		public OneOfThese<CreativeWork,Url> PublishingPrinciples {get; set;}
 		///<summary>The most generic familial relation.</summary>
 		public Person RelatedTo {get; set;}
 		///<summary>A pointer to products or services sought by the organization or person (demand).</summary>

@@ -9,7 +9,7 @@ namespace Bam.Net.Schema.Org.Things
 		public Bam.Net.Schema.Org.DataTypes.Date DateIssued {get; set;}
 		///<summary>The organization issuing the ticket or permit.</summary>
 		public Organization IssuedBy {get; set;}
-		///<summary>The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to PriceSpecification and its subtypes.</summary>
+		///<summary>The currency of the price, or a price component when attached to PriceSpecification and its subtypes.Use standard formats: ISO 4217 currency format e.g. "USD"; Ticker symbol for cryptocurrencies e.g. "BTC"; well known names for Local Exchange Tradings Systems (LETS) and other currency types e.g. "Ithaca HOUR".</summary>
 		public Text PriceCurrency {get; set;}
 		///<summary>The unique identifier for the ticket.</summary>
 		public Text TicketNumber {get; set;}

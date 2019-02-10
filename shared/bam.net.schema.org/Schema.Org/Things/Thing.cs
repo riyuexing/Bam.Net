@@ -13,6 +13,8 @@ namespace Bam.Net.Schema.Org.Things
 		public Text Description {get; set;}
 		///<summary>A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.</summary>
 		public Text DisambiguatingDescription {get; set;}
+		///<summary>The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See background notes for more details.</summary>
+		public OneOfThese<PropertyValue,Text,Url> Identifier {get; set;}
 		///<summary>An image of the item. This can be a URL or a fully described ImageObject.</summary>
 		public OneOfThese<ImageObject,Url> Image {get; set;}
 		///<summary>Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See background notes for details. Inverse property: mainEntity.</summary>
@@ -21,8 +23,10 @@ namespace Bam.Net.Schema.Org.Things
 		public Text Name {get; set;}
 		///<summary>Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.</summary>
 		public Action PotentialAction {get; set;}
-		///<summary>URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Freebase page, or official website.</summary>
+		///<summary>URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.</summary>
 		public Url SameAs {get; set;}
+		///<summary>A CreativeWork or Event about this Thing.. Inverse property: about.</summary>
+		public OneOfThese<CreativeWork,Event> SubjectOf {get; set;}
 		///<summary>URL of the item.</summary>
 		public Url Url {get; set;}
 	}

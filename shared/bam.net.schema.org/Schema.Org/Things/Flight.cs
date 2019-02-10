@@ -3,7 +3,7 @@ using Bam.Net.Schema.Org.DataTypes;
 namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>An airline flight.</summary>
-	public class Flight: Intangible
+	public class Flight: Trip
 	{
 		///<summary>The kind of aircraft (e.g., "Boeing 747").</summary>
 		public OneOfThese<Text,Vehicle> Aircraft {get; set;}
@@ -13,8 +13,6 @@ namespace Bam.Net.Schema.Org.Things
 		public Text ArrivalGate {get; set;}
 		///<summary>Identifier of the flight's arrival terminal.</summary>
 		public Text ArrivalTerminal {get; set;}
-		///<summary>The expected arrival time.</summary>
-		public Bam.Net.Schema.Org.DataTypes.Date ArrivalTime {get; set;}
 		///<summary>The type of boarding policy used by the airline (e.g. zone-based or group-based).</summary>
 		public BoardingPolicyType BoardingPolicy {get; set;}
 		///<summary>The airport where the flight originates.</summary>
@@ -23,8 +21,6 @@ namespace Bam.Net.Schema.Org.Things
 		public Text DepartureGate {get; set;}
 		///<summary>Identifier of the flight's departure terminal.</summary>
 		public Text DepartureTerminal {get; set;}
-		///<summary>The expected departure time.</summary>
-		public Bam.Net.Schema.Org.DataTypes.Date DepartureTime {get; set;}
 		///<summary>The estimated time the flight will take.</summary>
 		public OneOfThese<Duration,Text> EstimatedFlightDuration {get; set;}
 		///<summary>The distance of the flight.</summary>
@@ -33,8 +29,6 @@ namespace Bam.Net.Schema.Org.Things
 		public Text FlightNumber {get; set;}
 		///<summary>Description of the meals that will be provided or available for purchase.</summary>
 		public Text MealService {get; set;}
-		///<summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
-		public OneOfThese<Organization,Person> Provider {get; set;}
 		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
 		public OneOfThese<Organization,Person> Seller {get; set;}
 		///<summary>The time when a passenger can check into the flight online.</summary>

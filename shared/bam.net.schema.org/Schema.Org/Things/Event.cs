@@ -5,12 +5,16 @@ namespace Bam.Net.Schema.Org.Things
 	///<summary>An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the offers property. Repeated events may be structured as separate Event objects.</summary>
 	public class Event: Thing
 	{
+		///<summary>The subject matter of the content. Inverse property: subjectOf.</summary>
+		public Thing About {get; set;}
 		///<summary>An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
 		public Person Actor {get; set;}
 		///<summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
 		public AggregateRating AggregateRating {get; set;}
 		///<summary>A person or organization attending the event. Supersedes attendees.</summary>
 		public OneOfThese<Organization,Person> Attendee {get; set;}
+		///<summary>An intended audience, i.e. a group for whom something was created. Supersedes serviceAudience.</summary>
+		public Audience Audience {get; set;}
 		///<summary>The person or organization who wrote a composition, or who is the composer of a work performed at some event.</summary>
 		public OneOfThese<Organization,Person> Composer {get; set;}
 		///<summary>A secondary contributor to the CreativeWork or Event.</summary>
@@ -29,10 +33,12 @@ namespace Bam.Net.Schema.Org.Things
 		public OneOfThese<Organization,Person> Funder {get; set;}
 		///<summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. See also availableLanguage. Supersedes language.</summary>
 		public OneOfThese<Language,Text> InLanguage {get; set;}
-		///<summary>A flag to signal that the publication is accessible for free. Supersedes free.</summary>
+		///<summary>A flag to signal that the item, event, or place is accessible for free. Supersedes free.</summary>
 		public Boolean IsAccessibleForFree {get; set;}
 		///<summary>The location of for example where the event is happening, an organization is located, or where an action takes place.</summary>
 		public OneOfThese<Place,PostalAddress,Text> Location {get; set;}
+		///<summary>The total number of individuals that may attend an event or venue.</summary>
+		public Integer MaximumAttendeeCapacity {get; set;}
 		///<summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
 		public Offer Offers {get; set;}
 		///<summary>An organizer of an Event.</summary>
@@ -43,6 +49,8 @@ namespace Bam.Net.Schema.Org.Things
 		public Bam.Net.Schema.Org.DataTypes.Date PreviousStartDate {get; set;}
 		///<summary>The CreativeWork that captured all or part of this Event. Inverse property: recordedAt.</summary>
 		public CreativeWork RecordedIn {get; set;}
+		///<summary>The number of attendee places for an event that remain unallocated.</summary>
+		public Integer RemainingAttendeeCapacity {get; set;}
 		///<summary>A review of the item. Supersedes reviews.</summary>
 		public Review Review {get; set;}
 		///<summary>A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.</summary>

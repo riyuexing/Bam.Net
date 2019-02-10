@@ -12,7 +12,7 @@ namespace Bam.Net.Schema.Org.Things
 		///<summary>An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred. Supersedes bookingAgent.</summary>
 		public OneOfThese<Organization,Person> Broker {get; set;}
 		///<summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
-		public OneOfThese<Text,Thing> Category {get; set;}
+		public OneOfThese<PhysicalActivityCategory,Text,Thing> Category {get; set;}
 		///<summary>A number that confirms the given order or payment has been received.</summary>
 		public Text ConfirmationNumber {get; set;}
 		///<summary>Party placing the order or paying the invoice.</summary>

@@ -2,10 +2,10 @@ using Bam.Net.Schema.Org.DataTypes;
 
 namespace Bam.Net.Schema.Org.Things
 {
-	///<summary>A monetary value or range. This type can be used to describe an amount of money such as $50 USD, or a range as in describing a bank account being suitable for a balance between Â£1,000 and Â£1,000,000 GBP, or the value of a salary, etc. It is recommended to use PriceSpecification Types to describe the price of an Offer, Invoice, etc.</summary>
+	///<summary>A monetary value or range. This type can be used to describe an amount of money such as $50 USD, or a range as in describing a bank account being suitable for a balance between £1,000 and £1,000,000 GBP, or the value of a salary, etc. It is recommended to use PriceSpecification Types to describe the price of an Offer, Invoice, etc.</summary>
 	public class MonetaryAmount: StructuredValue
 	{
-		///<summary>The currency in which the monetary amount is expressed (in 3-letter ISO 4217 format).</summary>
+		///<summary>The currency in which the monetary amount is expressed.Use standard formats: ISO 4217 currency format e.g. "USD"; Ticker symbol for cryptocurrencies e.g. "BTC"; well known names for Local Exchange Tradings Systems (LETS) and other currency types e.g. "Ithaca HOUR".</summary>
 		public Text Currency {get; set;}
 		///<summary>The upper value of some characteristic or property.</summary>
 		public Number MaxValue {get; set;}

@@ -19,7 +19,7 @@ namespace Bam.Net.Schema.Org.Things
 		public OneOfThese<Number,Text> Discount {get; set;}
 		///<summary>Code used to redeem a discount.</summary>
 		public Text DiscountCode {get; set;}
-		///<summary>The currency (in 3-letter ISO 4217 format) of the discount.</summary>
+		///<summary>The currency of the discount.Use standard formats: ISO 4217 currency format e.g. "USD"; Ticker symbol for cryptocurrencies e.g. "BTC"; well known names for Local Exchange Tradings Systems (LETS) and other currency types e.g. "Ithaca HOUR".</summary>
 		public Text DiscountCurrency {get; set;}
 		///<summary>Was the offer accepted as a gift for someone other than the buyer.</summary>
 		public Boolean IsGift {get; set;}
