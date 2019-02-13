@@ -7,8 +7,8 @@ TL;DR
 - bam /init
 - bam /import
 - bam /gen:all
-- bam /addPage:[path/to/newPage]
 - bam /addModel:[modelName],[type1:propertyName1],[type2:propertyName2]...
+- bam /addPage:[path/to/newPage]
 - bam /webpack
 - bam /build
 - bam /push
@@ -21,10 +21,10 @@ The /init switch clones the bam.js repository into wwwroot/bam.js, writes Startu
 The /import switch reads data files (csv, json, yaml) from the folders of the same name found in AppData.  Dynamic types are derived from the data.
 
 ## /gen
-The /gen switch generates data access code.  The code generated represents the dynamic types derived from the import process.
+The /gen switch generates data access code.  The code generated represents the dynamic types derived from the import process.  
 
 ### /gen:src
-Specifying the /gen:src argument generates C# source code for all the dynamic types derived from the import process.
+Specifying the /gen:src argument generates C# source code for all the dynamic types derived from the import process.  Source code files are placed in a folder named "_gen" inside the AppData folder.
 
 ### /gen:bin
 Specifying the /gen:bin argument generates binaries for all the dynamic types derived from the import process.
@@ -56,12 +56,15 @@ The /addModel switch adds a model deifnition to AppModels/Definitions and re-gen
 Use WebPack to pack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs.
 
 ## /build
-Builds the project using "dotnet publish ...", then creates a docker image.
+Creates a Dockerfile then creates a docker image.
 
 ## /push
-Tag the docker image and push it to the docker registry, for example, 
+Tag the docker image and push it to the docker registry, for example: 
 
 ```
-docker tag {{app-name}} bryanapellanes/bam:{{app-name}}
-docker push bryanapellanes/bam:{{app-name}}
+docker tag {{app-name}} bamapps/containers:{{app-name}}
+docker push bamapps/containers:{{app-name}}
 ```
+
+## /clean
+Clears all dynamic types and namespaces from the dynamic type manager.

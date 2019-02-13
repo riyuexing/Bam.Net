@@ -19,7 +19,7 @@ using Bam.Net.Data.Dynamic.Data;
 namespace Bam.Net.Application
 {
     [Serializable]
-    public class WebActions : CommandLineTestInterface
+    public class LifeCycleActions : CommandLineTestInterface
     {
         public const string AppDataFolderName = "AppData";
         public const string GenerationOutputFolderName = "_gen";
@@ -167,7 +167,6 @@ namespace Bam.Net.Application
             // change directories into wwwroot/bam.js
             // for every webpack.config.js file in ./configs/ call
             // npx  webpack --config [configPath]
-
             string startDir = Environment.CurrentDirectory;
             DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
             if (csprojFile == null)
@@ -203,7 +202,36 @@ namespace Bam.Net.Application
             Environment.CurrentDirectory = startDir;
         }
 
-
+        [ConsoleAction("build", "Write a docker file and build a docker image.")]
+        public void Build()
+        {
+            string startDir = Environment.CurrentDirectory;
+            DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
+            if(csprojFile == null)
+            {
+                OutLine("Can't find csproj file", ConsoleColor.Magenta);
+                Exit(1);
+            }
+            BamSettings settings = BamSettings.Load();
+            HandlebarsDirectory handlebars = GetHandlebarsDirectory();
+            string projectName = Path.GetFileNameWithoutExtension(csprojFile.Name);
+            string dockerFileContents = handlebars.Render("Dockerfile", new { AspNetCoreEnvironment = settings.Environment, ProjectName = projectName });
+            Environment.CurrentDirectory = projectParent.FullName;
+            string dockerFile = Path.Combine(".", "Dockerfile");
+            dockerFileContents.SafeWriteToFile(dockerFile, true);
+            ProcessOutput tagOutput = $"docker tag {projectName} bamapps/containers:{projectName}".Run();
+            if(tagOutput.ExitCode != 0)
+            {
+                OutLineFormat("docker tag command failed: {0}\r\n{1}", tagOutput.StandardOutput, tagOutput.StandardError);
+                Exit(1);
+            }
+            ProcessOutput pushOutput = $"docker push bamapps/containers:{projectName}".Run();
+            if (tagOutput.ExitCode != 0)
+            {
+                OutLineFormat("docker push command failed: {0}\r\n{1}", tagOutput.StandardOutput, tagOutput.StandardError);
+                Exit(1);
+            }
+        }
 
         private void GenerateDaoFromDbJsFiles()
         {

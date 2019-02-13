@@ -19,7 +19,7 @@ namespace Bam.Net
 
         public static void AddArguments()
         {
-            AddSwitches(typeof(WebActions));
+            AddSwitches(typeof(LifeCycleActions));
             AddValidArgument("schemaName", false, addAcronym: true, description: "The name to use for the generated schema");
         }
 
@@ -35,7 +35,7 @@ namespace Bam.Net
             {
                 Pause("paused..."); // for debugging
             }
-            if (ExecuteSwitches(Arguments, typeof(WebActions), false, logger))
+            if (ExecuteSwitches(Arguments, typeof(LifeCycleActions), false, logger))
             {
                 logger.BlockUntilEventQueueIsEmpty();                
             }

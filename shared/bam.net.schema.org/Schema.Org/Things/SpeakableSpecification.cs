@@ -6,8 +6,8 @@ namespace Bam.Net.Schema.Org.Things
 	public class SpeakableSpecification: Intangible
 	{
 		///<summary>A CSS selector, e.g. of a SpeakableSpecification or WebPageElement. In the latter case, multiple matches within a page can constitute a single conceptual "Web page element".</summary>
-		public CssSelectorType CssSelector {get; set;}
+		public string CssSelector {get; set;}
 		///<summary>An XPath, e.g. of a SpeakableSpecification or WebPageElement. In the latter case, multiple matches within a page can constitute a single conceptual "Web page element".</summary>
-		public XPathType Xpath {get; set;}
+		public string Xpath {get; set;}
 	}
 }

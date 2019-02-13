@@ -22,6 +22,8 @@ namespace Bam.Net.CommandLine
     /// </summary>
     public class ParsedArguments
     {
+        public const string DefaultArgPrefix = "/";
+
         public ParsedArguments(string[] args, string[] validArgNames)
             : this(args, ArgumentInfo.FromStringArray(validArgNames))
         {
