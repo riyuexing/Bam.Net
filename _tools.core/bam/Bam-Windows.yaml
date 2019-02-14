@@ -1,0 +1,4 @@
+﻿Environment: Development
+GitPath: C:\Program Files\Git\cmd\git.exe
+DotNetPath: C:\Program Files\dotnet\dotnet.exe
+NpxPath: C:\Program Files\nodejs\npx

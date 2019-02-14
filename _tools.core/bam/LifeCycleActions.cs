@@ -15,6 +15,7 @@ using System.Threading;
 using System.Reflection;
 using Bam.Net.Data.Dynamic;
 using Bam.Net.Data.Dynamic.Data;
+using System.Diagnostics;
 
 namespace Bam.Net.Application
 {
@@ -32,7 +33,7 @@ namespace Bam.Net.Application
             {
                 return _appDataLock.DoubleCheckLock(ref _appData, () => new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, AppDataFolderName)));
             }
-        }        
+        }
 
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
@@ -42,6 +43,11 @@ namespace Bam.Net.Application
             // - clone bam.js into wwwroot/bam.js
             // - write Startup.cs (backing up existing)
             // - write sample modules
+            BamSettings settings = BamSettings.Load();
+            if (!settings.IsValid(msg => OutLine(msg, ConsoleColor.Red)))
+            {
+                Exit(1);
+            }
             DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
             if(csprojFile == null)
             {
@@ -60,8 +66,8 @@ namespace Bam.Net.Application
             if (!Directory.Exists(bamJsPath))
             {
                 OutLineFormat("Cloning bam.js to {0}", ConsoleColor.Yellow, bamJsPath);
-                string cloneCommand = "git clone https://github.com/BryanApellanes/bam.js.git wwwroot/bam.js";
-                cloneCommand.Run((output) => OutLine(output, ConsoleColor.Cyan));
+                ProcessStartInfo cloneCommand = settings.GitPath.ToStartInfo("clone https://github.com/BryanApellanes/bam.js.git wwwroot/bam.js");
+                cloneCommand.Run();
             }
 
             WriteStartupCs(csprojFile);
