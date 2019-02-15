@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Security.Principal;
+using Bam.Net.CommandLine;
 
 namespace Bam.Net
 {
@@ -55,6 +56,16 @@ namespace Bam.Net
         /// <returns>User as string</returns>
         public static string GetCurrentWindowsUser(bool includeDomain)
         {
+#if NETCOREAPP
+            ProcessOutput output = "whoami".Run();
+            string result = output.StandardOutput.Trim();
+            if (output.ExitCode == 0)
+            {
+                return result;
+            }
+
+            return string.Empty;
+#else
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             if (includeDomain)
             {
@@ -64,6 +75,7 @@ namespace Bam.Net
             {
                 return StripDomain(identity.Name);
             }
+#endif
         }
 
         public static ICredentials GetCurrentCredentials()
