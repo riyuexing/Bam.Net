@@ -35,6 +35,16 @@ namespace Bam.Net.Application
             }
         }
 
+        [ConsoleAction("config", "Write the default config file backing up the current file if it exists")]
+        public void Config()
+        {
+            BamSettings settings = BamSettings.Load(true);
+            if(!settings.IsValid(msgs => OutLine(msgs, ConsoleColor.Magenta)))
+            {
+                settings.Save(bak => OutLineFormat("Backed up existing file: {0}", ConsoleColor.DarkYellow, bak));
+            }            
+        }
+
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
         {
@@ -43,16 +53,12 @@ namespace Bam.Net.Application
             // - clone bam.js into wwwroot/bam.js
             // - write Startup.cs (backing up existing)
             // - write sample modules
-            BamSettings settings = BamSettings.Load();
-            if (!settings.IsValid(msg => OutLine(msg, ConsoleColor.Red)))
-            {
-                Exit(1);
-            }
+            BamSettings settings = GetSettings();
             DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
-            if(csprojFile == null)
+            if (csprojFile == null)
             {
                 OutLine("Can't find csproj file", ConsoleColor.Magenta);
-                
+
                 Thread.Sleep(3000);
                 Exit(1);
             }
@@ -67,11 +73,11 @@ namespace Bam.Net.Application
             {
                 OutLineFormat("Cloning bam.js to {0}", ConsoleColor.Yellow, bamJsPath);
                 ProcessStartInfo cloneCommand = settings.GitPath.ToStartInfo("clone https://github.com/BryanApellanes/bam.js.git wwwroot/bam.js");
-                cloneCommand.Run();
+                cloneCommand.Run(msg => OutLine(msg, ConsoleColor.DarkCyan));
             }
 
             WriteStartupCs(csprojFile);
-            WriteBaseAppModules(csprojFile);          
+            WriteBaseAppModules(csprojFile);
         }
 
         [ConsoleAction("import", "Import data files from AppData (csv, json and yaml)")]
@@ -173,13 +179,11 @@ namespace Bam.Net.Application
             // change directories into wwwroot/bam.js
             // for every webpack.config.js file in ./configs/ call
             // npx  webpack --config [configPath]
+
             string startDir = Environment.CurrentDirectory;
-            DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
-            if (csprojFile == null)
-            {
-                OutLine("Can't find csproj file", ConsoleColor.Magenta);
-                Exit(1);
-            }
+
+            DirectoryInfo projectParent = GetProjectParentDirectoryOrExit();
+            BamSettings settings = BamSettings.Load();
             DirectoryInfo wwwroot = new DirectoryInfo(Path.Combine(projectParent.FullName, "wwwroot"));
             if (!wwwroot.Exists)
             {
@@ -193,7 +197,9 @@ namespace Bam.Net.Application
             }
             Environment.CurrentDirectory = bamJs.FullName;
             DirectoryInfo configs = new DirectoryInfo(Path.Combine(bamJs.FullName, "configs"));
-            foreach (FileInfo config in configs.GetFiles("webpack.config.js", SearchOption.AllDirectories))
+            
+            FileInfo[] webpackConfigs = configs.GetFiles("*webpack.config.js", SearchOption.AllDirectories);
+            foreach (FileInfo config in webpackConfigs)
             {
                 string configPath = config.FullName.Replace(configs.FullName, "");
                 if (configPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
@@ -201,9 +207,13 @@ namespace Bam.Net.Application
                     configPath = configPath.TruncateFront(1);
                 }
                 OutLineFormat("Packing {0}", ConsoleColor.Green, configPath);
-                string webPackCommand = $"npx webpack --config {configPath}";
-                OutLineFormat(webPackCommand);
-                webPackCommand.Run(output => OutLine(output, ConsoleColor.Cyan));
+
+                ProcessStartInfo webPackCommand = settings.NpxPath.ToStartInfo($"webpack --config {configPath}");
+                ProcessOutput output = webPackCommand.Run(msg => OutLineFormat(msg, ConsoleColor.DarkGreen));
+            }
+            if(webpackConfigs.Length == 0)
+            {
+                OutLineFormat("No webpack configs found in {0}", ConsoleColor.Yellow, configs.FullName);
             }
             Environment.CurrentDirectory = startDir;
         }
@@ -211,32 +221,41 @@ namespace Bam.Net.Application
         [ConsoleAction("build", "Write a docker file and build a docker image.")]
         public void Build()
         {
-            string startDir = Environment.CurrentDirectory;
-            DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
-            if(csprojFile == null)
-            {
-                OutLine("Can't find csproj file", ConsoleColor.Magenta);
-                Exit(1);
-            }
-            BamSettings settings = BamSettings.Load();
+            DirectoryInfo projectParent = GetProjectParentDirectoryOrExit(out FileInfo csprojFile);
+            BamSettings settings = GetSettings();
             HandlebarsDirectory handlebars = GetHandlebarsDirectory();
             string projectName = Path.GetFileNameWithoutExtension(csprojFile.Name);
             string dockerFileContents = handlebars.Render("Dockerfile", new { AspNetCoreEnvironment = settings.Environment, ProjectName = projectName });
+            string startDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = projectParent.FullName;
             string dockerFile = Path.Combine(".", "Dockerfile");
             dockerFileContents.SafeWriteToFile(dockerFile, true);
-            ProcessOutput tagOutput = $"docker tag {projectName} bamapps/containers:{projectName}".Run();
+            ProcessStartInfo startInfo = settings.DockerPath.ToStartInfo($"tag {projectName} bamapps/containers:{projectName}");
+            ProcessOutput tagOutput = startInfo.Run(msg => OutLine(msg, ConsoleColor.Blue));
+            Environment.CurrentDirectory = startDir;
             if(tagOutput.ExitCode != 0)
             {
                 OutLineFormat("docker tag command failed: {0}\r\n{1}", tagOutput.StandardOutput, tagOutput.StandardError);
                 Exit(1);
             }
-            ProcessOutput pushOutput = $"docker push bamapps/containers:{projectName}".Run();
+            ProcessOutput pushOutput = settings.DockerPath.ToStartInfo("push bamapps/containers:{projectName}").Run(msg => OutLine(msg, ConsoleColor.DarkCyan));
             if (tagOutput.ExitCode != 0)
             {
                 OutLineFormat("docker push command failed: {0}\r\n{1}", tagOutput.StandardOutput, tagOutput.StandardError);
                 Exit(1);
             }
+        }
+
+        [ConsoleAction("push", "Tag the docker image and push it to the bamapps docker registry.")]
+        public void Push()
+        {
+            DirectoryInfo projectParent = GetProjectParentDirectoryOrExit(out FileInfo csprojFile);
+            string projectName = Path.GetFileNameWithoutExtension(csprojFile.Name);
+            BamSettings settings = GetSettings();
+            string startDir = Environment.CurrentDirectory;
+            settings.DockerPath.ToStartInfo($"tag {projectName} bamapps/images:{projectName}").Run(msg => OutLine(msg, ConsoleColor.Cyan));
+            settings.DockerPath.ToStartInfo($"push bamapps/images:{projectName}").Run(msg=> OutLine(msg, ConsoleColor.DarkCyan));
+            Environment.CurrentDirectory = startDir;
         }
 
         private void GenerateDaoFromDbJsFiles()
@@ -596,6 +615,34 @@ namespace Bam.Net.Application
             });
             dataModel.Properties = props.ToArray();
             return dataModel;
+        }
+        
+        private static BamSettings GetSettings()
+        {
+            BamSettings settings = BamSettings.Load();
+            if (!settings.IsValid(msg => OutLine(msg, ConsoleColor.Red)))
+            {
+                Exit(1);
+            }
+
+            return settings;
+        }
+
+        private DirectoryInfo GetProjectParentDirectoryOrExit()
+        {
+            return GetProjectParentDirectoryOrExit(out FileInfo ignore);
+        }
+
+        private DirectoryInfo GetProjectParentDirectoryOrExit(out FileInfo csprojFile)
+        {
+            DirectoryInfo projectParent = FindProjectParent(out csprojFile);
+            if (csprojFile == null)
+            {
+                OutLine("Can't find csproj file", ConsoleColor.Magenta);
+                Exit(1);
+            }
+
+            return projectParent;
         }
     }
 }

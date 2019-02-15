@@ -107,7 +107,7 @@ namespace Bam.Net.CommandLine
         /// <returns></returns>
         public static ProcessOutput Run(this ProcessStartInfo startInfo, int timeout = 600000)
         {
-            return Run(startInfo, null, null, timeout);
+            return Run(startInfo, new StringBuilder(), new StringBuilder(), timeout);
         }
 
         /// <summary>
@@ -125,6 +125,11 @@ namespace Bam.Net.CommandLine
             error = error ?? new StringBuilder();
             ProcessOutputCollector receiver = new ProcessOutputCollector(output, error);
             return Run(startInfo, receiver, timeout);
+        }
+
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, Action<string> dataHandler, Action<string> errorHandler = null, int timeout = 600000)
+        {
+            return Run(startInfo, new ProcessOutputCollector(dataHandler, errorHandler), timeout);
         }
 
         /// <summary>

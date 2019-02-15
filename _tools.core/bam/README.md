@@ -4,6 +4,7 @@ Bam.exe is a tool used to manage BamFramework features and functionality within 
 
 TL;DR
 
+- bam /config
 - bam /init
 - bam /import
 - bam /gen:all
@@ -13,6 +14,9 @@ TL;DR
 - bam /build
 - bam /push
 - bam /deploy
+
+## /config
+The /config switch writes the default config file backing up the current file if it exists.
 
 ## /init
 The /init switch clones the bam.js repository into wwwroot/bam.js, writes Startup.cs and sample AppModule classes into the AppModules folder. Startup.cs is backed up if the file already exists; AppModules are only written if they do not already exist.
@@ -59,7 +63,7 @@ Use WebPack to pack each bam.js page found in wwwroot/bam.js/pages using corresp
 Creates a Dockerfile then creates a docker image.
 
 ## /push
-Tag the docker image and push it to the docker registry, for example: 
+Tag the docker image and push it to the bamapps docker registry, for example: 
 
 ```
 docker tag {{app-name}} bamapps/images:{{app-name}}
