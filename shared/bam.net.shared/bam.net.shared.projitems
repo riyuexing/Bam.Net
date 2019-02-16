@@ -201,6 +201,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessMonitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessMonitorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonServiceInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Data\ManagedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DeployInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
@@ -438,6 +439,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlRegistrarCaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoGenerationEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTargetStreamResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoCodeWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ITargetStreamResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorParserDaoCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OSNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OSInfo.cs" />
@@ -2860,6 +2866,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Analytics\EnglishDictionary\EnglishDictionary.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)Analytics\words\negative-words.txt" />
     <Content Include="$(MSBuildThisFileDirectory)Analytics\words\positive-words.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)Application\repo_config.json" />
     <Content Include="$(MSBuildThisFileDirectory)Automation\Automation.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)Automation\NodeScripts\ln.node.js" />
     <Content Include="$(MSBuildThisFileDirectory)Data\Js\AES.js" />

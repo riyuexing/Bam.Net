@@ -229,6 +229,17 @@ namespace Bam.Net.CommandLine
             };
         }
 
+        public static ProcessStartInfo ToCmdStartInfo(this string cmdFilePath, string arguments, DirectoryInfo workingDir = null)
+        {
+            FileInfo cmdFile = new FileInfo(cmdFilePath);
+            return cmdFile.ToCmdStartInfo(arguments, workingDir ?? new DirectoryInfo("."));
+        }
+
+        public static ProcessStartInfo ToCmdStartInfo(this FileInfo cmdFileInfo, string arguments, DirectoryInfo workingDirectory)
+        {
+            return ToStartInfo(OSInfo.GetPath("cmd.exe"), $"/c \"{cmdFileInfo.FullName}\" {arguments}");
+        }
+
         public static ProcessStartInfo ToStartInfo(this string exe, string arguments, string workingDirectory, bool promptForAdmin = false)
         {
             ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);

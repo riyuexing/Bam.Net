@@ -738,7 +738,7 @@ namespace Bam.Net.Data.Schema
                 referenceAssemblies[i] = File.Exists(binPath) ? binPath : assembly;
             }
 
-            CompilerResults results = generator.Compile(dirs, string.Format("{0}.dll", nameSpace), referenceAssemblies);
+            CompilerResults results = AdHocCSharpCompiler.CompileDirectories(dirs, string.Format("{0}.dll", nameSpace), referenceAssemblies, false);
             if (results.Errors.Count > 0)
             {
                 CompilerErrors = results.Errors;

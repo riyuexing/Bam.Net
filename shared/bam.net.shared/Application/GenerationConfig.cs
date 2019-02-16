@@ -4,14 +4,16 @@ using System.Text;
 
 namespace Bam.Net.Application
 {
+    /// <summary>
+    /// Configuration for generating a schema repository.
+    /// </summary>
     public class GenerationConfig
     {
         public string TypeAssembly { get; set; }
         public string SchemaName { get; set; }
         public string FromNameSpace { get; set; }
         public string ToNameSpace { get; set; }
-        public string WriteTo { get; set; }
-        public string WriteSrc { get; set; }
+        public string WriteSourceTo { get; set; }
 
         /// <summary>
         /// Check the specified data classes for Id properties

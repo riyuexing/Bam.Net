@@ -20,6 +20,7 @@ namespace Bam.Net
         public static void AddArguments()
         {
             AddSwitches(typeof(LifeCycleActions));
+            AddValidArgument("config", "The path to a config file to use");
             AddValidArgument("schemaName", false, addAcronym: true, description: "The name to use for the generated schema");
         }
 

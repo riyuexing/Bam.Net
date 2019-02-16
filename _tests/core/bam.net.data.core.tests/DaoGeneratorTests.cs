@@ -32,30 +32,9 @@ namespace Bam.Net.Data.Tests
     {
         class TestRazorEngineDaoGenerator : DaoGenerator
         {
-            public TestRazorEngineDaoGenerator() : base("Test") { }
-            public bool Called { get; set; }
-            protected override void WriteClassToStream(string result, Stream s)
-            {
-                Called = true;
-            }
-
-            public void TestWriteResult(string result, Stream s)
-            {
-                base.WriteClassToStream(result, s);
-            }
+            public TestRazorEngineDaoGenerator() : base("Test") { }            
         }
-
-        [UnitTest]
-        public static void WriteResultShouldWriteToSpecifiedStream()
-        {
-            MemoryStream stream = new MemoryStream();
-            TestRazorEngineDaoGenerator gen = new TestRazorEngineDaoGenerator();
-            string randomString = "".RandomString(8);
-            gen.TestWriteResult(randomString, stream);
-
-            Expect.AreEqual(randomString, Encoding.UTF8.GetString(stream.GetBuffer().Take(8).ToArray()));
-        }
-                
+                        
         private static void OutputCompilerErrors(CompilerResults results)
         {
             foreach (CompilerError error in results.Errors)

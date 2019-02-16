@@ -307,7 +307,7 @@ namespace laotze
         private static void Compile(DirectoryInfo[] dirs, FileInfo file)
         {
             DaoGenerator generator = new DaoGenerator(GetNamespace());
-            CompilerResults results = generator.Compile(dirs, file.FullName);
+            CompilerResults results = AdHocCSharpCompiler.CompileDirectories(dirs, file.Name, DaoGenerator.DefaultReferenceAssemblies.ToArray(), false);
             OutputCompilerErrors(results);
         }
 
@@ -337,8 +337,9 @@ namespace laotze
             DaoGenerator generator = new DaoGenerator(ns, resultInspector);
             if (!silent)
             {
-                generator.BeforeClassParse += BeforeTableHandler;
-                generator.AfterClassParse += AfterTableHandler;
+                // TODO: define and wireup generator events
+                //generator.BeforeClassParse += BeforeTableHandler;
+                //generator.AfterClassParse += AfterTableHandler;
             }
             generator.Generate(schema, dir.FullName);
         }

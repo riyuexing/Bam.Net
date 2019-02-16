@@ -161,10 +161,6 @@ namespace Bam.Net.Data.Dynamic
 
         private void Subscribe(DaoGenerator generator)
         {
-            if (OnTableStarted != null)
-            {
-                generator.BeforeClassStreamResolved += OnTableStarted;
-            }
             if (OnGenerateStarted != null)
             {
                 generator.GenerateStarted += OnGenerateStarted;

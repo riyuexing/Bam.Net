@@ -476,7 +476,8 @@ namespace Bam.Net.Data.Repositories
                 attrTypes.AttributeTypes.Each(attrType => references.Add(attrType.Assembly.GetFileInfo().FullName));
             });
             references.Add(typeof(DaoRepository).Assembly.GetFileInfo().FullName);
-            CompilerResults results = _daoGenerator.Compile(new DirectoryInfo(writeSourceTo), assemblyNameToCreate, references.ToArray(), false);
+            CompilerResults results = AdHocCSharpCompiler.CompileDirectories(new DirectoryInfo[] { new DirectoryInfo(writeSourceTo) }, assemblyNameToCreate, references.ToArray(), false);
+
             return results;
         }
         private static DaoRepositorySchemaWarningEventArgs GetEventArgs(KeyColumn keyColumn)

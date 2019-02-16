@@ -20,7 +20,7 @@ namespace Bam.Net.Tests
                 SchemaName = "TestSchemaName",
                 FromNameSpace = "From.Name.Space",
                 ToNameSpace = "To.Name.Space",
-                WriteSrc = "C:\\bam\\src\\_gen",
+                WriteSourceTo = "C:\\bam\\src\\_gen",
                 CheckForIds = true,
                 UseInheritanceSchema = false
             };

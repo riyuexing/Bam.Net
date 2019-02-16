@@ -48,7 +48,7 @@ namespace Bam.Net.Application
                 config = genInfo.ToConfig();
                 config.UseInheritanceSchema = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative();
                 config.CheckForIds = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
-                config.WriteSrc = GetArgument("writeSrc", "Please enter the directory to write source to");
+                config.WriteSourceTo = GetArgument("writeSrc", "Please enter the directory to write source to");
             }
             
             SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(Assembly.LoadFrom(config.TypeAssembly), config.FromNameSpace, logger)
@@ -56,7 +56,7 @@ namespace Bam.Net.Application
                 CheckIdField = config.CheckForIds,
                 BaseRepositoryType = config.UseInheritanceSchema ? "DatabaseRepository" : "DaoRepository"
             };
-            string targetDir = config.WriteSrc;
+            string targetDir = config.WriteSourceTo;
             if (Directory.Exists(targetDir))
             {
                 Directory.Move(targetDir, targetDir.GetNextDirectoryName());

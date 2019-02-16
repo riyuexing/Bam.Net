@@ -26,6 +26,9 @@
     <None Update="Bam-Windows.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="GenerationConfig.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Templates\AppDataModel.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

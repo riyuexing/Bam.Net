@@ -21,6 +21,7 @@ namespace Bam.Net.Application
         public string GitPath { get; set; }
         public string DotNetPath { get; set; }
         public string NpxPath { get; set; }
+        public string NodePath { get; set; }
         public string NpmPath { get; set; }
         public string DockerPath { get; set; }
 
@@ -37,6 +38,10 @@ namespace Bam.Net.Application
             if (string.IsNullOrEmpty(NpxPath))
             {
                 NpxPath = GetPath("npx");
+            }
+            if (string.IsNullOrEmpty(NodePath))
+            {
+                NodePath = GetPath("node");
             }
             if (string.IsNullOrEmpty(NpmPath))
             {
@@ -59,6 +64,10 @@ namespace Bam.Net.Application
             if (string.IsNullOrEmpty(NpxPath.Trim()))
             {
                 message.AppendLine("npx was not found, please specify the path to the npx executable");
+            }
+            if (string.IsNullOrEmpty(NodePath.Trim()))
+            {
+                message.AppendLine("node was not found, please specify the path to the node executable");
             }
             if (string.IsNullOrEmpty(DockerPath.Trim()))
             {
@@ -87,6 +96,7 @@ namespace Bam.Net.Application
                     GitPath = GetPath("git"),
                     DotNetPath = GetPath("dotnet"),
                     NpxPath = GetPath("npx"),
+                    NodePath = GetPath("node"),
                     NpmPath = GetPath("npm"),
                     DockerPath = GetPath("docker")
                 };
@@ -113,25 +123,9 @@ namespace Bam.Net.Application
             return path;
         }
 
-        private static string GetPath(string fileName)
+        public static string GetPath(string fileName)
         {
-            if(OSInfo.Current == OSNames.Windows)
-            {
-                ProcessOutput whereOutput = $"where {fileName}".Run();
-                return ResolvePath(whereOutput.StandardOutput);
-            }
-            ProcessOutput whichOutput = $"which {fileName}".Run();
-            return ResolvePath(whichOutput.StandardOutput);
-        }
-
-        private static string ResolvePath(string output)
-        {
-            string[] lines = output.DelimitSplit("\r", "\n");
-            if (lines.Length == 2)
-            {
-                return lines[1];
-            }
-            return lines[0];
+            return OSInfo.GetPath(fileName);
         }
     }
 }

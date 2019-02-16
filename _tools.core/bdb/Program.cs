@@ -13,6 +13,7 @@ namespace Bam.Net.Application
 
             DefaultMethod = typeof(Program).GetMethod(nameof(AfterInitialize));
             IsolateMethodCalls = false;
+            AddValidArgument("pause", true, addAcronym: false, description: "pause before exiting, only valid if command line switches are specified");
             AddSwitches(typeof(UtilityActions));
             AddConfigurationSwitches();
             ArgumentAdder.AddArguments(args);
@@ -26,6 +27,10 @@ namespace Bam.Net.Application
 
         public static void AfterInitialize()
         {
+            if (Arguments.Contains("pause"))
+            {
+                Pause("paused..."); // for debugging
+            }
             if (Arguments.Length > 0 && !Arguments.Contains("i"))
             {
                 ExecuteSwitches(Arguments, typeof(UtilityActions), false, Log.Default);

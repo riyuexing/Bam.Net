@@ -45,6 +45,15 @@ namespace Bam.Net.Application
             }            
         }
 
+        [ConsoleAction("genconfig")]
+        public void GenerationConfig()
+        {
+            GenerationSettings settings = new GenerationSettings();
+            string configFile = ".\\repo_gen_config.yaml";
+            settings.ToConfig().ToYamlFile(configFile);
+            $"notepad {configFile}".Run();
+        }
+
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
         {
@@ -108,7 +117,14 @@ namespace Bam.Net.Application
                     GenerateDaoFromDbJsFiles();
                     break;
                 case GenerationTargets.repo:
-                    GenerateSchemaRepository();
+                    if (Arguments.Contains("config"))
+                    {
+                        GenerateSchemaRepository(Arguments["config"]);
+                    }
+                    else
+                    {
+                        GenerateSchemaRepository();
+                    }
                     break;
                 case GenerationTargets.all:
                 default:
@@ -171,7 +187,7 @@ namespace Bam.Net.Application
             AddPage(csprojFile, pageName);
         }
 
-        [ConsoleAction("webpack", "WebPack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs")]
+        [ConsoleAction("pack", "WebPack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs")]
         public void WebPack()
         {
             // find the first csproj file by looking first in the current directory then going up
@@ -183,7 +199,7 @@ namespace Bam.Net.Application
             string startDir = Environment.CurrentDirectory;
 
             DirectoryInfo projectParent = GetProjectParentDirectoryOrExit();
-            BamSettings settings = BamSettings.Load();
+            BamSettings settings = GetSettings();
             DirectoryInfo wwwroot = new DirectoryInfo(Path.Combine(projectParent.FullName, "wwwroot"));
             if (!wwwroot.Exists)
             {
@@ -194,22 +210,24 @@ namespace Bam.Net.Application
             if (!bamJs.Exists)
             {
                 OutLineFormat("{0} doesn't exist", ConsoleColor.Magenta, bamJs.FullName);
+                Exit(1);
             }
             Environment.CurrentDirectory = bamJs.FullName;
             DirectoryInfo configs = new DirectoryInfo(Path.Combine(bamJs.FullName, "configs"));
             
-            FileInfo[] webpackConfigs = configs.GetFiles("*webpack.config.js", SearchOption.AllDirectories);
+            FileInfo[] webpackConfigs = configs.GetFiles("webpack.config.js", SearchOption.AllDirectories);
             foreach (FileInfo config in webpackConfigs)
             {
-                string configPath = config.FullName.Replace(configs.FullName, "");
-                if (configPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                string configPath = config.FullName.Replace(configs.Parent.FullName, "");
+                if (configPath.StartsWith(Path.DirectorySeparatorChar.ToString()))
                 {
                     configPath = configPath.TruncateFront(1);
                 }
                 OutLineFormat("Packing {0}", ConsoleColor.Green, configPath);
 
-                ProcessStartInfo webPackCommand = settings.NpxPath.ToStartInfo($"webpack --config {configPath}");
-                ProcessOutput output = webPackCommand.Run(msg => OutLineFormat(msg, ConsoleColor.DarkGreen));
+                ProcessStartInfo webPackCommand = settings.NpxPath.ToCmdStartInfo($"webpack --config {configPath}");
+                ProcessOutput output = webPackCommand.Run();
+                OutLine(output.StandardOutput, ConsoleColor.DarkGreen);
             }
             if(webpackConfigs.Length == 0)
             {
@@ -274,9 +292,13 @@ namespace Bam.Net.Application
         {
             OutLineFormat("Generating Dao repository for AppModels", ConsoleColor.Cyan);
             FileInfo csprojFile = FindProjectFile();
+            BamSettings settings = GetSettings();
+
             string schemaName = $"{Path.GetFileNameWithoutExtension(csprojFile.Name).Replace("_", "").Replace("-", "").Replace(".", "")}Schema";
             string dotnetTemp = new DirectoryInfo(Path.Combine(csprojFile.Directory.FullName, "AppData", "_gen", "dotnet")).FullName;
-            ProcessOutput dotnetOutput = $"dotnet publish --output \"{dotnetTemp}\"".Run(o => OutLine(o, ConsoleColor.DarkGray), 100000);
+
+            ProcessStartInfo dotnet = settings.DotNetPath.ToStartInfo($"publish --output \"{dotnetTemp}\"");
+            ProcessOutput dotnetOutput = dotnet.Run(o => OutLine(o, ConsoleColor.DarkGray), e => OutLine(e, ConsoleColor.Magenta), 600000);
             Assembly dotnetAssembly = Assembly.LoadFile(Path.Combine(dotnetTemp, $"{Path.GetFileNameWithoutExtension(csprojFile.Name)}.dll"));
 
             string fromNamespace = GetAppModelsNamespace(dotnetAssembly);
@@ -285,6 +307,7 @@ namespace Bam.Net.Application
                 return;
             }
             string toNamespace = $"{fromNamespace}.GeneratedDao";
+
             GenerationSettings generationSettings = new GenerationSettings
             {
                 Assembly = dotnetAssembly,
@@ -297,13 +320,20 @@ namespace Bam.Net.Application
             GenerateSchemaRepository(generationSettings);
         }
 
+        private void GenerateSchemaRepository(string configPath)
+        {
+            GenerateSchemaRepository(GenerationSettings.FromConfig(configPath));
+        }
+
         private void GenerateSchemaRepository(GenerationSettings generationSettings)
         {
-            ProcessOutput output = $"troo.exe /generateSchemaRepository /typeAssembly:\"{generationSettings.Assembly.GetFilePath()}\" /schemaName:{generationSettings.SchemaName} /fromNameSpace:{generationSettings.FromNameSpace} /checkForIds:yes /useInhertianceSchema:{generationSettings.UseInheritanceSchema.ToString()} /writeSource:\"{generationSettings.WriteSourceTo}\"".Run(o => OutLine(o, ConsoleColor.DarkGreen), 100000);
+            string bdbCommand = $"bdb.exe /generateSchemaRepository /typeAssembly:\"{generationSettings.Assembly.GetFilePath()}\" /schemaName:{generationSettings.SchemaName} /fromNameSpace:{generationSettings.FromNameSpace} /checkForIds:yes /useInhertianceSchema:{generationSettings.UseInheritanceSchema.ToString()} /writeSource:\"{generationSettings.WriteSourceTo}\"";
+            ProcessOutput output = bdbCommand.Run(o => OutLine(o, ConsoleColor.DarkGreen), 100000);
 
             if (output.ExitCode != 0)
             {
-                OutLineFormat("Schema generation exited with code {0}: {1}", ConsoleColor.Yellow, output.ExitCode, output.StandardError.Substring(output.StandardError.Length - 300));
+                OutLineFormat("Schema generation exited with code {0}: {1}\r\n{2}", ConsoleColor.Yellow, output.ExitCode, output.StandardError, output.StandardOutput);
+                Thread.Sleep(300);
             }
         }
 
@@ -398,7 +428,7 @@ namespace Bam.Net.Application
             if (!File.Exists(webPackConfigPath))
             {
                 OutLineFormat("Writing web pack config file {0}", ConsoleColor.DarkBlue, webPackConfigPath);
-                handlebarsDirectory.Render("WebpackConfig", pageRenderModel).SafeWriteToFile(webPackConfigPath, true);
+                handlebarsDirectory.Render("Webpack.config.js", pageRenderModel).SafeWriteToFile(webPackConfigPath, true);
             }
         }
 

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "bdb": {
+      "commandName": "Project",
+      "commandLineArgs": "/generateSchemaRepository /typeAssembly:\"C:\\bam\\toolkit\\bam.net.core.dll\" /schemaName:ManagedApplication /fromNameSpace:Bam.Net.Application.Data /checkForIds:yes /useInhertanceSchema:False /writeSource:\"C:\\bam\\src\\_gen\\ManagedApplication\" /pause"
+    }
+  }
+}
