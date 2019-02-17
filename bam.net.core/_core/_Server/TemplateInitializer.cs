@@ -19,7 +19,7 @@ namespace Bam.Net.Server
 {
     public abstract partial class TemplateInitializer : IInitialize<TemplateInitializer>, IPostServerInitialize
     {
-        protected internal static void RenderEachTable(IRenderer renderer, DaoProxyRegistration daoProxyReg)
+        protected internal static void RenderEachTable(IWebRenderer renderer, DaoProxyRegistration daoProxyReg)
         {
             Assembly currentAssembly = daoProxyReg.Assembly;
             Type[] tableTypes = currentAssembly.GetTypes().Where(type => type.HasCustomAttributeOfType<TableAttribute>()).ToArray();

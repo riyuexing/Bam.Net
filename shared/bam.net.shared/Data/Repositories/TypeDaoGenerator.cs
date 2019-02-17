@@ -25,10 +25,17 @@ namespace Bam.Net.Data.Repositories
     public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
     {
         DaoGenerator _daoGenerator;
-        WrapperGenerator _wrapperGenerator;
+        IWrapperGenerator _wrapperGenerator;
         TypeSchemaGenerator _typeSchemaGenerator;
         HashSet<Assembly> _additionalReferenceAssemblies;
         HashSet<Type> _additionalReferenceTypes;
+
+        public TypeDaoGenerator(IDaoCodeWriter codeWriter, IDaoTargetStreamResolver targetStreamResolver)
+        {
+            _namespace = "TypeDaos";
+            _daoGenerator = new DaoGenerator(codeWriter, targetStreamResolver) { Namespace = DaoNamespace };
+            _wrapperGenerator = new RazorWrapperGenerator(WrapperNamespace, DaoNamespace);
+        }
 
         /// <summary>
         /// Instantiate a new instance of TypeDaoGenerator
@@ -39,7 +46,7 @@ namespace Bam.Net.Data.Repositories
         {
             _namespace = "TypeDaos";
             _daoGenerator = new DaoGenerator(DaoNamespace);
-            _wrapperGenerator = new WrapperGenerator(WrapperNamespace, DaoNamespace);
+            _wrapperGenerator = new RazorWrapperGenerator(WrapperNamespace, DaoNamespace);
             _typeSchemaGenerator = new TypeSchemaGenerator();
             _additionalReferenceAssemblies = new HashSet<Assembly>();
             _additionalReferenceTypes = new HashSet<Type>();
@@ -69,10 +76,34 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
             AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace)));
         }
-
+        
         public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
         {
             _typeSchemaGenerator = typeSchemaGenerator;
+        }
+
+        protected DaoGenerator DaoGenerator
+        {
+            get
+            {
+                return _daoGenerator;
+            }
+            set
+            {
+                _daoGenerator = value;
+            }
+        }
+
+        protected IWrapperGenerator WrapperGenerator
+        {
+            get
+            {
+                return _wrapperGenerator;
+            }
+            set
+            {
+                _wrapperGenerator = value;
+            }
         }
 
         /// <summary>

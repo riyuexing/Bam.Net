@@ -10,7 +10,7 @@ using System.IO;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class Base64Renderer: Renderer
+    public class Base64Renderer: WebRenderer
     {
         public Base64Renderer()
             : base("text/plain; charset=utf-8")

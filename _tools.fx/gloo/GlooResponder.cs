@@ -14,7 +14,7 @@ namespace Bam.Net.Application
         public GlooResponder(BamConf conf, ILogger logger, bool verbose = false)
             : base(conf, logger)
         {
-            RendererFactory = new RendererFactory(logger);
+            RendererFactory = new WebRendererFactory(logger);
             ServiceProxyResponder = new ServiceProxyResponder(conf, logger);
             RpcResponder = new JsonRpcResponder(conf, logger);
             _responders = new Dictionary<string, IResponder>

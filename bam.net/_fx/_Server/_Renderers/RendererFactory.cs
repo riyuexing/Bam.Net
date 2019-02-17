@@ -14,7 +14,7 @@ using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {
-    public partial class RendererFactory // fx
+    public partial class WebRendererFactory // fx
     {
         public override void Render(object toRender, Stream output)
         {

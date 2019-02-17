@@ -861,6 +861,15 @@ namespace Bam.Net
             writer.Write(string.Join(",", values.ToArray()));
         }
 
+        public static void WriteToStream(this string text, Stream writeTo)
+        {
+            using (StreamWriter sw = new StreamWriter(writeTo))
+            {
+                sw.Write(text);
+                sw.Flush();
+            }
+        }
+
         public static string XmlToHumanReadable(this string xml, Encoding encoding = null)
         {
             encoding = encoding ?? Encoding.Unicode;

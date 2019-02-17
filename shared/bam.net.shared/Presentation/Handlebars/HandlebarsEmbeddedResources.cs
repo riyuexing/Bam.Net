@@ -11,17 +11,15 @@ namespace Bam.Net.Presentation.Handlebars
         public HandlebarsEmbeddedResources(Assembly assembly)
         {
             Assembly = assembly;
+            Templates = new Dictionary<string, Func<object, string>>();
         }
 
         public Assembly Assembly { get; set; }
 
-        Dictionary<string, Func<object, string>> _templates;
         public Dictionary<string, Func<object, string>> Templates
         {
-            get
-            {
-                return _templates;
-            }
+            get;
+            set;
         }
 
         readonly object _reloadLock = new object();
@@ -58,7 +56,7 @@ namespace Bam.Net.Presentation.Handlebars
                     using (TextReader sr = new StreamReader(Assembly.GetManifestResourceStream(resourceName)))
                     {
                         string name = Path.GetFileNameWithoutExtension(resourceName);
-                        _templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(sr.ReadToEnd()));
+                        Templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(sr.ReadToEnd()));
                     }
                 });
 

@@ -11,7 +11,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Presentation
 {
-    public interface IRenderer: IStreamRenderer
+    public interface IWebRenderer: ITemplateRenderer
     {
         string[] Extensions { get; set; }
         string ContentType { get; set; }

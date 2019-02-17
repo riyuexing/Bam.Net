@@ -18,7 +18,7 @@ namespace Bam.Net.Data.Schema
         public Action<string> ResultInspector { get; set; }
         public string Namespace { get; set; }
 
-        public ITargetStreamResolver TargetStreamResolver { get; set; }
+        public IDaoTargetStreamResolver DaoTargetStreamResolver { get; set; }
 
         public event EventHandler BeforeClassParse;
         public event EventHandler AfterClassParse;
@@ -31,7 +31,7 @@ namespace Bam.Net.Data.Schema
             string code = parser.ExecuteResource("Class.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
             FireEvent(AfterClassParse, new DaoGenerationEventArgs { SchemaDefinition = schema, Table = table });
 
-            Stream stream = TargetStreamResolver.GetTargetClassStream(targetResolver, root, table);
+            Stream stream = DaoTargetStreamResolver.GetTargetClassStream(targetResolver, root, table);
             WriteToStream(code, stream);
         }
 
@@ -45,7 +45,7 @@ namespace Bam.Net.Data.Schema
             string code = parser.ExecuteResource("Collection.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
             FireEvent(AfterCollectionParse, new DaoGenerationEventArgs { SchemaDefinition = schema, Table = table });
 
-            Stream stream = TargetStreamResolver.GetTargetCollectionStream(targetResolver, root, table);
+            Stream stream = DaoTargetStreamResolver.GetTargetCollectionStream(targetResolver, root, table);
             WriteToStream(code, stream);
         }
 
@@ -59,7 +59,7 @@ namespace Bam.Net.Data.Schema
             string code = parser.ExecuteResource("ColumnsClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
             FireEvent(AfterColumnsClassParse, new DaoGenerationEventArgs { SchemaDefinition = schema, Table = table });
 
-            Stream stream = TargetStreamResolver.GetTargetColumnsClassStream(target, root, table);
+            Stream stream = DaoTargetStreamResolver.GetTargetColumnsClassStream(target, root, table);
             WriteToStream(code, stream);
         }
 
@@ -74,7 +74,7 @@ namespace Bam.Net.Data.Schema
             string result = parser.ExecuteResource("Context.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = schema, Namespace });
             FireEvent(AfterContextClassParse, new DaoGenerationEventArgs { SchemaDefinition = schema });
 
-            Stream s = TargetStreamResolver.GetTargetContextStream(targetResolver, root, schema);
+            Stream s = DaoTargetStreamResolver.GetTargetContextStream(targetResolver, root, schema);
 
             WriteToStream(result, s);
         }
@@ -90,7 +90,7 @@ namespace Bam.Net.Data.Schema
             string result = parser.ExecuteResource("PagedQueryClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
             FireEvent(AfterPagedQueryClassParse, new DaoGenerationEventArgs { SchemaDefinition = schema });
 
-            Stream stream = TargetStreamResolver.GetTargetPagedQueryClassStream(targetResolver, root, table);
+            Stream stream = DaoTargetStreamResolver.GetTargetPagedQueryClassStream(targetResolver, root, table);
             WriteToStream(result, stream);
         }
 
@@ -105,7 +105,7 @@ namespace Bam.Net.Data.Schema
             string result = parser.ExecuteResource("QiClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
             FireEvent(AfterQiClassParse, new DaoGenerationEventArgs { SchemaDefinition = schema });
 
-            Stream stream = TargetStreamResolver.GetTargetQiClassStream(targetResolver, root, table);
+            Stream stream = DaoTargetStreamResolver.GetTargetQiClassStream(targetResolver, root, table);
             WriteToStream(result, stream);
         }
 
@@ -120,7 +120,7 @@ namespace Bam.Net.Data.Schema
             string result = parser.ExecuteResource("QueryClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
             FireEvent(AfterQueryClassParse, new DaoGenerationEventArgs { SchemaDefinition = schema });
 
-            Stream stream = TargetStreamResolver.GetTargetQueryClassStream(targetResolver, root, table);
+            Stream stream = DaoTargetStreamResolver.GetTargetQueryClassStream(targetResolver, root, table);
             WriteToStream(result, stream);
         }
 

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Bam.Net.Presentation
 {
-	public interface ITemplateManager: IStreamRenderer
+	public interface ITemplateManager: ITemplateRenderer
 	{
 		void SetContentType(IResponse response);
 		string CombinedCompiledLayoutTemplates { get; }

@@ -12,7 +12,7 @@ using Bam.Net;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class XmlRenderer: Renderer
+    public class XmlRenderer: WebRenderer
     {
         public XmlRenderer()
             : base("application/xml", ".xml")

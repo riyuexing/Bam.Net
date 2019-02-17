@@ -206,6 +206,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\PageRenderModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\RazorRenderableModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\RenderableModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Args.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyResolve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\AssemblyReference.cs" />
@@ -439,12 +441,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlRegistrarCaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IWrapperGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RazorWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoGenerationEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTargetStreamResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\HandlebarsDaoCodeWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTableSchemaModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoCodeWriter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ITargetStreamResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoTargetStreamResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorParserDaoCodeWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorResourceDaoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITemplateResourceRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OSNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OSInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\InlineComponent.cs" />
@@ -457,6 +466,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Handlebars\HandlebarsEmbeddedResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\ParameterLayouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\RazorTemplateRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
@@ -1443,7 +1453,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Instant.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IOrganizationNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRenderable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IStreamRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITemplateRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITypeResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IWriteSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Javascript\CliProvider.cs" />
@@ -1634,7 +1644,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Js\DataSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ICompiledTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\IRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\IWebRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ITemplateManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\LayoutModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\DocumentComponent.cs" />
@@ -1757,8 +1767,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\DustScript.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\HtmlRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\JsonRenderer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\Renderer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\RendererFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\WebRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\WebRendererFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\ScriptRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\TxtRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\XmlRenderer.cs" />
@@ -2842,6 +2852,9 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\QiClass.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\QueryClass.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\XrefProperty.tmpl" />
+    <None Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ChildDaoCollectionAdd.hbs" />
+    <None Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ChildXrefCollectionAdd.hbs" />
+    <None Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Class.hbs" />
     <None Include="$(MSBuildThisFileDirectory)Documentation\XmlDocumentation.xsd" />
     <None Include="$(MSBuildThisFileDirectory)Encryption\Encryption.db.js" />
     <None Include="$(MSBuildThisFileDirectory)Logging\Http\regen_http-logging_dao.cmd" />

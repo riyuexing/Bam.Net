@@ -14,7 +14,7 @@ namespace Bam.Net.Server.Renderers
     /// a given object.  In other words writes
     /// the default template for an object.
     /// </summary>
-    public partial class CommonTemplateRenderer: Renderer
+    public partial class CommonTemplateRenderer: WebRenderer
     {
 		public const string ViewFolderName = "views";
         public CommonTemplateRenderer(ContentResponder content)

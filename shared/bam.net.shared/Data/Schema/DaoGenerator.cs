@@ -19,8 +19,8 @@ namespace Bam.Net.Data.Schema
     /// </summary>
     public class DaoGenerator
     {
-        List<Stream> _resultStreams = new List<Stream>();
-        public DaoGenerator(IDaoCodeWriter codeWriter = null, ITargetStreamResolver targetStreamResolver = null)
+        readonly List<Stream> _resultStreams = new List<Stream>();
+        public DaoGenerator(IDaoCodeWriter codeWriter = null, IDaoTargetStreamResolver targetStreamResolver = null)
         {
             DisposeOnComplete = true;
             SubscribeToEvents();
@@ -29,34 +29,10 @@ namespace Bam.Net.Data.Schema
             TargetStreamResolver = targetStreamResolver ?? new DaoTargetStreamResolver();
             DaoCodeWriter = codeWriter ?? new RazorParserDaoCodeWriter
             {
-                TargetStreamResolver = TargetStreamResolver
+                DaoTargetStreamResolver = TargetStreamResolver
             };
         }
 
-        public static List<string> DefaultReferenceAssemblies
-        {
-            get
-            {
-				return new List<string>(AdHocCSharpCompiler.DefaultReferenceAssemblies);
-            }
-        }
-
-        private void SubscribeToEvents()
-        {
-            this.GenerateComplete += (g, schema) =>
-            {
-                if (DisposeOnComplete)
-                {
-                    foreach (Stream s in this._resultStreams)
-                    {
-                        s.Dispose();
-                    }
-                }
-
-                this._resultStreams.Clear();
-            };
-        }
-        
         public DaoGenerator(string nameSpace)
             : this()
         {
@@ -69,13 +45,21 @@ namespace Bam.Net.Data.Schema
             this.RazorResultInspector = resultInspector;
         }
 
+        public static List<string> DefaultReferenceAssemblies
+        {
+            get
+            {
+				return new List<string>(AdHocCSharpCompiler.DefaultReferenceAssemblies);
+            }
+        }
+                
         public IDaoCodeWriter DaoCodeWriter
         {
             get;
             set;
         }
 
-        public ITargetStreamResolver TargetStreamResolver
+        public IDaoTargetStreamResolver TargetStreamResolver
         {
             get;
             set;
@@ -102,18 +86,12 @@ namespace Bam.Net.Data.Schema
 
         protected void OnGenerateStarted(SchemaDefinition schema)
         {
-            if (GenerateStarted != null)
-            {
-                GenerateStarted(this, schema);
-            }
+            GenerateStarted?.Invoke(this, schema);
         }
 
         protected void OnGenerateComplete(SchemaDefinition schema)
         {
-            if (GenerateComplete != null)
-            {
-                GenerateComplete(this, schema);
-            }
+            GenerateComplete?.Invoke(this, schema);
         }
         
         #endregion events
@@ -216,7 +194,7 @@ namespace Bam.Net.Data.Schema
             Stream s = null;
 
             Type type = this.GetType();
-            string result = parser.ExecuteResource("Partial.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("Partial.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
 
 
             FileInfo partial = new FileInfo(Path.Combine(partialsDir, "{0}.cs"._Format(table.Name)));
@@ -239,6 +217,22 @@ namespace Bam.Net.Data.Schema
                 sw.Write(text);
                 sw.Flush();
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.GenerateComplete += (g, schema) =>
+            {
+                if (DisposeOnComplete)
+                {
+                    foreach (Stream s in this._resultStreams)
+                    {
+                        s.Dispose();
+                    }
+                }
+
+                this._resultStreams.Clear();
+            };
         }
     }
 }

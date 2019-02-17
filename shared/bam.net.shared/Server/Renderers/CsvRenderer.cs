@@ -11,7 +11,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class CsvRenderer: Renderer
+    public class CsvRenderer: WebRenderer
     {
         public CsvRenderer()
             : base("application/vnd.ms-excel", ".csv")

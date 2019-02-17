@@ -14,7 +14,7 @@ namespace Bam.Net.Server.Renderers
     /// a given object.  In other words writes
     /// the default template for an object.
     /// </summary>    
-    public partial class CommonTemplateRenderer : Renderer // core
+    public partial class CommonTemplateRenderer : WebRenderer // core
     {
         protected internal static string FieldSetFor(string json, string legendText = null, object wrapperAttrs = null, bool setValues = false)
         {

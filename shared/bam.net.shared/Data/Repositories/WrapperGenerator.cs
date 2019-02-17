@@ -17,8 +17,8 @@ namespace Bam.Net.Data.Repositories
 	/// enable lazy loading of IEnumerable properties.  This type
     /// is not thread safe
 	/// </summary>
-	public class WrapperGenerator: IAssemblyGenerator
-	{
+	public abstract class WrapperGenerator : IAssemblyGenerator, IWrapperGenerator
+    {
 		public WrapperGenerator(string wrapperNamespace, string daoNamespace, TypeSchema typeSchema = null)
 		{
 			WrapperNamespace = wrapperNamespace;
@@ -32,7 +32,7 @@ namespace Bam.Net.Data.Repositories
         public string WriteSourceTo { get; set; }
         public string InfoFileName => $"{WrapperNamespace}.Wrapper.genInfo.json";
 
-        public void Generate(TypeSchema schema, string writeTo)
+        public virtual void Generate(TypeSchema schema, string writeTo)
 		{
             TypeSchema = schema;
             WriteSource(writeTo);
@@ -43,31 +43,8 @@ namespace Bam.Net.Data.Repositories
             return GeneratedAssemblyInfo.GetGeneratedAssembly(InfoFileName, this).Assembly;
         }
 
-        object _generateLock = new object();
-        public GeneratedAssemblyInfo GenerateAssembly()
-        {
-            lock (_generateLock)
-            {
-                string fileName = $"{WrapperNamespace}.Wrapper.dll";
-                new DirectoryInfo(WriteSourceTo).ToAssembly(fileName, out CompilerResults results);
-                GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
-                result.Save();
-                return result;
-            }
-        }
+        public abstract GeneratedAssemblyInfo GenerateAssembly();
 
-        public void WriteSource(string writeSourceDir)
-        {
-            WriteSourceTo = writeSourceDir;
-            foreach (Type type in TypeSchema.Tables)
-            {
-                WrapperModel model = new WrapperModel(type, TypeSchema, WrapperNamespace, DaoNamespace);
-                string fileName = "{0}Wrapper.cs"._Format(type.Name.TrimNonLetters());
-                using (StreamWriter sw = new StreamWriter(Path.Combine(writeSourceDir, fileName)))
-                {
-                    sw.Write(model.Render());
-                }
-            }
-        }
+        public abstract void WriteSource(string writeSourceDir);
     }
 }

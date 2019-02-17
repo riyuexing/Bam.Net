@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Bam.Net.Services.DataReplication
 {
     /// <summary>
-    /// A class used to resolve 
+    /// A class used to resolve types operations are intended to operate on.
     /// </summary>
     /// <seealso cref="Bam.Net.Services.DataReplication.IRepositoryTypeResolver" />
     public class RepositoryTypeResolver : IRepositoryTypeResolver

@@ -352,7 +352,7 @@ namespace Bam.Net.Server
         {
             SendResponse(response, Encoding.UTF8.GetBytes(content));
         }
-        protected RendererFactory RendererFactory
+        protected WebRendererFactory RendererFactory
         {
             get;
             set;

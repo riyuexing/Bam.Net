@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Bam.Net.Data.Schema
 {
-    public class DaoTargetStreamResolver: ITargetStreamResolver
+    public class DaoTargetStreamResolver: IDaoTargetStreamResolver
     {
         public Stream GetTargetContextStream(Func<string, Stream> targetResolver, string root, SchemaDefinition schema)
         {

@@ -20,13 +20,13 @@ namespace Bam.Net.Server.Renderers
     /// <summary>
     /// Factory for creating renderers based on file extension.
     /// </summary>
-    public partial class RendererFactory: Renderer
+    public partial class WebRendererFactory: WebRenderer
     {
-        Dictionary<string, Func<IRenderer>> _renderers;
-        public RendererFactory(ILogger logger)
+        Dictionary<string, Func<IWebRenderer>> _renderers;
+        public WebRendererFactory(ILogger logger)
             : base("text/plain", "")
         {
-            this._renderers = new Dictionary<string, Func<IRenderer>>();
+            this._renderers = new Dictionary<string, Func<IWebRenderer>>();
 			this.Logger = logger ?? Log.Default;
             this.AddBaseRenderers();
         }
@@ -35,12 +35,12 @@ namespace Bam.Net.Server.Renderers
 
         public void Respond(ExecutionRequest request, ContentResponder contentResponder)
         {
-            IRenderer renderer = CreateRenderer(request, contentResponder);
+            IWebRenderer renderer = CreateRenderer(request, contentResponder);
 
             renderer.Respond(request);
         }
 
-        protected internal IRenderer CreateRenderer(ExecutionRequest request, ContentResponder contentResponder)
+        protected internal IWebRenderer CreateRenderer(ExecutionRequest request, ContentResponder contentResponder)
         {
             IRequest webRequest = request.Request;
             IResponse webResponse = request.Response;
@@ -50,7 +50,7 @@ namespace Bam.Net.Server.Renderers
             string path = request.Request.Url.AbsolutePath;
             string ext = Path.GetExtension(path);
 
-            IRenderer renderer = CreateRenderer(webRequest, ext);
+            IWebRenderer renderer = CreateRenderer(webRequest, ext);
 
             if (request.HasCallback || ScriptRenderer.Extensions.Contains(ext.ToLowerInvariant()))
             {
@@ -61,9 +61,9 @@ namespace Bam.Net.Server.Renderers
             return renderer;
         }
 
-        protected internal IRenderer CreateRenderer(IRequest webRequest, string ext = null)
+        protected internal IWebRenderer CreateRenderer(IRequest webRequest, string ext = null)
         {
-            IRenderer renderer = null;
+            IWebRenderer renderer = null;
             if (_renderers.ContainsKey(ext))
             {
                 renderer = _renderers[ext]();
@@ -94,13 +94,13 @@ namespace Bam.Net.Server.Renderers
         /// <summary>
         /// The event that fires before resolving the renderer for the current request
         /// </summary>
-        public event Action<RendererFactory, IRequest> CreatingRenderer;
+        public event Action<WebRendererFactory, IRequest> CreatingRenderer;
         protected void OnCreatingRenderer(IRequest request)
         {
             CreatingRenderer?.Invoke(this, request);
         }
-        public event Action<RendererFactory, IRequest, IRenderer> CreatedRenderer;
-        protected void OnCreatedRenderer(IRequest request, IRenderer renderer)
+        public event Action<WebRendererFactory, IRequest, IWebRenderer> CreatedRenderer;
+        protected void OnCreatedRenderer(IRequest request, IWebRenderer renderer)
         {
             if (CreatedRenderer != null)
             {
@@ -108,7 +108,7 @@ namespace Bam.Net.Server.Renderers
             }
         }
 
-        protected internal string GetContentType(IRenderer renderer, IRequest webRequest)
+        protected internal string GetContentType(IWebRenderer renderer, IRequest webRequest)
         {
             // TODO: revisit this to handle Accept and/or Content-Type headers 
             // see http://www.xml.com/pub/a/2005/06/08/restful.html
@@ -129,11 +129,11 @@ namespace Bam.Net.Server.Renderers
         /// Adds the renderer.
         /// </summary>
         /// <param name="renderer">The renderer.</param>
-        public void AddRenderer(Func<IRenderer> renderer)
+        public void AddRenderer(Func<IWebRenderer> renderer)
         {
             if (_renderers == null)
             {
-                _renderers = new Dictionary<string, Func<IRenderer>>();
+                _renderers = new Dictionary<string, Func<IWebRenderer>>();
             }
 
             renderer().Extensions.Each(ext =>
@@ -144,7 +144,7 @@ namespace Bam.Net.Server.Renderers
                 }
                 else
                 {
-                    IRenderer alreadySet = _renderers[ext]();
+                    IWebRenderer alreadySet = _renderers[ext]();
                     Logger.AddEntry("Renderer of type ({0}) for extension ({1}) has already been added, Renderer of type ({2}) will not be added",
                         LogEventType.Warning,                        
                         alreadySet.GetType().Name,

@@ -19,7 +19,7 @@ namespace Bam.Net.Application
         public DaemonResponder(BamConf conf, DaemonProcessMonitorService monitorService, ILogger logger, bool verbose = false) 
             : base(conf, logger)
         {
-            RendererFactory = new RendererFactory(logger);
+            RendererFactory = new WebRendererFactory(logger);
             ServiceProxyResponder = new ServiceProxyResponder(conf, logger);
             ServiceProxyResponder.AddCommonService(new CommandService());
             ServiceProxyResponder.AddCommonService(monitorService);

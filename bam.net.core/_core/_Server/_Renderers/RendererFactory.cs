@@ -13,7 +13,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.Presentation;
 namespace Bam.Net.Server.Renderers
 {
-    public partial class RendererFactory // core
+    public partial class WebRendererFactory // core
     {
         public override void Render(object toRender, Stream output)
         {

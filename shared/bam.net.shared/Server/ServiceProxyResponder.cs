@@ -43,7 +43,7 @@ namespace Bam.Net.Server
             _appSecureChannels = new Dictionary<string, SecureChannel>();
             _commonSecureChannel = new SecureChannel();
             _clientProxyGenerators = new Dictionary<string, IClientProxyGenerator>();
-            RendererFactory = new RendererFactory(logger);
+            RendererFactory = new WebRendererFactory(logger);
             ExecutionRequestResolver = new ExecutionRequestResolver();
 
             AddCommonService(_commonSecureChannel);

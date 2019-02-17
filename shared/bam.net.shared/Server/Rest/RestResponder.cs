@@ -26,7 +26,7 @@ namespace Bam.Net.Server.Rest
             : base(conf, logger)
         {
             Repository = repository;
-            RendererFactory = new RendererFactory(logger);
+            RendererFactory = new WebRendererFactory(logger);
         }
 
         public IRepository Repository { get; set; }
@@ -60,7 +60,7 @@ namespace Bam.Net.Server.Rest
                 Type type = restRequest.GetStorableType(Repository.StorableTypes);
                 if (type != null)
                 {
-                    IRenderer renderer = RendererFactory.CreateRenderer(context.Request, restRequest.Extension);
+                    IWebRenderer renderer = RendererFactory.CreateRenderer(context.Request, restRequest.Extension);
                     object instance = Repository.Retrieve(type, restRequest.Id);
                     if (instance != null)
                     {
@@ -95,7 +95,7 @@ namespace Bam.Net.Server.Rest
                         string postBody = ReadInputBody(request);
                         object value = Deserializers[fileExtension](postBody, type);
                         value = bodyHandler(value);
-                        IRenderer renderer = RendererFactory.CreateRenderer(request, fileExtension);
+                        IWebRenderer renderer = RendererFactory.CreateRenderer(request, fileExtension);
                         renderer.Render(new RestResponse { Success = true, Data = value }, response.OutputStream);
                         result = true;
                     }

@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class JsonRenderer: Renderer
+    public class JsonRenderer: WebRenderer
     {
         public JsonRenderer()
             : base("application/json", ".json")

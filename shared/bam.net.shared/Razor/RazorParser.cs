@@ -181,12 +181,12 @@ namespace Bam.Net.Razor
             set;
         }
 
-        //[DebuggerStepThrough]
 		private Assembly GetTemplateAssembly(TextReader input, string hashKey, Assembly[] assembliesToReference, out CSharpCodeProvider codeProvider, out GeneratorResults results)
 		{
 			Assembly templateAssembly;
 			codeProvider = new CSharpCodeProvider();
 			results = _engine.GenerateCode(input);
+
 			CompilerResults compilerResults = codeProvider.CompileAssemblyFromDom(
 				GetCompilerParameters(assembliesToReference), results.GeneratedCode);
 

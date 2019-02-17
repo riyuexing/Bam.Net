@@ -8,12 +8,13 @@ namespace Bam.Net.Data.Schema
     public interface IDaoCodeWriter
     {
         string Namespace { get; set; }
+        IDaoTargetStreamResolver DaoTargetStreamResolver { get; set; }
         void WriteContextClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root);
-        void WriteDaoClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
-        void WriteQueryClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
-        void WritePagedQueryClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
-        void WriteQiClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
-        void WriteCollectionClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
-        void WriteColumnsClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
+        void WriteDaoClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
+        void WriteQueryClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
+        void WritePagedQueryClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
+        void WriteQiClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
+        void WriteCollectionClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
+        void WriteColumnsClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
     }
 }

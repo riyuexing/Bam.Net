@@ -12,7 +12,7 @@ using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
-    public interface IRequestRenderer: IRenderer
+    public interface IRequestRenderer: IWebRenderer
     {
         ExecutionRequest Request { get; set; }
     }

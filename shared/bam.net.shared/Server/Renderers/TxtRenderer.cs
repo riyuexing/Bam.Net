@@ -10,7 +10,7 @@ using System.IO;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class TxtRenderer: Renderer
+    public class TxtRenderer: WebRenderer
     {
         public TxtRenderer()
             : base("text/plain", ".txt")

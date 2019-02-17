@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace Bam.Net.Server.Renderers
 {
-    public abstract class ContentRenderer: Renderer
+    public abstract class ContentRenderer: WebRenderer
     {
         public ContentRenderer(ExecutionRequest request, ContentResponder content, string contentType, params string[] extensions)
             :base(contentType, extensions)

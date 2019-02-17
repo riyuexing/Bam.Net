@@ -38,7 +38,7 @@ namespace Bam.Net.Server.JsonRpc
             if (request != null)
             {
                 JsonRpcResponse response = request.Execute();
-                IRenderer renderer = RendererFactory.CreateRenderer(context.Request);
+                IWebRenderer renderer = RendererFactory.CreateRenderer(context.Request);
                 renderer.Render(response.GetOutput(), context.Response.OutputStream);
             }
             return result;

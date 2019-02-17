@@ -13,7 +13,7 @@ using Bam.Net.Yaml;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class YamlRenderer: Renderer
+    public class YamlRenderer: WebRenderer
     {
         public YamlRenderer()
             : base("application/x-yaml", ".yaml")

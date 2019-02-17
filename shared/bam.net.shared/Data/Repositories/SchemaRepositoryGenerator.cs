@@ -32,7 +32,7 @@ namespace Bam.Net.Data.Repositories
         }
 
         /// <summary>
-        /// The namespace to 
+        /// The namespace to analyze for types.
         /// </summary>
         public string SourceNamespace { get; set; }
         public string BaseRepositoryType { get; set; }

@@ -12,9 +12,9 @@ using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {
-    public abstract class Renderer: IRenderer
+    public abstract class WebRenderer: IWebRenderer
     {
-        public Renderer(string contentType, params string[] extensions)
+        public WebRenderer(string contentType, params string[] extensions)
         {
             this.Extensions = extensions;
             this.ContentType = contentType;
