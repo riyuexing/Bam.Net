@@ -159,6 +159,7 @@ namespace Bam.Net.Data.Schema
             {
                 throw new NamespaceNotSpecifiedException();
             }
+            DaoCodeWriter.Namespace = Namespace;
 
             OnGenerateStarted(schema);            
             

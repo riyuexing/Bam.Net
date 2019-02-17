@@ -353,9 +353,10 @@ namespace laotzu
 
         public void GenerateCSharpOnClick(object sender, EventArgs e)
         {
-            DaoGenerator generator = new DaoGenerator();
-            generator.Namespace = Namespace ?? DefaultNamespace;
-            generator.BeforeClassStreamResolved += (s, t) => FormModelBinder.SetByTag("SchemaStatus", "Writing code for {0}"._Format(t.Name));
+            DaoGenerator generator = new DaoGenerator
+            {
+                Namespace = Namespace ?? DefaultNamespace
+            };
             DirectoryInfo srcDir = GetSourceDir(true);
             
             if (MappedSchemaDefinition.SchemaDefinition.Tables.Length == 0)

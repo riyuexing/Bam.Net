@@ -7,6 +7,7 @@ namespace Bam.Net.Data.Schema
 {
     public interface IDaoCodeWriter
     {
+        string Namespace { get; set; }
         void WriteContextClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root);
         void WriteDaoClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
         void WriteQueryClass(SchemaDefinition schema, Func<string, Stream> target, string root, Table table);
