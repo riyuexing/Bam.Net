@@ -37,6 +37,13 @@ namespace Bam.Net.Data.Schema.Handlebars
         public HandlebarsDirectory HandlebarsDirectory { get; set; }
         public HandlebarsEmbeddedResources HandlebarsEmbeddedResources { get; set; }
 
+        public void WriteDaoClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string rootDirectory, Table table)
+        {
+            Load();
+            DaoTableSchemaModel renderModel = GetModel(schema, table);
+            Render("Class", renderModel, DaoTargetStreamResolver.GetTargetClassStream(targetResolver, rootDirectory, table));
+        }
+
         public void WriteCollectionClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string rootDirectory, Table table)
         {
             Load();            
@@ -54,15 +61,9 @@ namespace Bam.Net.Data.Schema.Handlebars
         public void WriteContextClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string rootDirectory)
         {
             Load();
+            // *** this is where you left off ***
             DaoTableSchemaModel renderModel = GetModel(schema, null);
             Render("Context", renderModel, DaoTargetStreamResolver.GetTargetContextStream(targetResolver, rootDirectory, schema));
-        }
-
-        public void WriteDaoClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string rootDirectory, Table table)
-        {
-            Load();
-            DaoTableSchemaModel renderModel = GetModel(schema, table);
-            Render("Class", renderModel, DaoTargetStreamResolver.GetTargetClassStream(targetResolver, rootDirectory, table));
         }
 
         public void WritePagedQueryClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string rootDirectory, Table table)

@@ -89,7 +89,7 @@ namespace Bam.Net.Data.Schema
         public string ReferenceNameSuffix
         {
             get;
-            private set;
+            set;
         }
 
         public string ReferencedKey { get; set; }

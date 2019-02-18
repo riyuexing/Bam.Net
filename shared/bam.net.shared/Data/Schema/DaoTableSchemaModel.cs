@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Bam.Net.Data.Schema
@@ -13,5 +14,53 @@ namespace Bam.Net.Data.Schema
         public Table Model { get; set; }
         public SchemaDefinition Schema { get; set; }
         public string Namespace { get; set; }
+
+        public ForeignKeyColumn[] SuffixedForeignKeys
+        {
+            get
+            {
+                int i = 0;
+                List<ForeignKeyColumn> results = new List<ForeignKeyColumn>();
+                foreach(ForeignKeyColumn fk in Model.ForeignKeys)
+                {
+                    ForeignKeyColumn copy = fk.CopyAs<ForeignKeyColumn>();
+                    copy.ReferenceNameSuffix = (++i).ToString();
+                    results.Add(copy);
+                }
+                return results.ToArray();
+            }
+        }
+
+        public Column[] NonForeignKeyColumns
+        {
+            get
+            {
+                return Model.Columns.Where(c => !(c is ForeignKeyColumn)).ToArray();
+            }
+        }
+
+        public ReferencingForeignKeyModel[] ReferencingForeignKeys
+        {
+            get
+            {
+                return Model.ReferencingForeignKeys.Select(rfk => new ReferencingForeignKeyModel(rfk)).ToArray();
+            }
+        }
+
+        public XrefInfoModel[] LeftXrefs
+        {
+            get
+            {
+                return Schema.LeftXrefsFor(Model.Name).Select(x => new XrefInfoModel(x)).ToArray();
+            }
+        }
+
+        public XrefInfoModel[] RightXrefs
+        {
+            get
+            {
+                return Schema.RightXrefsFor(Model.Name).Select(x => new XrefInfoModel(x)).ToArray();
+            }
+        }
     }
 }

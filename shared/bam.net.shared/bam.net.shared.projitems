@@ -451,6 +451,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoTargetStreamResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorParserDaoCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorResourceDaoGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ReferencingForeignKeyModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\XrefInfoModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplateResourceRenderer.cs" />
@@ -2551,6 +2553,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\UserRegistryService_Http_core.bamapps.net_80_Proxy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Collection.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ColumnsClass.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ColumnsProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\DaoCollectionProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ForeignKeyProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\KeyProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Property.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\XrefProperty.hbs" />
     <None Include="$(MSBuildThisFileDirectory)Analytics\EnglishDictionary\EnglishDictionary.sqlite" />
     <None Include="$(MSBuildThisFileDirectory)Analytics\words\american-abbreviations.70" />
     <None Include="$(MSBuildThisFileDirectory)Analytics\words\american-proper-names.80" />
