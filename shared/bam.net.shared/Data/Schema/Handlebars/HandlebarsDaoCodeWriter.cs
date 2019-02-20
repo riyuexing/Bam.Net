@@ -61,8 +61,7 @@ namespace Bam.Net.Data.Schema.Handlebars
         public void WriteContextClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string rootDirectory)
         {
             Load();
-            // *** this is where you left off ***
-            DaoTableSchemaModel renderModel = GetModel(schema, null);
+            DaoContextModel renderModel = GetContextModel(schema);
             Render("Context", renderModel, DaoTargetStreamResolver.GetTargetContextStream(targetResolver, rootDirectory, schema));
         }
 
@@ -87,12 +86,17 @@ namespace Bam.Net.Data.Schema.Handlebars
             Render("QueryClass", renderModel, DaoTargetStreamResolver.GetTargetQueryClassStream(targetResolver, rootDirectory, table));
         }
 
+        private DaoContextModel GetContextModel(SchemaDefinition schema)
+        {
+            return new DaoContextModel { Model = schema, Namespace = Namespace };
+        }
+
         private DaoTableSchemaModel GetModel(SchemaDefinition schema, Table table)
         {
             return new DaoTableSchemaModel { Model = table, Schema = schema, Namespace = Namespace };
         }
 
-        private void Render(string templateName, DaoTableSchemaModel renderModel, Stream output)
+        private void Render(string templateName, object renderModel, Stream output)
         {
             if ((HandlebarsDirectory?.Templates?.ContainsKey(templateName)).Value)
             {

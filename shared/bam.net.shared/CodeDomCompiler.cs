@@ -30,7 +30,7 @@ namespace Bam.Net
             return results.CompiledAssembly;
         }
 
-        public byte[] Compile(string sourceCode, string assemblyFileName)
+        public byte[] Compile(string assemblyFileName, string sourceCode)
         {
             CompilerResults results = AdHocCSharpCompiler.CompileSource(sourceCode, assemblyFileName, ReferenceAssemblies, Path.GetExtension(assemblyFileName).EndsWith("exe"));
             ThrowIfErrors(results);

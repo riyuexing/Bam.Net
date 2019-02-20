@@ -27,18 +27,24 @@ namespace Bam.Net
 
         public Assembly Compile(FileInfo[] sourceFiles, string assemblyFileName)
         {
-            StringBuilder sourceCode = new StringBuilder();
-            foreach(FileInfo file in sourceFiles)
-            {
-                sourceCode.AppendLine(file.ReadAllText());
-            }
-            return Assembly.Load(Compile(sourceCode.ToString(), assemblyFileName));
+            return Assembly.Load(Compile(assemblyFileName, sourceFiles.Select(f => SyntaxFactory.ParseSyntaxTree(f.ReadAllText())).ToArray()));
         }
 
-        public byte[] Compile(string sourceCode, string assemblyName)
+        public byte[] Compile(string assemblyName, string sourceCode)
         {
             SyntaxTree tree = SyntaxFactory.ParseSyntaxTree(sourceCode);
-            CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, new SyntaxTree[] { tree }, GetMetadataReferences(), new CSharpCompilationOptions(this.OutputKind));
+            return Compile(assemblyName, tree);
+        }
+
+        public byte[] Compile(string assemblyName, params SyntaxTree[] syntaxTrees)
+        {
+            return Compile(assemblyName, GetMetadataReferences, syntaxTrees);
+        }
+
+        public byte[] Compile(string assemblyName, Func<MetadataReference[]> getMetaDataReferences, params SyntaxTree[] syntaxTrees)
+        {
+            getMetaDataReferences = getMetaDataReferences ?? GetMetadataReferences;
+            CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, syntaxTrees, getMetaDataReferences(), new CSharpCompilationOptions(this.OutputKind));
             using(MemoryStream stream = new MemoryStream())
             {
                 EmitResult compileResult = compilation.Emit(stream);

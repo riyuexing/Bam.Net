@@ -194,6 +194,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\AppDataModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\AppDataPropertyModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\AppModuleModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\AspNetCoreEnvironments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessEventArgs.cs" />
@@ -441,10 +442,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlRegistrarCaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RazorWrapperGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoContextModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoGenerationEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTargetStreamResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ForeignKeyColumnModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\HandlebarsDaoCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTableSchemaModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoCodeWriter.cs" />
@@ -2556,10 +2560,14 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Collection.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ColumnsClass.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ColumnsProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Context.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ContextMethods.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\DaoCollectionProperty.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ForeignKeyProperty.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\KeyProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\PagedQueryClass.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Property.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\QiClass.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\XrefProperty.hbs" />
     <None Include="$(MSBuildThisFileDirectory)Analytics\EnglishDictionary\EnglishDictionary.sqlite" />
     <None Include="$(MSBuildThisFileDirectory)Analytics\words\american-abbreviations.70" />
@@ -2862,9 +2870,9 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\QiClass.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\QueryClass.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\XrefProperty.tmpl" />
-    <None Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ChildDaoCollectionAdd.hbs" />
-    <None Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ChildXrefCollectionAdd.hbs" />
-    <None Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Class.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ChildDaoCollectionAdd.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ChildXrefCollectionAdd.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Class.hbs" />
     <None Include="$(MSBuildThisFileDirectory)Documentation\XmlDocumentation.xsd" />
     <None Include="$(MSBuildThisFileDirectory)Encryption\Encryption.db.js" />
     <None Include="$(MSBuildThisFileDirectory)Logging\Http\regen_http-logging_dao.cmd" />
@@ -2910,6 +2918,7 @@
     <Content Include="$(MSBuildThisFileDirectory)UserAccounts\UserAccounts.db.js" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\" />
     <Folder Include="$(MSBuildThisFileDirectory)Presentation\Components\Templates\" />
   </ItemGroup>
 </Project>

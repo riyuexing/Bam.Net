@@ -45,15 +45,6 @@ namespace Bam.Net.Application
             }            
         }
 
-        [ConsoleAction("genconfig")]
-        public void GenerationConfig()
-        {
-            GenerationSettings settings = new GenerationSettings();
-            string configFile = ".\\repo_gen_config.yaml";
-            settings.ToConfig().ToYamlFile(configFile);
-            $"notepad {configFile}".Run();
-        }
-
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
         {

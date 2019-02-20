@@ -15,17 +15,17 @@ namespace Bam.Net.Data.Schema
         public SchemaDefinition Schema { get; set; }
         public string Namespace { get; set; }
 
-        public ForeignKeyColumn[] SuffixedForeignKeys
+        public ForeignKeyColumnModel[] SuffixedForeignKeys
         {
             get
             {
                 int i = 0;
-                List<ForeignKeyColumn> results = new List<ForeignKeyColumn>();
+                List<ForeignKeyColumnModel> results = new List<ForeignKeyColumnModel>();
                 foreach(ForeignKeyColumn fk in Model.ForeignKeys)
                 {
                     ForeignKeyColumn copy = fk.CopyAs<ForeignKeyColumn>();
                     copy.ReferenceNameSuffix = (++i).ToString();
-                    results.Add(copy);
+                    results.Add(new ForeignKeyColumnModel(copy, Namespace));
                 }
                 return results.ToArray();
             }

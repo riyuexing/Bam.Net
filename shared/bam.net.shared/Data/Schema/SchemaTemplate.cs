@@ -17,14 +17,16 @@ namespace Bam.Net.Data.Schema
 
         public void WriteContextMethods(Table table, string ns)
         {
-            RazorParser<TableTemplate> razorParser = new RazorParser<TableTemplate>();
-            razorParser.GetDefaultAssembliesToReference = () =>
+            RazorParser<TableTemplate> razorParser = new RazorParser<TableTemplate>
             {
-                Assembly[] assembliesToReference = new Assembly[]{typeof(SchemaTemplate).Assembly, 
-					typeof(DaoGenerator).Assembly,
+                GetDefaultAssembliesToReference = () =>
+                {
+                    Assembly[] assembliesToReference = new Assembly[]{typeof(SchemaTemplate).Assembly,
+                    typeof(DaoGenerator).Assembly,
                     typeof(ServiceProxySystem).Assembly,
                     typeof(Resolver).Assembly};
-                return assembliesToReference;
+                    return assembliesToReference;
+                }
             };
             Write(razorParser.ExecuteResource("ContextMethods.tmpl", SchemaTemplateResources.Path, typeof(SchemaTemplate).Assembly, new { Model = table, Namespace = ns }));
         }

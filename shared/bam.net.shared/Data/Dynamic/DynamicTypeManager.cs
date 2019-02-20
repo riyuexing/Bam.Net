@@ -182,7 +182,7 @@ namespace Bam.Net.Data.Dynamic
         public Assembly GenerateAssembly()
         {
             string source = GenerateSource();
-            return Assembly.Load(Compiler.Compile(source, source.Sha256()));
+            return Assembly.Load(Compiler.Compile(source.Sha256(), source));
         }
         
         public byte[] GenerateAssembly(string nameSpace)
@@ -193,7 +193,7 @@ namespace Bam.Net.Data.Dynamic
         public byte[] GenerateAssembly(out string source, string nameSpace = null)
         {
             source = GenerateSource(nameSpace, out DynamicNamespaceDescriptor ns);
-            return Compiler.Compile(source, ns.Namespace);
+            return Compiler.Compile(ns.Namespace, source);
         }
 
         public string GenerateSource()

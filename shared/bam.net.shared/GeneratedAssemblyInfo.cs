@@ -46,6 +46,12 @@ namespace Bam.Net
             Assembly = compilerResults.CompiledAssembly;
         }
 
+        public GeneratedAssemblyInfo(string infoFileName, Assembly assembly) : this(infoFileName)
+        {
+            AssemblyFilePath = assembly.GetFileInfo().FullName;
+            Assembly = assembly;
+        }
+
         internal GeneratedAssemblyInfo(Assembly assembly)
         {
             FileInfo assemblyFileInfo = assembly.GetFileInfo();

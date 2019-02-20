@@ -114,7 +114,7 @@ namespace Bam.Net.Data.Schema
         public string MaxLength { get; set; }
 
         /// <summary>
-        /// The string representation of the  Dao defined data type 
+        /// The string representation of the Dao defined data type 
         /// translated to its native csharp type equivalent.  Used by
         /// generator and not directly refernced in code
         /// </summary>
