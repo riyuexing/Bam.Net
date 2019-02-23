@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Encryption;
 using Bam.Net.Messaging;
@@ -20,7 +19,7 @@ namespace Bam.Net.CoreServices
     /// that though there are properties that appear not to
     /// be referenced they are used by the razor template
     /// </summary>
-    public class ProxyModel
+    public partial class ProxyModel
     {
         public ProxyModel(Type serviceType, string protocol = "http", string host = "localhost", int port = 8080, HashSet<Assembly> addedReferenceAssemblies = null)
         {
@@ -94,11 +93,6 @@ namespace Bam.Net.CoreServices
                 AdditionalReferenceAssemblies.Each(new { Assemblies = assemblies }, (ctx, a) => ctx.Assemblies.Add(a));
                 return assemblies.ToArray();
             }
-        }
-
-        public string Render()
-        {
-            return RazorRenderer.RenderResource(this, ProxyTemplateResources.Path, "Proxy.tmpl", ReferenceAssemblies);
         }
     }
 }

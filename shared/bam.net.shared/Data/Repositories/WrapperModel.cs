@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Schema;
-using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
 using System.Reflection;
 
 namespace Bam.Net.Data.Repositories
 {
-	public class WrapperModel
+	public partial class WrapperModel
 	{
 		public WrapperModel(Type pocoType, TypeSchema schema, string wrapperNamespace = "TypeWrappers", string daoNameSpace = "Daos")
 		{
@@ -56,26 +55,5 @@ namespace Bam.Net.Data.Repositories
 		
 		private Type BaseType { get; set; }
 
-		public string Render()
-		{
-            List<Assembly> references = new List<Assembly>(GetDefaultAssembliesToReference())
-            {
-                BaseType.Assembly
-            };
-            RazorParser<WrapperTemplate> parser = new RazorParser<WrapperTemplate>(RazorBaseTemplate.DefaultInspector);
-			string output = parser.ExecuteResource("Wrapper.tmpl", RepositoryTemplateResources.Path, typeof(WrapperGenerator).Assembly,
-				new { Model = this }, references.ToArray());
-
-			return output;
-		}
-
-        private static Assembly[] GetDefaultAssembliesToReference()
-        {
-            Assembly[] assembliesToReference = new Assembly[]{typeof(WrapperTemplate).Assembly, 
-					typeof(DaoGenerator).Assembly,
-					typeof(ServiceProxySystem).Assembly, 
-					typeof(Resolver).Assembly};
-            return assembliesToReference;
-        }
 	}
 }

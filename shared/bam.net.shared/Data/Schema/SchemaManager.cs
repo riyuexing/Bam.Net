@@ -15,7 +15,6 @@ using Newtonsoft.Json;
 using System.Linq.Expressions;
 using Bam.Net.Javascript;
 using System.Threading;
-using Bam.Net.Razor;
 using Bam.Net.Configuration;
 
 namespace Bam.Net.Data.Schema
@@ -814,7 +813,6 @@ namespace Bam.Net.Data.Schema
 
         private DaoGenerator GetDaoGenerator(DirectoryInfo compileTo, bool keepSource, string partialsDir, bool compile, SchemaResult result, string nameSpace, DirectoryInfo daoDir)
         {
-            RazorBaseTemplate.DefaultInspector = (s) => { }; // turn off output to console
             DaoGenerator generator = new DaoGenerator(nameSpace);
             if (compile)
             {

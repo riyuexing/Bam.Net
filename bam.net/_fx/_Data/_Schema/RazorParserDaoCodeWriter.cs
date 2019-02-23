@@ -124,6 +124,21 @@ namespace Bam.Net.Data.Schema
             WriteToStream(result, stream);
         }
 
+        public event EventHandler BeforeWritePartial;
+        public event EventHandler AfterWriterPartial;
+        public void WritePartial(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table)
+        {
+            RazorParser<TableTemplate> parser = GetParser<TableTemplate>();
+            Type type = GetType();
+
+            FireEvent(BeforeWritePartial, new DaoGenerationEventArgs { SchemaDefinition = schema });
+            string result = parser.ExecuteResource("Partial.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
+            FireEvent(AfterWriterPartial, new DaoGenerationEventArgs { SchemaDefinition = schema });
+
+            Stream stream = DaoTargetStreamResolver.GetTargetPartialClassStream(targetResolver, root, table);
+            WriteToStream(result, stream);
+        }
+
         private static void WriteToStream(string text, Stream s)
         {
             using (StreamWriter sw = new StreamWriter(s))

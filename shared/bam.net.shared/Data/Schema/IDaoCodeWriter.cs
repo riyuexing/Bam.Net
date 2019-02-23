@@ -16,5 +16,7 @@ namespace Bam.Net.Data.Schema
         void WriteQiClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
         void WriteCollectionClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
         void WriteColumnsClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
+
+        void WritePartial(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table);
     }
 }

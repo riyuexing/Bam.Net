@@ -3,12 +3,11 @@
 */
 using System.Collections.Generic;
 using System.Reflection;
-using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    public class ProxyMethodModel
+    public partial class ProxyMethodModel
     {
         public ProxyMethodModel(MethodInfo method, params Assembly[] assembliesToreference)
             : this(new MethodGenerationInfo(method), assembliesToreference)
@@ -78,14 +77,6 @@ namespace Bam.Net.CoreServices
             set;
         }
 
-        public string Render()
-        {
-            return Render(ReferenceAssemblies);
-        }
 
-        public string Render(params Assembly[] assembliesToReference)
-        {
-            return RazorRenderer.RenderResource<ProxyMethodModel>(this, ProxyTemplateResources.Path, "ProxyMethod.tmpl", assembliesToReference);
-        }
     }
 }

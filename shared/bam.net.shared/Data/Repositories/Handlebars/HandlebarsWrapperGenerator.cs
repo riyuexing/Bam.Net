@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.Presentation.Handlebars;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -7,8 +8,18 @@ namespace Bam.Net.Data.Repositories.Handlebars
 {
     public class HandlebarsWrapperGenerator : WrapperGenerator
     {
+        public HandlebarsWrapperGenerator(HandlebarsWrapperGeneratorConfig config):this(config.WrapperNamespace, config.DaoNamespace, config.TypeSchema)
+        {
+            HandlebarsDirectory = config.HandlebarsDirectory;
+            HandlebarsEmbeddedResources = config.HandlebarsEmbeddedResources;
+        }
+
         public HandlebarsWrapperGenerator(string wrapperNamespace, string daoNamespace, TypeSchema typeSchema = null) : base(wrapperNamespace, daoNamespace, typeSchema)
-        { }
+        {
+        }
+
+        public HandlebarsDirectory HandlebarsDirectory { get; set; }
+        public HandlebarsEmbeddedResources HandlebarsEmbeddedResources { get; set; }
 
         object _generateLock = new object();
         public override GeneratedAssemblyInfo GenerateAssembly()
@@ -25,7 +36,8 @@ namespace Bam.Net.Data.Repositories.Handlebars
 
         public override void WriteSource(string writeSourceDir)
         {
-            throw new NotImplementedException();
+            WriteSourceTo = writeSourceDir;
+
         }
     }
 }

@@ -9,13 +9,10 @@ using Bam.Net.Presentation.Html;
 using System.Text.RegularExpressions;
 using Bam.Net;
 using Bam.Net.Data;
-using Bam.Net.Razor;
-//using Bam.Net.ServiceProxy;
-//using Bam.Net.ServiceProxy.Js;
 
 namespace Bam.Net.Data.Schema
 {
-    public class Column
+    public partial class Column
     {
         public Column()
         {
@@ -226,23 +223,6 @@ namespace Bam.Net.Data.Schema
             set;
         }
 
-        protected internal virtual string RenderClassProperty()
-        {
-            if (this.Key)
-            {
-                return Render<Column>("KeyProperty.tmpl");
-            }
-            else
-            {
-                return Render<Column>("Property.tmpl");
-            }
-        }
-
-        protected internal virtual string RenderColumnsClassProperty()
-        {
-            return Render<Column>("ColumnsProperty.tmpl");
-        }
-
         public override int GetHashCode()
         {
             return string.Format("{0}.{1}", this.TableName, this.Name).ToLowerInvariant().GetHashCode();
@@ -260,15 +240,6 @@ namespace Bam.Net.Data.Schema
                 return base.Equals(obj);
             }
         }
-        
-        protected string Render<T>(string templateName, string ns = "")
-        {
-            Type type = this.GetType();
-            RazorParser<DaoRazorTemplate<T>> razorParser = new RazorParser<DaoRazorTemplate<T>>
-            {
-                GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies
-            };
-            return razorParser.ExecuteResource(templateName, SchemaTemplateResources.Path, type.Assembly, new { Model = this, Namespace = ns });
-        }
+
     }
 }

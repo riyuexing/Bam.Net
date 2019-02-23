@@ -82,7 +82,7 @@ namespace Bam.Net.Data.Repositories
             _typeSchemaGenerator = typeSchemaGenerator;
         }
 
-        protected DaoGenerator DaoGenerator
+        public DaoGenerator DaoGenerator
         {
             get
             {
@@ -94,7 +94,7 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        protected IWrapperGenerator WrapperGenerator
+        public IWrapperGenerator WrapperGenerator
         {
             get
             {

@@ -6,11 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Razor;
 
 namespace Bam.Net.Data.Schema
 {
-    public sealed class XrefInfo
+    public sealed partial class XrefInfo
     {
         public XrefInfo(string parentTableName, string xrefTableName, string listTableName)
         {
@@ -33,14 +32,5 @@ namespace Bam.Net.Data.Schema
             return Render("ChildXrefCollectionAdd.tmpl");
         }
 
-        protected string Render(string templateName)
-        {
-            Type type = this.GetType();
-            RazorParser<DaoRazorTemplate<XrefInfo>> razorParser = new RazorParser<DaoRazorTemplate<XrefInfo>>
-            {
-                GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies
-            };
-            return razorParser.ExecuteResource(templateName, SchemaTemplateResources.Path, type.Assembly, new { Model = this });
-        }
     }
 }

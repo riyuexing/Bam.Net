@@ -4,12 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Services.OpenApi
 {
-    public class OpenApiObjectDescriptorModel
+    public partial class OpenApiObjectDescriptorModel
     {
         public string Namespace { get; set; }
         public string ObjectName { get; set; }
@@ -27,16 +26,7 @@ namespace Bam.Net.Services.OpenApi
 
         public string Render()
         {
-            List<Assembly> referenceAssemblies = new List<Assembly>
-            {
-                typeof(OpenApiObjectDatabase).Assembly,
-                    typeof(ServiceProxyHelper).Assembly,
-                    typeof(Args).Assembly
-            };
-
-            RazorParser<OpenApiObjectDescriptorModelTemplate> parser = new RazorParser<OpenApiObjectDescriptorModelTemplate>();            
-            string result = parser.ExecuteResource("ObjectDescriptor.tmpl", OpenApiTemplateResources.Path, typeof(OpenApiObjectDatabase).Assembly, new { Model = this }, referenceAssemblies.ToArray());
-            return result;
+            return Bam.Net.Handlebars.Render("OpenApiObjectDescriptorModel", this);
         }
     }
 }

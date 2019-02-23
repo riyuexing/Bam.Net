@@ -9,16 +9,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Bam.Net;
 using Bam.Net.Data;
-//using Bam.Net.ServiceProxy;
-//using Bam.Net.ServiceProxy.Js;
-using Bam.Net.Razor;
 
 namespace Bam.Net.Data.Schema
 {
     /// <summary>
     /// A database Table
     /// </summary>
-    public class Table
+    public partial class Table
     {
         Dictionary<string, Column> _columns;
         List<ForeignKeyColumn> _referencingForeignKeys;
@@ -290,12 +287,6 @@ namespace Bam.Net.Data.Schema
                     throw new InvalidOperationException(string.Format("The specified column {0} was not found on the table {1}", columnName, this.Name));
                 }
             }
-        }
-
-        public string RenderContextMethod()
-        {
-            RazorParser<TableTemplate> razorParser = new RazorParser<TableTemplate>();
-            return razorParser.ExecuteResource("ContextMethods.tmpl", new { Model = this });
         }
 
         public override string ToString()

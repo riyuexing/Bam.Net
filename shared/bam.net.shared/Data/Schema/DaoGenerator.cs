@@ -10,28 +10,27 @@ using System.Reflection;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 using Bam.Net.ServiceProxy;
-using Bam.Net.Razor;
 
 namespace Bam.Net.Data.Schema
 {
     /// <summary>
     /// A code generator that writes Dao code for a SchemaDefinition
     /// </summary>
-    public class DaoGenerator
+    public partial class DaoGenerator
     {
         readonly List<Stream> _resultStreams = new List<Stream>();
-        public DaoGenerator(IDaoCodeWriter codeWriter = null, IDaoTargetStreamResolver targetStreamResolver = null)
-        {
-            DisposeOnComplete = true;
-            SubscribeToEvents();
+        //public DaoGenerator(IDaoCodeWriter codeWriter = null, IDaoTargetStreamResolver targetStreamResolver = null)
+        //{
+        //    DisposeOnComplete = true;
+        //    SubscribeToEvents();
 			
-            Namespace = "DaoGenerated";
-            TargetStreamResolver = targetStreamResolver ?? new DaoTargetStreamResolver();
-            DaoCodeWriter = codeWriter ?? new RazorParserDaoCodeWriter
-            {
-                DaoTargetStreamResolver = TargetStreamResolver
-            };
-        }
+        //    Namespace = "DaoGenerated";
+        //    TargetStreamResolver = targetStreamResolver ?? new DaoTargetStreamResolver();
+        //    DaoCodeWriter = codeWriter ?? new RazorParserDaoCodeWriter
+        //    {
+        //        DaoTargetStreamResolver = TargetStreamResolver
+        //    };
+        //}
 
         public DaoGenerator(string nameSpace)
             : this()
@@ -153,7 +152,7 @@ namespace Bam.Net.Data.Schema
             {
                 if (writePartial)
                 {
-                    WritePartial(schema, partialsDir, table);
+                    DaoCodeWriter.WritePartial(schema, targetResolver, root, table);
                 }
                 DaoCodeWriter.WriteDaoClass(schema, targetResolver, root, table);
                 DaoCodeWriter.WriteQueryClass(schema, targetResolver, root, table);
@@ -174,35 +173,15 @@ namespace Bam.Net.Data.Schema
                 partials.Create();
             }
         }
-        
+
         public static Assembly[] GetReferenceAssemblies()
         {
-            Assembly[] assembliesToReference = new Assembly[]{typeof(SchemaTemplate).Assembly, 
-					typeof(DaoGenerator).Assembly,
-					typeof(ServiceProxySystem).Assembly, 
+            Assembly[] assembliesToReference = new Assembly[]{
+                    typeof(DaoGenerator).Assembly,
+                    typeof(ServiceProxySystem).Assembly,
                     typeof(DataTypes).Assembly,
-					typeof(Resolver).Assembly};
+                    typeof(Resolver).Assembly};
             return assembliesToReference;
-        }
-
-        private void WritePartial(SchemaDefinition schema, string partialsDir, Table table)
-        {
-            RazorParser<TableTemplate> parser = new RazorParser<TableTemplate>(RazorResultInspector)
-            {
-                GetDefaultAssembliesToReference = GetReferenceAssemblies
-            };
-            Stream s = null;
-
-            Type type = this.GetType();
-            string result = parser.ExecuteResource("Partial.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace });
-
-
-            FileInfo partial = new FileInfo(Path.Combine(partialsDir, "{0}.cs"._Format(table.Name)));
-            if (!partial.Exists)
-            {
-                s = partial.OpenWrite();
-                WritePartialToStream(result, s);
-            }
         }
         
         protected virtual void WritePartialToStream(string code, Stream s)

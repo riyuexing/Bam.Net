@@ -16,7 +16,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Yaml;
 using YamlDotNet.Serialization;
 using Timer = Bam.Net.Logging.Counters.Timer;
 

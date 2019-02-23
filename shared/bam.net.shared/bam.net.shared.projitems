@@ -207,7 +207,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\PageRenderModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Application\RazorRenderableModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\RenderableModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Args.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyResolve.cs" />
@@ -442,9 +441,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlRegistrarCaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaTypeModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeXrefModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsWrapperGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsWrapperGeneratorConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeFkModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RazorWrapperGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\SchemaRepositoryGeneratorSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoContextModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoGenerationEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTargetStreamResolver.cs" />
@@ -453,10 +457,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoTableSchemaModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\IDaoTargetStreamResolver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorParserDaoCodeWriter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\RazorResourceDaoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ReferencingForeignKeyModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\XrefInfoModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlebars.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplateResourceRenderer.cs" />
@@ -472,7 +475,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Handlebars\HandlebarsEmbeddedResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\ParameterLayouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Application\RazorTemplateRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
@@ -832,7 +834,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxySettingsInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxySettingsValidation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxySettingsValidationException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\RepositoryChunkStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Requesting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ServiceConfig.cs" />
@@ -1175,7 +1176,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Dto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DtoModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DtoPropertyModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DtoTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\EchoTypeTableNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\FsRepoData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\GenerateDaoAssemblyEventArgs.cs" />
@@ -1253,7 +1253,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\WrapperExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\WrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\WrapperModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\WrapperTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Xref.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\XrefInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\SchemaInitializer.cs" />
@@ -1270,7 +1269,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ColumnNameToPropertyName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\CuidSchemaManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoGenerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\DaoRazorTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\EchoNameFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ForeignKeyColumn.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\GeneratorEventDelegate.cs" />
@@ -1290,11 +1288,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\SchemaNameMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\SchemaNameMapNameFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\SchemaResult.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\SchemaTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\SQLiteSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Table.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\TableNameToClassName.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\TableTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\TargetTableEventDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\UuidSchemaManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\XrefInfo.cs" />
@@ -1671,10 +1667,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ProxyAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RandomHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RandomNumber.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Razor\RazorBaseTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Razor\RazorParser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Razor\RazorRenderer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Razor\RazorTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReflectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResourceTextFiles.cs" />
@@ -2196,7 +2188,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiFixedFieldModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiObjectDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiObjectDescriptorModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiObjectDescriptorModelTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\FixedField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\FixedFieldCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\FixedFieldColumns.cs" />
@@ -2541,7 +2532,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlDaoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlDeserializationFailure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlSchemaGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\ApplicationRegistrationService_Http_core.bamapps.net_80_Proxy.cs" />
@@ -2557,6 +2547,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\UserRegistryService_Http_core.bamapps.net_80_Proxy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\ChildPrimaryKeyProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\ForeignKeyProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\SchemaRepository.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\SchemaRepositoryAddType.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\SchemaRepositoryMethods.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\Wrapper.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\XrefLeftProperty.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\XrefRightProperty.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Collection.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ColumnsClass.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ColumnsProperty.hbs" />
@@ -2566,6 +2564,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\ForeignKeyProperty.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\KeyProperty.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\PagedQueryClass.hbs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Partial.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\Property.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\QiClass.hbs" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Handlebars\Templates\XrefProperty.hbs" />
@@ -2918,7 +2917,6 @@
     <Content Include="$(MSBuildThisFileDirectory)UserAccounts\UserAccounts.db.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\Templates\" />
     <Folder Include="$(MSBuildThisFileDirectory)Presentation\Components\Templates\" />
   </ItemGroup>
 </Project>

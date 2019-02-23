@@ -85,6 +85,13 @@ namespace Bam.Net.Data.Schema.Handlebars
             DaoTableSchemaModel renderModel = GetModel(schema, table);
             Render("QueryClass", renderModel, DaoTargetStreamResolver.GetTargetQueryClassStream(targetResolver, rootDirectory, table));
         }
+        
+        public void WritePartial(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table)
+        {
+            Load();
+            DaoTableSchemaModel renderModel = GetModel(schema, table);
+            Render("Partial", renderModel, DaoTargetStreamResolver.GetTargetPartialClassStream(targetResolver, root, table));
+        }
 
         private DaoContextModel GetContextModel(SchemaDefinition schema)
         {

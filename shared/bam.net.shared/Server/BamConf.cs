@@ -564,7 +564,7 @@ namespace Bam.Net.Server
         private static BamConf LoadYamlConfig(string yamlConfig)
         {
             BamConf temp = null;
-            temp = (BamConf)(yamlConfig.FromYamlFile().FirstOrDefault());
+            temp = (BamConf)(yamlConfig.FromYamlFile());
             temp.LoadedFrom = new FileInfo(yamlConfig).FullName;
             temp.Format = ConfFormat.Yaml;
             return temp;

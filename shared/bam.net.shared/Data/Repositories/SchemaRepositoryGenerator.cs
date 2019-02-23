@@ -13,8 +13,31 @@ namespace Bam.Net.Data.Repositories
     /// A code and assembly generator used to generate schema
     /// specific dao repositories
     /// </summary>
-    public class SchemaRepositoryGenerator: TypeDaoGenerator
+    public partial class SchemaRepositoryGenerator: TypeDaoGenerator
     {
+        public SchemaRepositoryGenerator(SchemaRepositoryGeneratorSettings settings, ILogger logger = null)
+        {
+            if(logger != null)
+            {
+                Subscribe(logger);
+            }
+
+            DaoGenerator = new Schema.DaoGenerator(settings.DaoCodeWriter, settings.DaoTargetStreamResolver);
+            WrapperGenerator = settings.WrapperGenerator;
+            if(settings.Config != null)
+            {
+                CheckIdField = settings.Config.CheckForIds;
+                BaseRepositoryType = settings.Config.UseInheritanceSchema ? "DatabaseRepository" : "DaoRepository";
+            }
+        }
+
+        public void AddTypes(Assembly typeAssembly, string sourceNamespace)
+        {
+            SourceNamespace = sourceNamespace;
+            Args.ThrowIfNull(typeAssembly);
+            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(sourceNamespace)));
+        }
+
         /// <summary>
         /// Instantiate an instance of SchemaRepositoryGenerator that
         /// is used to generate a schema specific repository for the
@@ -50,21 +73,5 @@ namespace Bam.Net.Data.Repositories
             GenerateRepositorySource(writeSourceTo);
         }
 
-        public void GenerateRepositorySource(string writeSourceTo, string schemaName = null)
-        {
-            schemaName = schemaName ?? SchemaName;
-            SchemaName = schemaName;
-            base.GenerateSource(writeSourceTo);
-            SchemaRepositoryModel schemaModel = new SchemaRepositoryModel
-            {
-                BaseRepositoryType = BaseRepositoryType,
-                BaseNamespace = SourceNamespace,
-                SchemaRepositoryNamespace = SchemaRepositoryNamespace,
-                SchemaName = schemaName,
-                Types = Types.Select(t => SchemaTypeModel.FromType(t, DaoNamespace)).ToArray()
-            };
-            string code = schemaModel.Render();
-            code.SafeWriteToFile(Path.Combine(writeSourceTo, $"{schemaName}Repository.cs"));
-        }
     }
 }

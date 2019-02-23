@@ -57,7 +57,8 @@ namespace Bam.Net.Yaml.Data
         private object GetOneOrDo(FileInfo file, Action<FileInfo> moreThanOne)
         {
             Args.ThrowIfNull(file, "file");
-            object[] datas = file.FromYamlFile();
+            object data = file.FromYamlFile();
+            object[] datas = data as object[] ?? new object[] { data };
             if (datas.Length > 1)
             {
                 moreThanOne(file);
@@ -74,7 +75,8 @@ namespace Bam.Net.Yaml.Data
         {
             Args.ThrowIfNull(file, "file");
             DirectoryInfo dir = file.Directory;
-            object[] datas = file.FromYamlFile();
+            object datum = file.FromYamlFile();
+            object[] datas = datum as object[] ?? new object[] { datum };
             List<string> names = new List<string>();
             object first = null;
             foreach(object data in datas)

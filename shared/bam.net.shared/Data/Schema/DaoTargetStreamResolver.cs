@@ -49,6 +49,21 @@ namespace Bam.Net.Data.Schema
             return GetTargetStream(targetResolver, root, parameterValue);
         }
 
+        public Stream GetTargetPartialClassStream(Func<string, Stream> targetResolver, string root, Table table)
+        {
+            if(targetResolver != null)
+            {
+                return targetResolver($"{table.Name}_Partial");
+            }
+            string path = Path.Combine(root, "Partials", $"{table.Name}.cs");
+            FileInfo f = new FileInfo(path);
+            if (!f.Directory.Exists)
+            {
+                f.Directory.Create();
+            }
+            return f.OpenWrite();            
+        }
+
         public Stream GetTargetStream(Func<string, Stream> targetResolver, string root, string parameterValue)
         {
             Stream s = new MemoryStream();

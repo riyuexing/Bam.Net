@@ -1,5 +1,7 @@
 ﻿using Bam.Net.CommandLine;
 using Bam.Net.CoreServices;
+using Bam.Net.Data.Repositories;
+using Bam.Net.Data.Repositories.Handlebars;
 using Bam.Net.Data.Schema;
 using Bam.Net.Data.Schema.Handlebars;
 using Bam.Net.Services;
@@ -12,28 +14,16 @@ namespace Bam.Net.Tests
     public class DaoGenerationServiceRegistry : ApplicationServiceRegistry
     {
         [ServiceRegistryLoader]
-        public ApplicationServiceRegistry GetRazorParsingInstnace()
-        {
-            DaoGenerationServiceRegistry daoRegistry = new DaoGenerationServiceRegistry();
-            daoRegistry.CombineWith(Configure(appRegistry =>
-            {
-                appRegistry
-                    .For<IDaoCodeWriter>().Use<RazorParserDaoCodeWriter>()
-                    .For<IDaoTargetStreamResolver>().Use<DaoTargetStreamResolver>();
-            }));
-
-            return daoRegistry;
-        }
-
-        [ServiceRegistryLoader]
-        public ApplicationServiceRegistry GetHandlebarsInstance()
+        public static DaoGenerationServiceRegistry GetHandlebarsInstance()
         {
             DaoGenerationServiceRegistry daoRegistry = new DaoGenerationServiceRegistry();
             daoRegistry.CombineWith(Configure(appRegistry =>
             {
                 appRegistry
                     .For<IDaoCodeWriter>().Use<HandlebarsDaoCodeWriter>()
-                    .For<IDaoTargetStreamResolver>().Use<DaoTargetStreamResolver>();
+                    .For<IDaoTargetStreamResolver>().Use<DaoTargetStreamResolver>()
+                    .For<IWrapperGenerator>().Use<HandlebarsWrapperGenerator>()
+                    .For<SchemaRepositoryGeneratorSettings>().Use<SchemaRepositoryGeneratorSettings>();               
             }));
 
             return daoRegistry;

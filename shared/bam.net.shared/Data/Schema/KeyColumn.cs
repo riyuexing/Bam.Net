@@ -11,7 +11,7 @@ namespace Bam.Net.Data.Schema
     /// <summary>
     /// A key/identity column.
     /// </summary>
-    public class KeyColumn: Column
+    public partial class KeyColumn: Column
     {
 		public KeyColumn() { }
 
@@ -56,9 +56,5 @@ namespace Bam.Net.Data.Schema
         }
         public static KeyColumn Default { get; } = new KeyColumn("Id", DataTypes.ULong);
 
-        protected internal override string RenderClassProperty()
-        {
-            return Render<KeyColumn>("KeyProperty.tmpl");
-        }
     }
 }

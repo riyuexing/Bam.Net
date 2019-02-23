@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using Bam.Net;
 using Bam.Net.Data;
-using Bam.Net.Razor;
 
 namespace Bam.Net.Data.Schema
 {
     /// <summary>
     /// A column that represents a foreign key
     /// </summary>
-    public class ForeignKeyColumn: Column
+    public partial class ForeignKeyColumn: Column
     {
         /// <summary>
         /// Empty constructor provided for deserialization
@@ -127,28 +126,5 @@ namespace Bam.Net.Data.Schema
             return this.ReferenceName;
         }
 
-        protected internal string RenderClassProperty(int i = -1, string ns = "")
-        {
-            if (string.IsNullOrEmpty(ReferencedClass.Trim()))
-            {
-                throw new InvalidOperationException("ReferencedClass cannot be null");
-            }
-            if (i > 0)
-            {
-                ReferenceNameSuffix = i.ToString();
-            }
-
-            return Render<ForeignKeyColumn>("ForeignKeyProperty.tmpl", ns); 
-        }
-
-        protected internal string RenderListProperty()
-        {
-            return Render<ForeignKeyColumn>("DaoCollectionProperty.tmpl");
-        }
-
-        protected internal string RenderAddToChildDaoCollection()
-        {
-            return Render<ForeignKeyColumn>("ChildDaoCollectionAdd.tmpl");
-        }
     }
 }

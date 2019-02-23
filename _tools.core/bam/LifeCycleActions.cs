@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Automation.MSBuild;
 using Bam.Net.Presentation.Handlebars;
-using System.Yaml;
 using System.Threading;
 using System.Reflection;
 using Bam.Net.Data.Dynamic;

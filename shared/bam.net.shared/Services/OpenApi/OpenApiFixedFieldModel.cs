@@ -4,13 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
 using Newtonsoft.Json;
 
 namespace Bam.Net.Services.OpenApi
 {
-    public class OpenApiFixedFieldModel
+    public partial class OpenApiFixedFieldModel
     {
         public string FieldName { get; set; }
         public string Type { get; set; }
@@ -47,20 +46,6 @@ namespace Bam.Net.Services.OpenApi
             {
                 return FieldName.Replace("$", "").PascalCase(true, " ");
             }
-        }
-
-        public string Render()
-        {
-            List<Assembly> referenceAssemblies = new List<Assembly>
-            {
-                typeof(OpenApiObjectDatabase).Assembly,
-                    typeof(ServiceProxyHelper).Assembly,
-                    typeof(Args).Assembly
-            };
-
-            RazorParser<RazorTemplate<OpenApiFixedFieldModel>> parser = new RazorParser<RazorTemplate<OpenApiFixedFieldModel>>();
-            string result = parser.ExecuteResource("FixedField.tmpl", OpenApiTemplateResources.Path, typeof(OpenApiObjectDatabase).Assembly, new { Model = this }, referenceAssemblies.ToArray());
-            return result;
         }
     }
 }

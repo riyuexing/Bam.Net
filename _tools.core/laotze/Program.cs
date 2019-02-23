@@ -13,7 +13,6 @@ using Bam.Net.Data.Oracle;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Incubation;
 using Bam.Net.CommandLine;
-using Bam.Net.Razor;
 using System.IO;
 using System.CodeDom.Compiler;
 using System.Reflection;
@@ -282,7 +281,6 @@ namespace laotze
 
             if (gen)
             {
-                RazorParser<RazorBaseTemplate>.DefaultRazorInspector = inspector;
                 OutLineFormat("Generating csharp for ({0})", schema.File);
                 Generate(schema, inspector, silent);
                 OutLine("Generation complete...");

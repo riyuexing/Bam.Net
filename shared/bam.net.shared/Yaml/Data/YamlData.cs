@@ -34,7 +34,7 @@ namespace Bam.Net.Yaml.Data
             DateTime fileModified = file.LastWriteTimeUtc;
             if (modified <= fileModified)
             {
-                return ((Dictionary<object, object>)file.FromYamlFile().First()).FromDictionary(Data.GetType());
+                return ((Dictionary<object, object>)file.FromYamlFile()).FromDictionary(Data.GetType());
             }
             else
             {
@@ -43,7 +43,7 @@ namespace Bam.Net.Yaml.Data
         }
         public static YamlData Load(Type type, FileInfo file, ILogger logger = null)
         {
-            object data = file.FromYamlFile().First();
+            object data = file.FromYamlFile();
             if (data is Dictionary<object, object> dict)
             {
                 data = dict.FromDictionary(type);
@@ -56,7 +56,7 @@ namespace Bam.Net.Yaml.Data
             DateTime fileModified = file.LastWriteTimeUtc;
             if(modified <= fileModified)
             {
-                Data = file.FromYamlFile().First();
+                Data = file.FromYamlFile();
                 FileWins?.Invoke(this, new YamlDataEventArgs { Type = type, Data = Data.CopyAs(type) });
             }
             else

@@ -14,5 +14,7 @@ namespace Bam.Net.Data.Schema
         Stream GetTargetQiClassStream(Func<string, Stream> targetResolver, string rootDirectory, Table table);
         Stream GetTargetCollectionStream(Func<string, Stream> targetResolver, string rootDirectory, Table table);
         Stream GetTargetColumnsClassStream(Func<string, Stream> targetResolver, string rootDirectory, Table table);
+
+        Stream GetTargetPartialClassStream(Func<string, Stream> targetResolver, string rootDirectory, Table table);
     }
 }

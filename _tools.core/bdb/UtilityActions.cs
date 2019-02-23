@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Bam.Net.CommandLine;
-using Bam.Net.Testing;
-using Bam.Net.Data.Repositories;
-using System.Reflection;
-using System.IO;
-using Bam.Net.Data.SQLite;
+﻿using Bam.Net.CommandLine;
 using Bam.Net.CoreServices.ProtoBuf;
-using Bam.Net.Razor;
+using Bam.Net.Data.Repositories;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Testing;
+using Bam.Net.Tests;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Bam.Net.Application
 {
@@ -21,6 +21,40 @@ namespace Bam.Net.Application
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
 
+            GenerationConfig config = GetGenerationConfig(logger);
+
+            string targetDir = config.WriteSourceTo;
+
+            SchemaRepositoryGenerator schemaRepositoryGenerator = DaoGenerationServiceRegistry.GetHandlebarsInstance().Get<SchemaRepositoryGenerator>();
+
+            if (Directory.Exists(targetDir))
+            {
+                Directory.Move(targetDir, targetDir.GetNextDirectoryName());
+            }
+
+            schemaRepositoryGenerator.GenerateRepositorySource(targetDir, config.SchemaName);
+
+            if (schemaRepositoryGenerator.Warnings.MissingKeyColumns.Length > 0)
+            {
+                OutLine("Missing key/id columns", ConsoleColor.Yellow);
+                schemaRepositoryGenerator.Warnings.MissingKeyColumns.Each(kc =>
+                {
+                    OutLineFormat("\t{0}", kc.TableClassName, ConsoleColor.DarkYellow);
+                });
+            }
+
+            if (schemaRepositoryGenerator.Warnings.MissingForeignKeyColumns.Length > 0)
+            {
+                OutLine("Missing ForeignKey columns", ConsoleColor.Cyan);
+                schemaRepositoryGenerator.Warnings.MissingForeignKeyColumns.Each(fkc =>
+                {
+                    OutLineFormat("\t{0}.{1}", ConsoleColor.DarkCyan, fkc.TableClassName, fkc.Name);
+                });
+            }
+        }
+
+        private static GenerationConfig GetGenerationConfig(ConsoleLogger logger)
+        {
             GenerationConfig config = new GenerationConfig();
             if (Arguments.Contains("config"))
             {
@@ -50,37 +84,8 @@ namespace Bam.Net.Application
                 config.CheckForIds = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
                 config.WriteSourceTo = GetArgument("writeSrc", "Please enter the directory to write source to");
             }
-            
-            SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(Assembly.LoadFrom(config.TypeAssembly), config.FromNameSpace, logger)
-            {
-                CheckIdField = config.CheckForIds,
-                BaseRepositoryType = config.UseInheritanceSchema ? "DatabaseRepository" : "DaoRepository"
-            };
-            string targetDir = config.WriteSourceTo;
-            if (Directory.Exists(targetDir))
-            {
-                Directory.Move(targetDir, targetDir.GetNextDirectoryName());
-            }
 
-            schemaGen.GenerateRepositorySource(targetDir, config.SchemaName);
-
-            if(schemaGen.Warnings.MissingKeyColumns.Length > 0)
-            {
-                OutLine("Missing key/id columns", ConsoleColor.Yellow);
-                schemaGen.Warnings.MissingKeyColumns.Each(kc =>
-                {
-                    OutLineFormat("\t{0}", kc.TableClassName, ConsoleColor.DarkYellow);
-                });
-            }
-
-            if(schemaGen.Warnings.MissingForeignKeyColumns.Length > 0)
-            {
-                OutLine("Missing ForeignKey columns", ConsoleColor.Cyan);
-                schemaGen.Warnings.MissingForeignKeyColumns.Each(fkc =>
-                {
-                    OutLineFormat("\t{0}.{1}", ConsoleColor.DarkCyan, fkc.TableClassName, fkc.Name);
-                });
-            }
+            return config;
         }
 
         [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assembly for types")]

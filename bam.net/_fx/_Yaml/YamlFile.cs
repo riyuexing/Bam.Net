@@ -28,7 +28,8 @@ namespace Bam.Net.Yaml
 				return _dynamicTypeLock.DoubleCheckLock(ref _dynamicTypes, () =>
 				{
 					List<Type> types = new List<Type>();
-					object[] instances = this.File.FromYamlFile();
+                    object arr = this.File.FromYamlFile();
+                    object[] instances = arr as object[] ?? new object[] { arr };
 					for (int i = 0; i < instances.Length; i++)
 					{
 						object o = instances[i];
