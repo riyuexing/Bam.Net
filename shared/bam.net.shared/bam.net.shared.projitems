@@ -441,11 +441,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlRegistrarCaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaRepositoryGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaTypeModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeXrefModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsWrapperGenerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsWrapperGeneratorConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeFkModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IRepositorySourceGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\ISourceGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RazorWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\SchemaRepositoryGeneratorSettings.cs" />
@@ -1210,8 +1212,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\KeyHashAuditRepoData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\KeyHashProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\KeyHashRepoData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\LuceneIndex.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\LuceneIndexExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Meta.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\MetaId.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\MetaProperty.cs" />

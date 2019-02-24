@@ -8,16 +8,6 @@ namespace Bam.Net.Data.Repositories.Handlebars
 {
     public class HandlebarsWrapperGenerator : WrapperGenerator
     {
-        public HandlebarsWrapperGenerator(HandlebarsWrapperGeneratorConfig config):this(config.WrapperNamespace, config.DaoNamespace, config.TypeSchema)
-        {
-            HandlebarsDirectory = config.HandlebarsDirectory;
-            HandlebarsEmbeddedResources = config.HandlebarsEmbeddedResources;
-        }
-
-        public HandlebarsWrapperGenerator(string wrapperNamespace, string daoNamespace, TypeSchema typeSchema = null) : base(wrapperNamespace, daoNamespace, typeSchema)
-        {
-        }
-
         public HandlebarsDirectory HandlebarsDirectory { get; set; }
         public HandlebarsEmbeddedResources HandlebarsEmbeddedResources { get; set; }
 

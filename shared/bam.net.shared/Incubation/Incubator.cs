@@ -196,7 +196,7 @@ namespace Bam.Net.Incubation
         
         /// <summary>
         /// Set writable properties of the specified instance to 
-        /// instances in the current Incubator.
+        /// values in the current Incubator.
         /// </summary>
         /// <param name="instance"></param>
         public void SetProperties(object instance)
@@ -221,6 +221,11 @@ namespace Bam.Net.Incubation
             }
         }
 
+        /// <summary>
+        /// Sets writable properties addorned with the Inject attribute of the specified instance to
+        /// values in the current Incubator.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
         public void SetInjectionProperties(object instance)
         {
             Type type = instance.GetType();
@@ -672,8 +677,7 @@ namespace Bam.Net.Incubation
 
         public void Remove(string className)
         {
-            Type ignore;
-            Remove(className, out ignore);
+            Remove(className, out Type ignore);
         }
 
         public void Remove(string className, out Type type)
@@ -777,6 +781,8 @@ namespace Bam.Net.Incubation
             }
         }
         
+        //public void SetCtor
+
         /// <summary>
         /// Set the value to pass into the constructor when 
         /// constructing the specified type

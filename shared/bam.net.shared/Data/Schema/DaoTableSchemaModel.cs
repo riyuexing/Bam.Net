@@ -15,6 +15,22 @@ namespace Bam.Net.Data.Schema
         public SchemaDefinition Schema { get; set; }
         public string Namespace { get; set; }
 
+        public string CamelCasedPluralizedClassName
+        {
+            get
+            {
+                return PluralizedClassName.CamelCase();
+            }
+        }
+
+        public string PluralizedClassName
+        {
+            get
+            {
+                return Model.ClassName.Pluralize();
+            }
+        }
+
         public ForeignKeyColumnModel[] SuffixedForeignKeys
         {
             get

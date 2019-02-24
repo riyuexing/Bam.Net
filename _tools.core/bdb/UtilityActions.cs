@@ -24,15 +24,15 @@ namespace Bam.Net.Application
             GenerationConfig config = GetGenerationConfig(logger);
 
             string targetDir = config.WriteSourceTo;
-
-            SchemaRepositoryGenerator schemaRepositoryGenerator = DaoGenerationServiceRegistry.GetHandlebarsInstance().Get<SchemaRepositoryGenerator>();
+            DaoGenerationServiceRegistry registry = DaoGenerationServiceRegistry.GetHandlebarsInstance(config, logger);            
+            SchemaRepositoryGenerator schemaRepositoryGenerator = registry.Get<SchemaRepositoryGenerator>();
 
             if (Directory.Exists(targetDir))
             {
                 Directory.Move(targetDir, targetDir.GetNextDirectoryName());
             }
 
-            schemaRepositoryGenerator.GenerateRepositorySource(targetDir, config.SchemaName);
+            schemaRepositoryGenerator.GenerateRepositorySource();
 
             if (schemaRepositoryGenerator.Warnings.MissingKeyColumns.Length > 0)
             {

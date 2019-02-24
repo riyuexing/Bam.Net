@@ -42,12 +42,12 @@
 			}
 	}
 
-	static {{Model.ClassName}}QueryContext _@(Model.ClassName.Pluralize().CamelCase());
-	static object _@(Model.ClassName.Pluralize().CamelCase())Lock = new object();
-	public static {{Model.ClassName}}QueryContext @(Model.ClassName.Pluralize())
+	static {{Model.ClassName}}QueryContext _{{CamelCasedPluralizedClassName}};
+	static object _{{CamelCasedPluralizedClassName}}Lock = new object();
+	public static {{Model.ClassName}}QueryContext {{PluralizedClassName}}
 	{
 		get
 		{
-			return _@(Model.ClassName.Pluralize().CamelCase())Lock.DoubleCheckLock<{{Model.ClassName}}QueryContext>(ref _@(Model.ClassName.Pluralize().CamelCase()), () => new {{Model.ClassName}}QueryContext());
+			return _{{CamelCasedPluralizedClassName}}Lock.DoubleCheckLock<{{Model.ClassName}}QueryContext>(ref _{{CamelCasedPluralizedClassName}}, () => new {{Model.ClassName}}QueryContext());
 		}
 	}

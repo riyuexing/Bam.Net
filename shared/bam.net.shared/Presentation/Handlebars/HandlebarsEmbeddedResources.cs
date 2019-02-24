@@ -46,8 +46,11 @@ namespace Bam.Net.Presentation.Handlebars
                 {
                     using (TextReader sr = new StreamReader(Assembly.GetManifestResourceStream(resourceName)))
                     {
-                        string name = Path.GetFileNameWithoutExtension(resourceName);
-                        HandlebarsDotNet.Handlebars.RegisterTemplate(name, sr.ReadToEnd());
+                        string longName = Path.GetFileNameWithoutExtension(resourceName);
+                        string shortName = longName.Substring(longName.LastIndexOf(".") + 1);
+                        string templateText = sr.ReadToEnd();
+                        HandlebarsDotNet.Handlebars.RegisterTemplate(longName, templateText);
+                        HandlebarsDotNet.Handlebars.RegisterTemplate(shortName, templateText);
                     }
                 });
 
@@ -55,8 +58,12 @@ namespace Bam.Net.Presentation.Handlebars
                 {
                     using (TextReader sr = new StreamReader(Assembly.GetManifestResourceStream(resourceName)))
                     {
-                        string name = Path.GetFileNameWithoutExtension(resourceName);
-                        Templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(sr.ReadToEnd()));
+                        string longName = Path.GetFileNameWithoutExtension(resourceName);
+                        string shortName = longName.Substring(longName.LastIndexOf(".") + 1);
+                        string templateText = sr.ReadToEnd();
+                        Func<object, string> compiled = HandlebarsDotNet.Handlebars.Compile(templateText);
+                        Templates.AddMissing(longName, compiled);
+                        Templates.AddMissing(shortName, compiled);
                     }
                 });
 

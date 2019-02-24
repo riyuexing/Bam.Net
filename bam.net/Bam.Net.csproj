@@ -378,6 +378,8 @@
     <Compile Include="Application\RazorTemplateRenderer.cs" />
     <Compile Include="CoreServices\ProxyTemplate.cs" />
     <Compile Include="Data\Repositories\DtoTemplate.cs" />
+    <Compile Include="Data\Repositories\LuceneIndex.cs" />
+    <Compile Include="Data\Repositories\LuceneIndexExtensions.cs" />
     <Compile Include="Data\Repositories\WrapperTemplate.cs" />
     <Compile Include="Data\Schema\DaoRazorTemplate.cs" />
     <Compile Include="Presentation\ApplicationModel.cs" />

@@ -13,6 +13,7 @@ using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
 using Bam.Net.Data.Schema;
 using Bam.Net.Logging;
+using Bam.Net.Services;
 using Newtonsoft.Json;
 
 namespace Bam.Net.Data.Repositories
@@ -22,7 +23,7 @@ namespace Bam.Net.Data.Repositories
     /// CLR types.
     /// </summary>
     [Serializable]
-    public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
+    public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider, ISourceGenerator
     {
         DaoGenerator _daoGenerator;
         IWrapperGenerator _wrapperGenerator;
@@ -82,6 +83,7 @@ namespace Bam.Net.Data.Repositories
             _typeSchemaGenerator = typeSchemaGenerator;
         }
 
+        [Inject]
         public DaoGenerator DaoGenerator
         {
             get
@@ -94,6 +96,7 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        [Inject]
         public IWrapperGenerator WrapperGenerator
         {
             get
@@ -109,7 +112,7 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// A filter function used to exclude anonymous types
         /// that were created by the use of lambda functions from 
-        /// having dao types attempted to be generated
+        /// having dao types generated
         /// </summary>
         public static Func<Type, bool> ClrDaoTypeFilter
         {
@@ -130,8 +133,26 @@ namespace Bam.Net.Data.Repositories
         public bool CheckIdField { get; set; }
 
         string _namespace;
+
         /// <summary>
-        /// The namespace to place generated classes into
+        /// The namespace containing POCO types to generate dao types for.  Setting 
+        /// the TargetNamespace will also set the DaoNamespace
+        /// and WrapperNamespace. This is the 
+        /// same as BaseNamespace and exists for contextual intuitiveness.
+        /// </summary>
+        /// <value>
+        /// The target namespace.
+        /// </value>
+        public string TargetNamespace
+        {
+            get { return BaseNamespace; }
+            set { BaseNamespace = value; }
+        }
+
+        /// <summary>
+        /// The namespace containing POCO types to generate dao types for.  Setting 
+        /// the BaseNamespace will also set the DaoNamespace
+        /// and WrapperNamespace.
         /// </summary>
         public string BaseNamespace
         {

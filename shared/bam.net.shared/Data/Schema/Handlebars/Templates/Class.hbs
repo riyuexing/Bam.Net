@@ -56,7 +56,7 @@ namespace {{Namespace}}
 		private void SetChildren()
 		{
 
-{{#each Model.ReferencingForeignKeys}}
+{{#each ReferencingForeignKeys}}
 {{> ChildDaoCollectionAdd }}
 {{/each}}
 

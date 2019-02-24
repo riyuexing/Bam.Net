@@ -1,15 +1,15 @@
 {{!-- Model is Column --}}
-	// property: {{Model.PropertyName}}, columnName: {{Model.Name}}
+	// property: {{PropertyName}}, columnName: {{Name}}
 	[Bam.Net.Exclude]
-	[Bam.Net.Data.KeyColumn(Name="{{Model.Name}}", DbDataType="{{Model.DbDataType}}", MaxLength="{{Model.MaxLength}}")]
-	public {{Model.NativeType}} {{Model.PropertyName}}
+	[Bam.Net.Data.KeyColumn(Name="{{Name}}", DbDataType="{{DbDataType}}", MaxLength="{{MaxLength}}")]
+	public {{NativeType}} {{PropertyName}}
 	{
 		get
 		{
-			return Get{{Model.DataType}}Value("{{Model.Name}}");
+			return Get{{DataType}}Value("{{Name}}");
 		}
 		set
 		{
-			SetValue("{{Model.Name}}", value);
+			SetValue("{{Name}}", value);
 		}
 	}

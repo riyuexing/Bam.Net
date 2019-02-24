@@ -19,6 +19,8 @@ namespace Bam.Net.Data.Repositories
 	/// </summary>
 	public abstract class WrapperGenerator : IAssemblyGenerator, IWrapperGenerator
     {
+        protected WrapperGenerator() { }
+
 		public WrapperGenerator(string wrapperNamespace, string daoNamespace, TypeSchema typeSchema = null)
 		{
 			WrapperNamespace = wrapperNamespace;

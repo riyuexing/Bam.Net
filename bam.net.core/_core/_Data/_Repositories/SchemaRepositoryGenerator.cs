@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Repositories
                 SchemaName = schemaName,
                 Types = Types.Select(t => SchemaTypeModel.FromType(t, DaoNamespace)).ToArray()
             };
-            string code = Bam.Net.Handlebars.Render("SchemaRepositoryTemplate", schemaModel);
+            string code = Bam.Net.Handlebars.Render("SchemaRepository", schemaModel);
             code.SafeWriteToFile(Path.Combine(writeSourceTo, $"{schemaName}Repository.cs"));
         }
     }

@@ -1,0 +1,72 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+using Bam.Net.Services;
+using Bam.Net.CoreServices;
+using Bam.Net.Configuration;
+using Bam.Net.Presentation;
+using Bam.Net.ServiceProxy;
+
+namespace Bam.Net.Web
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            ConfigurationResolver.Startup(configuration);
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
+            {
+                // Configure the Bam appRegistry here
+                appRegistry
+                    .For<Startup>().Use(this)
+                    .For<IConfiguration>().Use(Configuration)
+                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration));                    
+
+                appRegistry
+                    .RegisterAppModules();
+
+                appRegistry
+                    .For<IViewModelProvider>().Use<DefaultViewModelProvider>()
+                    .For<IPersistenceModelProvider>().Use<DefaultPersistenceModelProvider>()
+                    .For<IExecutionRequestResolver>().Use<ExecutionRequestResolver>()
+                    .For<WebServiceRegistry>().Use(WebServiceRegistry.ForCurrentApplication(appRegistry));
+
+                appRegistry.AddServices(services);
+            }));
+
+            services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+
+            app.UseMvc();
+        }
+    }
+}

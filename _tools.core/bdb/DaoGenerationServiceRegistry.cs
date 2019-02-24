@@ -1,9 +1,12 @@
-﻿using Bam.Net.CommandLine;
+﻿using Bam.Net.Application;
+using Bam.Net.CommandLine;
 using Bam.Net.CoreServices;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.Repositories.Handlebars;
 using Bam.Net.Data.Schema;
 using Bam.Net.Data.Schema.Handlebars;
+using Bam.Net.Logging;
+using Bam.Net.Presentation.Handlebars;
 using Bam.Net.Services;
 using Bam.Net.Testing;
 using System;
@@ -14,16 +17,13 @@ namespace Bam.Net.Tests
     public class DaoGenerationServiceRegistry : ApplicationServiceRegistry
     {
         [ServiceRegistryLoader]
-        public static DaoGenerationServiceRegistry GetHandlebarsInstance()
+        public static DaoGenerationServiceRegistry GetHandlebarsInstance(GenerationConfig config, ILogger logger = null)
         {
             DaoGenerationServiceRegistry daoRegistry = new DaoGenerationServiceRegistry();
             daoRegistry.CombineWith(Configure(appRegistry =>
             {
                 appRegistry
-                    .For<IDaoCodeWriter>().Use<HandlebarsDaoCodeWriter>()
-                    .For<IDaoTargetStreamResolver>().Use<DaoTargetStreamResolver>()
-                    .For<IWrapperGenerator>().Use<HandlebarsWrapperGenerator>()
-                    .For<SchemaRepositoryGeneratorSettings>().Use<SchemaRepositoryGeneratorSettings>();               
+                    .For<SchemaRepositoryGenerator>().Use(new HandlebarsSchemaRepositoryGenerator(config, logger));
             }));
 
             return daoRegistry;

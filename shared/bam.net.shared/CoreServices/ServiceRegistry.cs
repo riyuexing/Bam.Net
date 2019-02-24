@@ -13,6 +13,11 @@ namespace Bam.Net.CoreServices
     {
         public string Name { get; set; }
 
+        public FluentCtorContext<I> ForCtor<I>(string parameterName)
+        {
+            return new FluentCtorContext<I>(this, parameterName);
+        }
+
         public FluentServiceRegistryContext<I> For<I>()
         {
             return new FluentServiceRegistryContext<I>(this);

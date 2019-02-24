@@ -31,6 +31,14 @@ namespace Bam.Net
             }
         }
 
+        public static void ThrowIfNull(object param, string message, string paramName)
+        {
+            if(param == null)
+            {
+                throw new ArgumentNullException(paramName, message);
+            }
+        }
+
         /// <summary>
         /// Throw an ArgumentNullException if the specified
         /// string is null or an empty string

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Bam.Net.Application
@@ -9,8 +10,23 @@ namespace Bam.Net.Application
     /// </summary>
     public class GenerationConfig
     {
+        public GenerationConfig()
+        {
+            CheckForIds = true;
+            TemplatePath = Path.Combine(".", "Templates");
+        }
+
+        public string TemplatePath { get; set; }
+
         public string TypeAssembly { get; set; }
         public string SchemaName { get; set; }
+
+        /// <summary>
+        /// Gets or sets from name space to find types to generate dao types and wrappers for.
+        /// </summary>
+        /// <value>
+        /// From name space.
+        /// </value>
         public string FromNameSpace { get; set; }
         public string ToNameSpace { get; set; }
         public string WriteSourceTo { get; set; }
