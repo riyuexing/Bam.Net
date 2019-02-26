@@ -18,9 +18,11 @@ namespace Bam.Net.Data.Repositories.Handlebars
             new HandlebarsWrapperGenerator()
         ), logger)
         {
+            TemplateRenderer = new HandlebarsTemplateRenderer(new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath), new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly));
+
             Configure(config);
-            Net.Handlebars.HandlebarsDirectory = new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath);
-            Net.Handlebars.HandlebarsEmbeddedResources = new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly);
+            Bam.Net.Handlebars.HandlebarsDirectory = new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath);
+            Bam.Net.Handlebars.HandlebarsEmbeddedResources = new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly);
         }
     }
 }

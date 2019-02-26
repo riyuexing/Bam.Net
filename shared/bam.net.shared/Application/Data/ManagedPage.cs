@@ -12,7 +12,7 @@ namespace Bam.Net.Application.Data
         {
             OrgnizationName = DefaultConfigurationOrganizationNameProvider.Instance.GetOrganizationName();
         }
-
+        
         [CompositeKey]
         public string OrgnizationName { get; set; }
 
@@ -20,6 +20,10 @@ namespace Bam.Net.Application.Data
         public string ApplicationName { get; set; }
 
         [CompositeKey]
-        public string PageName { get; set; }
+        public string Name { get; set; }
+
+        public ulong ManagedApplicationId { get; set; }
+        public virtual ManagedApplication ManagedApplication { get; set; }
+        public virtual List<ManagedComponent> Components { get; set; }
     }
 }

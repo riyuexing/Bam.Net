@@ -202,7 +202,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessMonitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessMonitorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonServiceInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Data\ManagedComponentIdentifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Data\ComponentOrder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Data\ManagedApplication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Data\ManagedComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\Data\ManagedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\SplitKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DeployInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
@@ -441,6 +446,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlRegistrarCaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSchemaExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\CompositeKeyRepoData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaRepositoryGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaTypeModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeXrefModel.cs" />
@@ -462,6 +468,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\ReferencingForeignKeyModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\XrefInfoModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlebars.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HandlebarsTemplateRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplateResourceRenderer.cs" />
@@ -2896,7 +2903,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Analytics\EnglishDictionary\EnglishDictionary.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)Analytics\words\negative-words.txt" />
     <Content Include="$(MSBuildThisFileDirectory)Analytics\words\positive-words.txt" />
-    <Content Include="$(MSBuildThisFileDirectory)Application\repo_config.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Application\repo_config.yaml" />
     <Content Include="$(MSBuildThisFileDirectory)Automation\Automation.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)Automation\NodeScripts\ln.node.js" />
     <Content Include="$(MSBuildThisFileDirectory)Data\Js\AES.js" />

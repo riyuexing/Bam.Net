@@ -9,8 +9,7 @@ namespace Bam.Net.Data.Repositories
 {
     public partial class SchemaRepositoryGenerator
     {
-
-        public void GenerateRepositorySource(string writeSourceTo, string schemaName = null)
+        public virtual void GenerateRepositorySource(string writeSourceTo, string schemaName = null)
         {
             schemaName = schemaName ?? SchemaName;
             SchemaName = schemaName;

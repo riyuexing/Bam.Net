@@ -7,7 +7,7 @@ namespace Bam.Net.Application
 {
     /// <summary>
     /// A base class for models that may be templated, where the extender of this class
-    /// RECIEVES the model that is tempalted.
+    /// RECIEVES the model that is templated.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class RazorRenderableModel<T> : RazorRenderableModel

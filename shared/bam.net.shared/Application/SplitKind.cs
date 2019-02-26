@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bam.Net.Presentation.Components
+namespace Bam.Net.Application
 {
     public enum SplitKind
     {

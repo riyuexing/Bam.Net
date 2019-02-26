@@ -38,8 +38,7 @@ namespace Bam.Net.Server.Renderers
         public string GetTemplateName(object toRender)
         {
             HttpArgs args = HttpArgs;//new HttpArgs(ExecutionRequest.Request.Url.Query);
-            string result;
-            args.Has("view", out result);
+            args.Has("view", out string result);
             if (string.IsNullOrEmpty(result))
             {
                 string prefix = string.Empty;
