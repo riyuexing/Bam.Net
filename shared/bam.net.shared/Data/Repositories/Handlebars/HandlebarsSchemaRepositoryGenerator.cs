@@ -11,18 +11,18 @@ namespace Bam.Net.Data.Repositories.Handlebars
 {
     public class HandlebarsSchemaRepositoryGenerator: SchemaRepositoryGenerator
     {
-        public HandlebarsSchemaRepositoryGenerator(GenerationConfig config, ILogger logger = null) : base(new SchemaRepositoryGeneratorSettings
-        (
-            new HandlebarsDaoCodeWriter(new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath), new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly)),
-            new DaoTargetStreamResolver(),
-            new HandlebarsWrapperGenerator()
-        ), logger)
+        public HandlebarsSchemaRepositoryGenerator(GenerationConfig config, ILogger logger = null) : base(SchemaRepositoryGeneratorSettings.FromConfig(config), logger)
         {
             TemplateRenderer = new HandlebarsTemplateRenderer(new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath), new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly));
 
             Configure(config);
             Bam.Net.Handlebars.HandlebarsDirectory = new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath);
             Bam.Net.Handlebars.HandlebarsEmbeddedResources = new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly);
+        }
+
+        public override SchemaTypeModel GetSchemaTypeModel(Type t)
+        {
+            return HandlebarsSchemaTypeModel.FromType(t, DaoNamespace);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Bam.Net.Data.Repositories
 {
     public partial class SchemaRepositoryGenerator
     {
-        public ITemplateRenderer TemplateRenderer { get; set; }
         public virtual void GenerateRepositorySource(string writeSourceTo, string schemaName = null)
         {
             Args.ThrowIfNull(TemplateRenderer, "TemplateRenderer");
@@ -23,7 +22,7 @@ namespace Bam.Net.Data.Repositories
                 BaseNamespace = SourceNamespace,
                 SchemaRepositoryNamespace = SchemaRepositoryNamespace,
                 SchemaName = schemaName,
-                Types = Types.Select(t => SchemaTypeModel.FromType(t, DaoNamespace)).ToArray()
+                Types = Types.Select(t => GetSchemaTypeModel(t)).ToArray()
             };
 
             string filePath = Path.Combine(writeSourceTo, $"{schemaName}Repository.cs");

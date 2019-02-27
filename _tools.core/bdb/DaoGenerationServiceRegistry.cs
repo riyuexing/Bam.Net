@@ -11,13 +11,13 @@ using Bam.Net.Services;
 using Bam.Net.Testing;
 using System;
 
-namespace Bam.Net.Tests
+namespace Bam.Net.Application
 {
     [Serializable]
     public class DaoGenerationServiceRegistry : ApplicationServiceRegistry
     {
         [ServiceRegistryLoader]
-        public static DaoGenerationServiceRegistry GetHandlebarsInstance(GenerationConfig config, ILogger logger = null)
+        public static DaoGenerationServiceRegistry ForConfiguration(GenerationConfig config, ILogger logger = null)
         {
             DaoGenerationServiceRegistry daoRegistry = new DaoGenerationServiceRegistry();
             daoRegistry.CombineWith(Configure(appRegistry =>

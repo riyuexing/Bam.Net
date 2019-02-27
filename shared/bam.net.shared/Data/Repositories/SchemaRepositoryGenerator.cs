@@ -44,6 +44,8 @@ namespace Bam.Net.Data.Repositories
             BaseRepositoryType = "DaoRepository";
         }
 
+        public ITemplateRenderer TemplateRenderer { get; set; }
+
         public GenerationConfig Config
         {
             get; private set;
@@ -61,6 +63,11 @@ namespace Bam.Net.Data.Repositories
             CheckIdField = config.CheckForIds;
             BaseRepositoryType = config.UseInheritanceSchema ? "DatabaseRepository" : "DaoRepository";
             TargetNamespace = Config.FromNameSpace;
+        }
+
+        public virtual SchemaTypeModel GetSchemaTypeModel(Type t)
+        {
+            return SchemaTypeModel.FromType(t, DaoNamespace);
         }
 
         public void AddTypes()

@@ -1,5 +1,7 @@
 ﻿using Bam.Net.Application;
+using Bam.Net.Data.Repositories.Handlebars;
 using Bam.Net.Data.Schema;
+using Bam.Net.Data.Schema.Handlebars;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -20,5 +22,18 @@ namespace Bam.Net.Data.Repositories
         public IDaoTargetStreamResolver DaoTargetStreamResolver { get; set; }
         public IWrapperGenerator WrapperGenerator { get; set; }
         public GenerationConfig Config { get; set; }
+
+        public static SchemaRepositoryGeneratorSettings FromConfig(GenerationConfig config)
+        {
+            return new SchemaRepositoryGeneratorSettings
+            (
+                new HandlebarsDaoCodeWriter(new Presentation.Handlebars.HandlebarsDirectory(config.TemplatePath), new Presentation.Handlebars.HandlebarsEmbeddedResources(typeof(SchemaRepositoryGenerator).Assembly)),
+                new DaoTargetStreamResolver(),
+                new HandlebarsWrapperGenerator()
+            )
+            {
+                Config = config
+            };
+        }
     }
 }

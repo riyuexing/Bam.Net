@@ -13,5 +13,10 @@ namespace Bam.Net.Data.Repositories.Handlebars
                 return Type.Name.Pluralize();
             }
         }
+
+        public new static HandlebarsSchemaTypeModel FromType(Type type, string daoNamespace)
+        {
+            return new HandlebarsSchemaTypeModel { Type = type, DaoNamespace = daoNamespace };
+        }
     }
 }

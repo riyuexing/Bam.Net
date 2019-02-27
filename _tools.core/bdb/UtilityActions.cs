@@ -3,7 +3,6 @@ using Bam.Net.CoreServices.ProtoBuf;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Testing;
-using Bam.Net.Tests;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +23,7 @@ namespace Bam.Net.Application
             GenerationConfig config = GetGenerationConfig(logger);
 
             string targetDir = config.WriteSourceTo;
-            DaoGenerationServiceRegistry registry = DaoGenerationServiceRegistry.GetHandlebarsInstance(config, logger);            
+            DaoGenerationServiceRegistry registry = DaoGenerationServiceRegistry.ForConfiguration(config, logger);
             SchemaRepositoryGenerator schemaRepositoryGenerator = registry.Get<SchemaRepositoryGenerator>();
 
             if (Directory.Exists(targetDir))
@@ -51,41 +50,6 @@ namespace Bam.Net.Application
                     OutLineFormat("\t{0}.{1}", ConsoleColor.DarkCyan, fkc.TableClassName, fkc.Name);
                 });
             }
-        }
-
-        private static GenerationConfig GetGenerationConfig(ConsoleLogger logger)
-        {
-            GenerationConfig config = new GenerationConfig();
-            if (Arguments.Contains("config"))
-            {
-                FileInfo configFile = new FileInfo(Arguments["config"]);
-                if (!configFile.Exists)
-                {
-                    OutLineFormat("Config file not found: {0}", ConsoleColor.Magenta, configFile.FullName);
-                    Exit(1);
-                }
-                logger.Info("using config: {0}", configFile.FullName);
-                string ext = Path.GetExtension(configFile.FullName).ToLowerInvariant();
-                if (ext.Equals(".json"))
-                {
-                    config = configFile.FromJsonFile<GenerationConfig>();
-                }
-                else if (ext.Equals(".yaml") || ext.Equals(".yml"))
-                {
-                    config = configFile.FromYamlFile<GenerationConfig>();
-                }
-                logger.Info(config.ToJson(true));
-            }
-            else
-            {
-                GenerationSettings genInfo = GetDaoGenerationSettings();
-                config = genInfo.ToConfig();
-                config.UseInheritanceSchema = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative();
-                config.CheckForIds = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
-                config.WriteSourceTo = GetArgument("writeSrc", "Please enter the directory to write source to");
-            }
-
-            return config;
         }
 
         [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assembly for types")]
@@ -192,8 +156,10 @@ namespace Bam.Net.Application
 
         private static T GetGenerator<T>(string assemblyName, IEnumerable<Type> types) where T: ProtocolBuffersAssemblyGenerator, new()
         {
-            T generator = new T();
-            generator.AssemblyName = assemblyName;
+            T generator = new T
+            {
+                AssemblyName = assemblyName
+            };
             generator.AddTypes(types);
             return generator;
         }
@@ -222,6 +188,41 @@ namespace Bam.Net.Application
             }
             GenerationSettings result = new GenerationSettings { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };
             return result;
+        }
+
+        private static GenerationConfig GetGenerationConfig(ConsoleLogger logger)
+        {
+            GenerationConfig config = new GenerationConfig();
+            if (Arguments.Contains("config"))
+            {
+                FileInfo configFile = new FileInfo(Arguments["config"]);
+                if (!configFile.Exists)
+                {
+                    OutLineFormat("Config file not found: {0}", ConsoleColor.Magenta, configFile.FullName);
+                    Exit(1);
+                }
+                logger.Info("using config: {0}", configFile.FullName);
+                string ext = Path.GetExtension(configFile.FullName).ToLowerInvariant();
+                if (ext.Equals(".json"))
+                {
+                    config = configFile.FromJsonFile<GenerationConfig>();
+                }
+                else if (ext.Equals(".yaml") || ext.Equals(".yml"))
+                {
+                    config = configFile.FromYamlFile<GenerationConfig>();
+                }
+                logger.Info(config.ToJson(true));
+            }
+            else
+            {
+                GenerationSettings genInfo = GetDaoGenerationSettings();
+                config = genInfo.ToConfig();
+                config.UseInheritanceSchema = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative();
+                config.CheckForIds = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
+                config.WriteSourceTo = GetArgument("writeSrc", "Please enter the directory to write source to");
+            }
+
+            return config;
         }
     }
 }

@@ -47,11 +47,11 @@ namespace Bam.Net.Data.Schema
             }
         }
 
-        public Column[] NonForeignKeyColumns
+        public NonForeignKeyColumnModel[] NonForeignKeyColumns
         {
             get
             {
-                return Model.Columns.Where(c => !(c is ForeignKeyColumn)).ToArray();
+                return Model.Columns.Where(c => !(c is ForeignKeyColumn)).Select(c => new NonForeignKeyColumnModel(c)).ToArray();
             }
         }
 
