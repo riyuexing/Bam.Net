@@ -33,7 +33,7 @@ namespace Bam.Net.Application
         {
             if (!TryRespond(context))
             {
-                SendResponse(context, 404, new { BamServer = "Troo Server" });
+                SendResponse(context, 404, new { BamServer = "BamDb Server" });
             }
             context.Response.Close();
             return true;

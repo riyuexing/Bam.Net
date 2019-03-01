@@ -66,7 +66,6 @@ namespace Bam.Net.Data.Repositories.Tests
             Expect.AreEqual("Id", fk.ReferencedKey);
         }
 
-
         [UnitTest]
         public void SchemaManagerIdAsForeignKeyTest()
         {

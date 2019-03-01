@@ -103,7 +103,6 @@ namespace Bam.Net.Logging
             if (DebugOut)
             {
                 WriteDebug(messageSignature, args);
-                Info(messageSignature, args);
             }
         }
         
@@ -111,8 +110,7 @@ namespace Bam.Net.Logging
         {
             if (DebugOut)
             {
-                WriteDebug(messageSignature, args);
-                Warn(messageSignature, args);
+                WriteDebug(messageSignature, args);                
             }
         }
 

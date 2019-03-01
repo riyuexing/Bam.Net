@@ -16,6 +16,8 @@ namespace Bam.Net.Application
     [Serializable]
     public class DaoGenerationServiceRegistry : ApplicationServiceRegistry
     {
+
+
         [ServiceRegistryLoader]
         public static DaoGenerationServiceRegistry ForConfiguration(GenerationConfig config, ILogger logger = null)
         {
