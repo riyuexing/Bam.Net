@@ -276,8 +276,7 @@ namespace Bam.Net.Server
         /// </summary>
         public override void Initialize()
         {
-            OnAppInitializing();
-            WriteCompiledTemplates();
+            OnAppInitializing();            
 
             AppRoot.WriteFile("appConf.json", AppConf.ToJson(true));
 
@@ -486,25 +485,6 @@ namespace Bam.Net.Server
             ms.Seek(0, SeekOrigin.Begin);
             content = ms.GetBuffer();
             return content;
-        }
-
-        private void WriteCompiledTemplates()
-        {
-            if (AppConf.CompileTemplates)
-            {
-                // TODO: see DustScript.cs line 91 to make Regex.Unescape calls unecessary
-                AppConf.AppRoot.WriteFile("~/combinedTemplates.js", Regex.Unescape(AppTemplateManager.CombinedCompiledTemplates));
-
-                Task.Run(() =>
-                {
-                    Parallel.ForEach(AppTemplateManager.CompiledTemplates, (template) =>
-                    {
-                        FileInfo templateFile = new FileInfo(template.SourceFilePath);
-                        FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));
-                        jsFile.FullName.SafeWriteFile(template.UnescapedCompiled, true);
-                    });
-                });
-            }
         }
 
         protected override void SetBaseIgnorePrefixes()

@@ -1,6 +1,6 @@
-# Bam Interactive server
+# Bam Server
 
-The Bam Interactive server hosts an HTTP server that serves content 
+The Bam Server hosts an HTTP server that serves content 
 from the directory specified in the config file by the key "ContentRoot".
 
 - Hosts a Bam specific HTTP server

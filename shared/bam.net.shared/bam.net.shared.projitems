@@ -411,13 +411,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ProcessOutputEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Comparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\CompositeConfigurationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\Configurable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\ConfigurationConflictEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\ConfigurationResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfigurationApplicationNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfigurationOrganizationNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfigurationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfigurer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\EnvironmentConfigurationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IConfigurable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IConfigurationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IConfigurer.cs" />

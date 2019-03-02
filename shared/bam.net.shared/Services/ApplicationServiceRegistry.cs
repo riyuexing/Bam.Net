@@ -1,9 +1,13 @@
 ﻿using Bam.Net.Configuration;
 using Bam.Net.CoreServices;
+using Bam.Net.Logging;
 using Bam.Net.Presentation;
 using Bam.Net.Services.Clients;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Bam.Net.Services
@@ -31,6 +35,44 @@ namespace Bam.Net.Services
         }
 
         public static Action<ApplicationServiceRegistry> Configurer { get; set; }
+
+        public static ApplicationServiceRegistry Discover(string directoryPath)
+        {
+            return Discover(new DirectoryInfo(directoryPath));
+        }
+
+        public static ApplicationServiceRegistry Discover(DirectoryInfo directoryInfo)
+        {
+            try
+            {
+                return Configure((appServiceRegistry) =>
+                {
+                    foreach (FileInfo file in directoryInfo.GetFiles())
+                    {
+                        if ((file.Extension?.Equals(".dll", StringComparison.InvariantCultureIgnoreCase)).Value || (file.Extension?.Equals(".exe", StringComparison.InvariantCultureIgnoreCase)).Value)
+                        {
+                            try
+                            {
+                                Assembly assembly = Assembly.LoadFile(file.FullName);
+                                foreach(Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<AppModuleAttribute>()))
+                                {
+                                    appServiceRegistry.Set(type, type);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Warn("Exception loading file for service discovery {0}: {1}", ex, file.FullName, ex.Message);
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Exception discovering services: {0}", ex, ex.Message);
+            }
+            return Configure((a) => { });
+        }
 
         [ServiceRegistryLoader]
         public static ApplicationServiceRegistry Configure(Action<ApplicationServiceRegistry> configure)

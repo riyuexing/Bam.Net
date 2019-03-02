@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Server;
 using Bam.Net.Logging;
+using Newtonsoft.Json;
 
 namespace Bam.Net.Server
 {
@@ -82,6 +83,7 @@ namespace Bam.Net.Server
             return !string.IsNullOrEmpty(foundPath);
         }
 
+        [JsonIgnore]
         public Fs ContentRoot
         {
             get;

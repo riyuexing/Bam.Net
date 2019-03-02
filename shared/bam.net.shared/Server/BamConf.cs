@@ -44,10 +44,12 @@ namespace Bam.Net.Server
             this.ServiceSearchPattern = "*Services.dll,*Proxyables.dll";
             this.ServerEventListenerSearchPath = "c:\\bam\\content\\server-listeners,c:\\bam\\content\\server-listeners-temp";
             this.ServerEventListenerAssemblySearchPattern = "*ServerListeners.dll,*ServerEventListeners.dll";
-            this.MainLoggerName = "ConsoleLogger";          
+            this.MainLoggerName = "ConsoleLogger";
 
-            List<SchemaInitializer> schemaInitInfos = new List<SchemaInitializer>();
-            schemaInitInfos.Add(new SchemaInitializer(typeof(UserAccountsContext), typeof(SQLiteRegistrarCaller)));
+            List<SchemaInitializer> schemaInitInfos = new List<SchemaInitializer>
+            {
+                new SchemaInitializer(typeof(UserAccountsContext), typeof(SQLiteRegistrarCaller))
+            };
 
             this._schemaInitializers = schemaInitInfos;
         }

@@ -475,8 +475,10 @@ namespace Bam.Net.Server
         public HostPrefix[] GetHostPrefixes()
         {
             BamConf serverConfig = GetCurrentConf(false);
-            HashSet<HostPrefix> results = new HashSet<HostPrefix>();
-            results.Add(DefaultHostPrefix);         
+            HashSet<HostPrefix> results = new HashSet<HostPrefix>
+            {
+                DefaultHostPrefix
+            };
             serverConfig.AppConfigs.Each(appConf =>
             {
                 appConf.Bindings.Each(hp => results.Add(hp));
@@ -1038,7 +1040,7 @@ namespace Bam.Net.Server
         /// state of the BamServer
         /// </summary>
         /// <returns></returns>
-        internal protected BamConf GetCurrentConf(bool reload = true)
+        public BamConf GetCurrentConf(bool reload = true)
         {
             lock (_confLock)
             {

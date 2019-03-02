@@ -33,6 +33,7 @@ namespace Bam.Net.Application
             IsolateMethodCalls = false;
 
 			Type type = typeof(Program);
+            AddValidArgument("content", false, false, "The path to the content root directory");
 			AddSwitches(type);
 			DefaultMethod = type.GetMethod(nameof(Interactive));
 
@@ -52,14 +53,17 @@ namespace Bam.Net.Application
         {
             get
             {
-                return _serverLock.DoubleCheckLock(ref _server, () => new BamServer(BamConf.Load()));
+                return _serverLock.DoubleCheckLock(ref _server, () => new BamServer(BamConf.Load(GetArgument("content", "Enter the path to the content root"))));
             }
         }
-                
+        
         [ConsoleAction("S", "Start default server")]
         public static void StartDefaultServer()
         {
+            ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
+            Server.Subscribe(logger);
             Server.Start();
+            logger.Info(Server.GetCurrentConf().ToJson(true));
 			Pause("Default server started");
         }
 
