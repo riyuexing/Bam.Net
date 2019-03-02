@@ -3,18 +3,23 @@ using Bam.Net.Presentation.Handlebars;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Bam.Net.Data.Schema.Handlebars
 {
     public class HandlebarsDaoCodeWriter : Loggable, IDaoCodeWriter
     {
+        public HandlebarsDaoCodeWriter(IDaoTargetStreamResolver daoTargetStreamResolver = null):this(new HandlebarsDirectory(".\\Templates"), new HandlebarsEmbeddedResources(Assembly.GetExecutingAssembly()), daoTargetStreamResolver)
+        { }
+
         public HandlebarsDaoCodeWriter(HandlebarsDirectory handlebarsDirectory, HandlebarsEmbeddedResources handlebarsEmbeddedResources, IDaoTargetStreamResolver daoTargetStreamResolver = null)
         {
             DaoTargetStreamResolver = daoTargetStreamResolver ?? new DaoTargetStreamResolver();
             HandlebarsDirectory = handlebarsDirectory;
             HandlebarsEmbeddedResources = handlebarsEmbeddedResources;
         }
+
         protected bool Loaded { get; set; }
 
         public void Load()

@@ -36,6 +36,7 @@ namespace Bam.Net.Data.Repositories
             _namespace = "TypeDaos";
             _daoGenerator = new DaoGenerator(codeWriter, targetStreamResolver) { Namespace = DaoNamespace };
             _wrapperGenerator = new RazorWrapperGenerator(WrapperNamespace, DaoNamespace);
+            _types = new HashSet<Type>();
         }
 
         /// <summary>
@@ -106,6 +107,18 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _wrapperGenerator = value;
+            }
+        }
+
+        protected TypeSchemaGenerator TypeSchemaGenerator
+        {
+            get
+            {
+                return _typeSchemaGenerator;
+            }
+            set
+            {
+                _typeSchemaGenerator = value;
             }
         }
 
@@ -207,7 +220,6 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _schemaName = value;
-
             }
         }
 
@@ -427,6 +439,7 @@ namespace Bam.Net.Data.Repositories
                 }
             }
         }
+
         /// <summary>
         /// Create a SchemaDefintionCreateResult for the types currently
         /// added to the TypeDaoGenerator
@@ -437,6 +450,7 @@ namespace Bam.Net.Data.Repositories
         {
             return _typeSchemaGenerator.CreateSchemaDefinition(_types, schemaName);
         }
+
         protected internal bool GenerateDaoAssembly(TypeSchema typeSchema, out CompilationException compilationEx)
         {
             try

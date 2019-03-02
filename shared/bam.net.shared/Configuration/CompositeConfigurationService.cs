@@ -14,7 +14,7 @@ namespace Bam.Net.Configuration
             {
                 new EnvironmentConfigurationService(),
                 new DefaultConfigurationService(),
-                new ApplicationConfigurationProvider(new CoreClient())
+                new ApplicationConfigurationProvider(CoreClient.Heart)
             };
         }
 

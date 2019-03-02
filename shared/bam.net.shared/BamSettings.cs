@@ -1,11 +1,12 @@
-﻿using Bam.Net.CommandLine;
+﻿using Bam.Net.Application;
+using Bam.Net.CommandLine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Bam.Net.Application
+namespace Bam.Net
 {
     public class BamSettings
     {

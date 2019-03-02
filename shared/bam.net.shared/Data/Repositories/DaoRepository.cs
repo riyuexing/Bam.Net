@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Bam.Net.Data.Repositories.Handlebars;
 using Bam.Net.Data.Schema;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
@@ -1193,7 +1194,7 @@ namespace Bam.Net.Data.Repositories
         private void CtorInit(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
             TypeSchemaGenerator = new TypeSchemaGenerator(tableNameProvider, schemaTempPathProvider);
-            TypeDaoGenerator = new TypeDaoGenerator(TypeSchemaGenerator);
+            TypeDaoGenerator = new HandlebarsTypeDaoGenerator(TypeSchemaGenerator);
             TypeDaoGenerator.SchemaWarning += (o, a) =>
             {
                 FireEvent(SchemaWarning, a);

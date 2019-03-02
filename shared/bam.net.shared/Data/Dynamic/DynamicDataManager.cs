@@ -15,6 +15,9 @@ using System.Text;
 
 namespace Bam.Net.Data.Dynamic
 {
+    /// <summary>
+    /// A class used to manage dynamic data and generated types.
+    /// </summary>
     public class DynamicDataManager: Loggable
     {
         public DynamicDataManager() : this(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Current, new DynamicTypeManager())

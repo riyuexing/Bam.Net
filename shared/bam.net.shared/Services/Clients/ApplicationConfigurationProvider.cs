@@ -98,7 +98,7 @@ namespace Bam.Net.Services.Clients
             {
                 foreach(string configName in Configurations[appName].Keys)
                 {
-                    GetApplicationConfiguration(appName, configName);//Configurations[appName][configName] = CoreClient.ConfigurationService.GetApplicationConfiguration(appName, configName);
+                    GetApplicationConfiguration(appName, configName);
                 }
             }
         }

@@ -347,6 +347,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Automation\ZipFolderWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BackgroundThreadQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BamHome.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BamSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Breve\BreveFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Breve\BreveGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Breve\BreveInfo.cs" />
@@ -452,6 +454,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\CompositeKeyRepoData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaRepositoryGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsSchemaTypeModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeDaoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeXrefModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsWrapperGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Handlebars\HandlebarsTypeFkModel.cs" />

@@ -14,7 +14,7 @@ namespace Bam.Net.Configuration
         public ConfigurationResolver(ILogger logger = null)
         {
             DefaultConfiguration = ConfigurationManager.AppSettings;
-            ConfigurationService = new CompositeConfigurationService();
+            ConfigurationService = new DefaultConfigurationService();
         }
 
         public ConfigurationResolver(IConfiguration configuration, ILogger logger = null)

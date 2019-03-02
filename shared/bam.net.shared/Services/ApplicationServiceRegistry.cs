@@ -36,6 +36,22 @@ namespace Bam.Net.Services
 
         public static Action<ApplicationServiceRegistry> Configurer { get; set; }
 
+        [ServiceRegistryLoader]
+        public static ApplicationServiceRegistry Discover(Action<ApplicationServiceRegistry> configure)
+        {
+            ApplicationServiceRegistry discovered = Discover();
+            return Configure(appRegistry =>
+            {
+                appRegistry.CombineWith(discovered);
+                configure(appRegistry);
+            });
+        }
+
+        public static ApplicationServiceRegistry Discover()
+        {
+            return Discover(Assembly.GetEntryAssembly().GetFileInfo().Directory.FullName);
+        }
+
         public static ApplicationServiceRegistry Discover(string directoryPath)
         {
             return Discover(new DirectoryInfo(directoryPath));
