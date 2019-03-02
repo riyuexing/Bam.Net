@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Threading;
 
@@ -25,6 +26,9 @@ namespace Bam.Net.Application
                 startInfo.Run(msg => OutLine(msg, ConsoleColor.DarkYellow));
                 OutLineFormat("publish command finished for project {0}, output directory = {1}", ConsoleColor.Blue, projectFile, recipe.OutputDirectory);
             }
+            FileInfo file = new FileInfo(Path.Combine(".", "bamtk.zip"));
+            ZipFile.CreateFromDirectory(recipe.OutputDirectory, file.FullName);
+            OutLineFormat("Created {0}", ConsoleColor.DarkGreen, file.FullName);
         }
 
         [ConsoleAction("discover", "Read a specified recipe file and discover csproj files")]
