@@ -18,7 +18,7 @@ namespace Bam.Net.Server.Renderers
     /// common (server level) dust template provided a given object
     /// </summary>
     [Obsolete("This class is deprecated, use CommonHandlebarsRenderer instead.")]
-    public class CommonDustRenderer: WebRenderer, ITemplateManager
+    public class CommonDustRenderer: WebRenderer, ITemplateManager, IHasCompiledTemplates
     {
         public CommonDustRenderer(ContentResponder content)
             : base("text/html", ".htm", ".html")

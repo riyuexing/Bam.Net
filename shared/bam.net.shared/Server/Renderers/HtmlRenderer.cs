@@ -4,6 +4,7 @@
 using Bam.Net.Presentation;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Web;
+using Bam.Net.Presentation;
 using System;
 using System.IO;
 using System.Text;
@@ -70,7 +71,11 @@ namespace Bam.Net.Server.Renderers
             AppContentResponder appContentResponder = ContentResponder.AppContentResponders[AppName];
             ITemplateManager templateManager = appContentResponder.AppTemplateManager;
             string templateName = GetTemplateName(toRender);
-            string templates = templateManager.CombinedCompiledTemplates;            
+            string templates = string.Empty;
+            if(templateManager is IHasCompiledTemplates hasCompiledTemplates)
+            {
+                templates = hasCompiledTemplates.CombinedCompiledTemplates;
+            }
             string renderedContent = DustScript.Render(templates, templateName, toRender);
 
             byte[] data;

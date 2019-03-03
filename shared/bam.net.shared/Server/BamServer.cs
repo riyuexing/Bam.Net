@@ -10,7 +10,9 @@ using Bam.Net.Logging;
 using Bam.Net.Presentation;
 using Bam.Net.Presentation.Html;
 using Bam.Net.Server.Listeners;
+using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Services;
 using Bam.Net.UserAccounts;
 using Bam.Net.Web;
 using System;
@@ -43,11 +45,34 @@ namespace Bam.Net.Server
             EnableServiceProxy = true;
 
             SQLiteRegistrar.RegisterFallback();
-
+            
             AppDomain.CurrentDomain.DomainUnload += (s, a) =>
             {
                 Stop();
             };
+            LoadApplicationServiceRegistry();
+        }
+
+        ApplicationServiceRegistry _appServiceRegistry;
+
+        public async Task<ApplicationServiceRegistry> LoadApplicationServiceRegistry()
+        {
+            return await Task.Run(() => 
+            {
+                if (_appServiceRegistry == null)
+                {
+                    _appServiceRegistry = ApplicationServiceRegistry.Discover();
+                    _appServiceRegistry
+                        .For<ContentResponder>().Use(ContentResponder)
+                        .For<ITemplateNameResolver>().Use<ContentTemplateNameResolver>()
+                        .For<ITemplateManager>().Use<CommonHandlebarsRenderer>()
+                        .For<IApplicationTemplateManager>().Use<AppHandlebarsRenderer>();
+
+                    _appServiceRegistry.SetInjectionProperties(ContentResponder);
+                    ContentResponder.ApplicationServiceRegistry = _appServiceRegistry;
+                }
+                return _appServiceRegistry;
+            });
         }
         
         /// <summary>
@@ -576,7 +601,10 @@ namespace Bam.Net.Server
             }
             OnCreatingApp(conf);
 
-            AppContentResponder responder = new AppContentResponder(ContentResponder, conf);
+            AppContentResponder responder = new AppContentResponder(ContentResponder, conf)
+            {
+                Logger = MainLogger
+            };
             responder.Initialize();
 
             OnCreatedApp(conf);
@@ -1050,8 +1078,7 @@ namespace Bam.Net.Server
             {
                 if (reload || _conf == null)
                 {
-                    BamConf conf = new BamConf();
-                    DefaultConfiguration.CopyProperties(this, conf);
+                    BamConf conf = this.CopyAs<BamConf>();
                     conf.Server = this;
                     _conf = conf;
                 }

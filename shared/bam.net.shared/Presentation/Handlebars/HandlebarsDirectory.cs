@@ -14,7 +14,7 @@ namespace Bam.Net.Presentation.Handlebars
         {
             return dir.Directory;
         }
-        Dictionary<string, Func<object, string>> _templates;
+
         public HandlebarsDirectory(DirectoryInfo directory)
         {
             FileExtension = "hbs";
@@ -25,12 +25,27 @@ namespace Bam.Net.Presentation.Handlebars
         {
         }
 
-        public Dictionary<string, Func<object, string>> Templates
+        public Dictionary<string, Func<object, string>> Templates { get; private set; }
+
+        public HandlebarsDirectory CombineWith(params HandlebarsDirectory[] dirs)
         {
-            get
-            {
-                return _templates;
+            Reload();
+            HandlebarsDirectory combined = new HandlebarsDirectory(Directory);
+            combined.CopyProperties(this);
+            foreach(HandlebarsDirectory dir in dirs)
+            { 
+                dir.Reload();
+                foreach (DirectoryInfo partialDir in dir.PartialsDirectories)
+                {
+                    combined.PartialsDirectories.Add(partialDir);
+                }
+                foreach(string key in dir.Templates.Keys)
+                {
+                    combined.Templates.AddMissing(key, dir.Templates[key]);
+                }
             }
+            combined.Reload();
+            return combined;
         }
 
         public void AddTemplate(string templateName, string source, bool reload = false)
@@ -43,17 +58,17 @@ namespace Bam.Net.Presentation.Handlebars
             }
             else
             {
-                _templates.AddMissing(templateName, HandlebarsDotNet.Handlebars.Compile(source));
+                Templates.AddMissing(templateName, HandlebarsDotNet.Handlebars.Compile(source));
             }
         }
 
         public void AddPartial(string templateName, string source, bool reload = false)
         {
-            if(PartialsDirectory == null)
+            if(PartialsDirectories == null)
             {
-                SetPartialsDirectory(Path.Combine(Directory.FullName, "Partials"));
+                AddPartialsDirectory(Path.Combine(Directory.FullName, "Partials"));
             }
-            string filePath = Path.Combine(PartialsDirectory.FullName, $"{templateName}.{FileExtension}");
+            string filePath = Path.Combine(Directory.FullName, $"{templateName}.{FileExtension}");
             source.SafeWriteToFile(filePath, true);
             if (reload)
             {
@@ -89,44 +104,77 @@ namespace Bam.Net.Presentation.Handlebars
                 SetDirectory(value);
             }
         }
-        public void SetPartialsDirectory(string partialsDirectory)
+        public void AddPartialsDirectory(string partialsDirectory)
         {
-            PartialsDirectory = new DirectoryInfo(partialsDirectory);
+            if(PartialsDirectories == null)
+            {
+                PartialsDirectories = new HashSet<DirectoryInfo>
+                {
+                    new DirectoryInfo(partialsDirectory)
+                };
+            }
+            else
+            {
+                PartialsDirectories.Add(new DirectoryInfo(partialsDirectory));
+            }
             Reload();
         }
         public string FileExtension { get; set; }
-        public DirectoryInfo PartialsDirectory { get; set; }
+        public HashSet<DirectoryInfo> PartialsDirectories { get; set; }
         object _reloadLock = new object();
         bool _loaded = false;
         public void Reload()
         {
-            lock (_reloadLock)
+            Load(true);
+        }
+
+        public void Load(bool reload)
+        {
+            if(!_loaded || reload)
             {
-                _templates = new Dictionary<string, Func<object, string>>();
-                if (PartialsDirectory != null)
+                lock (_reloadLock)
                 {
-                    foreach (FileInfo partial in PartialsDirectory.GetFiles($"*.{FileExtension}"))
+                    Templates = new Dictionary<string, Func<object, string>>();
+                    if (PartialsDirectories != null)
                     {
-                        string name = Path.GetFileNameWithoutExtension(partial.FullName);
-                        HandlebarsDotNet.Handlebars.RegisterTemplate(name, partial.ReadAllText());
+                        foreach (DirectoryInfo partialsDirectory in PartialsDirectories)
+                        {
+                            if (partialsDirectory.Exists)
+                            {
+                                foreach (FileInfo partial in partialsDirectory.GetFiles($"*.{FileExtension}"))
+                                {
+                                    string shortName = Path.GetFileNameWithoutExtension(partial.FullName);
+                                    string longName = partial.FullName.Truncate($".{FileExtension}".Length);
+                                    string content = partial.ReadAllText();
+                                    HandlebarsDotNet.Handlebars.RegisterTemplate(shortName, content);
+                                    HandlebarsDotNet.Handlebars.RegisterTemplate(longName, content);
+                                }
+                            }
+                        }
                     }
-                }
-                if(Directory != null)
-                {
-                    foreach (FileInfo file in Directory?.GetFiles($"*.{FileExtension}"))
+                    if (Directory != null && Directory.Exists)
                     {
-                        string name = Path.GetFileNameWithoutExtension(file.FullName);
-                        _templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(file.ReadAllText()));
+                        foreach (FileInfo file in Directory?.GetFiles($"*.{FileExtension}"))
+                        {
+                            string shortName = Path.GetFileNameWithoutExtension(file.FullName);
+                            string longName = file.FullName.Truncate($".{FileExtension}".Length);
+                            string content = file.ReadAllText();
+                            Func<object, string> template = HandlebarsDotNet.Handlebars.Compile(content);
+                            Templates.AddMissing(shortName, template);
+                            Templates.AddMissing(longName, template);
+                        }
                     }
+                    _loaded = true;
                 }
-                _loaded = true;
             }
         }
+
         private void SetDirectory(DirectoryInfo directory)
         {
             _directory = directory;
-            if (PartialsDirectory == null)
+            if (PartialsDirectories == null)
             {
+                AddPartialsDirectory(directory.FullName);
                 if (!_directory.Exists)
                 {
                     _directory.Create();
@@ -134,7 +182,7 @@ namespace Bam.Net.Presentation.Handlebars
                 DirectoryInfo partials = _directory.GetDirectories("Partials").FirstOrDefault();
                 if (partials != null)
                 {
-                    PartialsDirectory = new DirectoryInfo(partials.FullName);
+                    AddPartialsDirectory(partials.FullName);
                 }
             }
             Reload();

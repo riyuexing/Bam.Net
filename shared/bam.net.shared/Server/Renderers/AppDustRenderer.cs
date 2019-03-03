@@ -17,7 +17,8 @@ using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {
-    public partial class AppDustRenderer: CommonDustRenderer
+    [Obsolete("This class is obsolete use AppHandlebarsRenderer instead")]
+    public partial class AppDustRenderer: CommonDustRenderer, IApplicationTemplateManager, IHasCompiledTemplates
     {
         public AppDustRenderer(AppContentResponder appContent)
             : base(appContent.ContentResponder)
@@ -30,6 +31,14 @@ namespace Bam.Net.Server.Renderers
         {
             get;
             set;
+        }
+
+        public string ApplicationName
+        {
+            get
+            {
+                return AppContentResponder.ApplicationName;
+            }
         }
 
         string _combinedCompiledTemplates;
@@ -48,7 +57,10 @@ namespace Bam.Net.Server.Renderers
                     Logger.AddEntry("AppDustRenderer::Appending compiled layout templates");
                     templates.AppendLine(CombinedCompiledLayoutTemplates);
                     Logger.AddEntry("AppDustRenderer::Appending compiled common templates");
-                    templates.AppendLine(ContentResponder.CommonTemplateManager.CombinedCompiledTemplates);
+                    if(ContentResponder.CommonTemplateManager is IHasCompiledTemplates templateManager)
+                    {
+                        templates.AppendLine(templateManager.CombinedCompiledTemplates);
+                    }
 
                     foreach(string templateDirectoryName in TemplateDirectoryNames)
                     {

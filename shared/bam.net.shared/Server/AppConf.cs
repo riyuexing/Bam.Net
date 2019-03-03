@@ -42,6 +42,7 @@ namespace Bam.Net.Server
 			DefaultPage = DefaultPageConst;
 			ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
             ProcessMode = "Dev";
+            Name = ApplicationNameProvider.Default.GetApplicationName();
         }
 
         public AppConf(string name, int port = 8080, bool ssl = false)

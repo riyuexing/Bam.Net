@@ -37,6 +37,8 @@ namespace Bam.Net.Data.Repositories
             _daoGenerator = new DaoGenerator(codeWriter, targetStreamResolver) { Namespace = DaoNamespace };
             _wrapperGenerator = new RazorWrapperGenerator(WrapperNamespace, DaoNamespace);
             _types = new HashSet<Type>();
+            _additionalReferenceAssemblies = new HashSet<Assembly>();
+            _additionalReferenceTypes = new HashSet<Type>();
         }
 
         /// <summary>

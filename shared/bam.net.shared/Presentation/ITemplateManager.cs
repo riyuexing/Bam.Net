@@ -11,9 +11,8 @@ namespace Bam.Net.Presentation
 	public interface ITemplateManager: ITemplateRenderer
 	{
 		void SetContentType(IResponse response);
-		string CombinedCompiledLayoutTemplates { get; }
-        string CombinedCompiledTemplates { get; }
-        IEnumerable<ICompiledTemplate> CompiledTemplates { get; }
+
+        
         string ContentRoot { get; }
 		void RenderLayout(LayoutModel toRender, System.IO.Stream output);
         void EnsureDefaultTemplate(Type type);

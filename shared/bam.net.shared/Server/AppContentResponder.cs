@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using System.Linq;
 using Bam.Net.Configuration;
+using Bam.Net.Services;
 
 namespace Bam.Net.Server
 {
@@ -38,7 +39,7 @@ namespace Bam.Net.Server
             ServerRoot = commonResponder.ServerRoot;
             AppConf = conf;
             AppRoot = AppConf.AppRoot;
-            AppTemplateManager = new AppDustRenderer(this);
+            //AppTemplateManager = commonResponder?.BamConf?.Server?.LoadApplicationServiceRegistry()?.Result?.Construct(typeof(IApplicationTemplateManager), this)?.Cast<IApplicationTemplateManager>() ?? ApplicationServiceRegistry?.Construct(typeof(IApplicationTemplateManager), this)?.Cast<IApplicationTemplateManager>();
             AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
             ContentHandlers = new Dictionary<string, ContentHandler>();
@@ -193,13 +194,14 @@ namespace Bam.Net.Server
         public ContentResponder ContentResponder
         {
             get;
-            private set;
+            internal set;
         }
 
-        public ITemplateManager AppTemplateManager
+        [Inject]
+        public IApplicationTemplateManager AppTemplateManager
         {
             get;
-            private set;
+            internal set;
         }
 
         public AppConf AppConf

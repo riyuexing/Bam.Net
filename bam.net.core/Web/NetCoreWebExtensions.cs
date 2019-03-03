@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static ApplicationServiceRegistry RegisterAppModules(this ApplicationServiceRegistry registry)
         {
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes().Where(type => type.HasCustomAttributeOfType<AppModuleAttribute>()))
+            foreach (Type type in Assembly.GetCallingAssembly().GetTypes().Where(type => type.HasCustomAttributeOfType<AppServiceAttribute>()))
             {
                 registry.Set(type, type);
             }

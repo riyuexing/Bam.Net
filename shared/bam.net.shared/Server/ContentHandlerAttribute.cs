@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
+    /// <summary>
+    /// Attribute used to addorn a static method that returns a byte[]
+    /// and takes IHttpContext and Fs as arguments.  The method will be
+    /// registered as a content handler during content handler scanning
+    /// done by AppContentResponder instances.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class ContentHandlerAttribute: Attribute
     {

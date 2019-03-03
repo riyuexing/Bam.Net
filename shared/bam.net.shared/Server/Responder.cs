@@ -14,6 +14,7 @@ using Bam.Net.Configuration;
 using System.IO.Compression;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Bam.Net.Services;
 
 namespace Bam.Net.Server
 {
@@ -40,6 +41,7 @@ namespace Bam.Net.Server
             _ignorePrefixes = new List<string>();
 
             AddRespondToPrefix(ResponderSignificantName);
+            ApplicationServiceRegistry = conf?.Server?.LoadApplicationServiceRegistry()?.Result ?? ApplicationServiceRegistry.Discovered.Result;
         }
 
         public Responder(BamConf conf, ILogger logger)
@@ -47,6 +49,8 @@ namespace Bam.Net.Server
         {
             this.Logger = logger;
         }
+
+        public ApplicationServiceRegistry ApplicationServiceRegistry { get; set; }
 
         ILogger _logger;
         object _loggerLock = new object();
@@ -85,7 +89,7 @@ namespace Bam.Net.Server
         /// The event that fires when a response is not sent
         /// </summary>
         public event ResponderEventHandler NotResponded;
-
+        
         BamConf _bamconf;
         public BamConf BamConf
         {
@@ -352,6 +356,7 @@ namespace Bam.Net.Server
         {
             SendResponse(response, Encoding.UTF8.GetBytes(content));
         }
+
         protected WebRendererFactory RendererFactory
         {
             get;

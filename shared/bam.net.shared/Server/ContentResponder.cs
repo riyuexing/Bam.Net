@@ -22,6 +22,7 @@ using Bam.Net.Server.Meta;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Configuration;
 using Bam.Net.Presentation;
+using Bam.Net.Services;
 
 namespace Bam.Net.Server
 {
@@ -42,7 +43,7 @@ namespace Bam.Net.Server
             ContentRoot = conf?.ContentRoot ?? DefaultConfiguration.GetAppSetting(contentRootConfigKey, defaultRoot);
             ServerRoot = new Fs(ContentRoot);
             TemplateDirectoryNames = new List<string>(new string[] { "views", "templates" });
-            CommonTemplateManager = commonTemplateManager ?? new CommonDustRenderer(this);
+            CommonTemplateManager = commonTemplateManager;// ?? conf?.Server?.LoadApplicationServiceRegistry()?.Result?.Construct(typeof(ITemplateManager), this)?.Cast<ITemplateManager>() ?? ApplicationServiceRegistry?.Construct(typeof(ITemplateManager), this)?.Cast<ITemplateManager>();
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMap>();            
             InitializeFileExtensions();
@@ -190,6 +191,7 @@ namespace Bam.Net.Server
             CommonTemplateRendererInitialized?.Invoke(this);
         }
 
+        [Inject]
         public ITemplateManager CommonTemplateManager // TODO: inject this
         {
             get;
@@ -337,6 +339,10 @@ namespace Bam.Net.Server
                 responder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
                 responder.Responded += (r, context) => OnResponded(context);
                 responder.NotResponded += (r, context) => OnNotResponded(context);
+                responder.ContentResponder = this;
+                IApplicationTemplateManager applicationTemplateManager = ApplicationServiceRegistry.Get<IApplicationTemplateManager>();
+                responder.AppTemplateManager = applicationTemplateManager;
+                ApplicationServiceRegistry.SetInjectionProperties(responder);
                 AppContentResponders[appName] = responder;
 
                 OnAppContentResponderInitialized(ac);

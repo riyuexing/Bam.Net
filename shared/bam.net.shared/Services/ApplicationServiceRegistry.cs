@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Services
 {
@@ -34,18 +35,35 @@ namespace Bam.Net.Services
             }
         }
 
+        public static Task<ApplicationServiceRegistry> Discovered
+        {
+            get
+            {
+                return Task.Run(() => Discover());
+            }
+        }
+
         public static Action<ApplicationServiceRegistry> Configurer { get; set; }
 
-        [ServiceRegistryLoader]
-        public static ApplicationServiceRegistry Discover(Action<ApplicationServiceRegistry> configure)
-        {
-            ApplicationServiceRegistry discovered = Discover();
-            return Configure(appRegistry =>
-            {
-                appRegistry.CombineWith(discovered);
-                configure(appRegistry);
-            });
-        }
+        //static ApplicationServiceRegistry _discoveredConfigured;
+        //static object _discoveredLock = new object();
+        //[ServiceRegistryLoader]
+        //public static ApplicationServiceRegistry Discover(Action<ApplicationServiceRegistry> configure)
+        //{
+        //    ApplicationServiceRegistry discovered = Discover();
+        //    if (_discoveredConfigured == null)
+        //    {
+        //        lock (_discoveredLock)
+        //        {
+        //            _discoveredConfigured = Configure(appRegistry =>
+        //            {
+        //                appRegistry.CombineWith(discovered);
+        //                configure(appRegistry);
+        //            });
+        //        }
+        //    }
+        //    return _discoveredConfigured;
+        //}
 
         public static ApplicationServiceRegistry Discover()
         {
@@ -57,20 +75,26 @@ namespace Bam.Net.Services
             return Discover(new DirectoryInfo(directoryPath));
         }
 
+        static object _discoverLock = new object();
+        static ApplicationServiceRegistry _discoveredApplicationServiceRegistry;
         public static ApplicationServiceRegistry Discover(DirectoryInfo directoryInfo)
         {
             try
             {
-                return Configure((appServiceRegistry) =>
+                return _discoverLock.DoubleCheckLock(ref _discoveredApplicationServiceRegistry, () =>
                 {
-                    foreach (FileInfo file in directoryInfo.GetFiles())
+                    return Configure((appServiceRegistry) =>
                     {
-                        if ((file.Extension?.Equals(".dll", StringComparison.InvariantCultureIgnoreCase)).Value || (file.Extension?.Equals(".exe", StringComparison.InvariantCultureIgnoreCase)).Value)
+                        foreach (FileInfo file in directoryInfo.GetFiles().Where(file =>
+                        {
+                            return (file.Extension?.Equals(".dll", StringComparison.InvariantCultureIgnoreCase)).Value || (file.Extension?.Equals(".exe", StringComparison.InvariantCultureIgnoreCase)).Value;
+                        }))
                         {
                             try
                             {
                                 Assembly assembly = Assembly.LoadFile(file.FullName);
-                                foreach(Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<AppModuleAttribute>()))
+                                Type[] types = assembly.GetTypes();
+                                foreach (Type type in types.Where(t => t.HasCustomAttributeOfType<AppServiceAttribute>()))
                                 {
                                     appServiceRegistry.Set(type, type);
                                 }
@@ -80,8 +104,8 @@ namespace Bam.Net.Services
                                 Log.Warn("Exception loading file for service discovery {0}: {1}", ex, file.FullName, ex.Message);
                             }
                         }
-                    }
-                });
+                    });
+                });                
             }
             catch (Exception ex)
             {

@@ -7,7 +7,7 @@ namespace Bam.Net.Services
     /// <summary>
     /// Used to addorn a class that is used as an application service.
     /// </summary>
-    public class AppModuleAttribute: Attribute
+    public class AppServiceAttribute: Attribute
     {
     }
 }
