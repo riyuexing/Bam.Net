@@ -248,7 +248,7 @@ namespace Bam.Net.Caching
         /// Occurs when a non typed query is executed which finds multiple entries with the same property name and value where the 
         /// object types are not the same.
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat="Different types were found with the same property name and value: \r\n{DifferingTypes}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat="Different types were found with the same property name and value: \r\n{DifferingTypes}")]
 		public event EventHandler DifferringTypesFound;
 
 		public string Types { get; private set; }

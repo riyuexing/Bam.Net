@@ -46,31 +46,31 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// The event that fires when schema creation begins
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "SchemaName (parameter): {SchemaName}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "SchemaName (parameter): {SchemaName}")]
         public event EventHandler CreatingSchemaStarted;
 
         /// <summary>
         /// The event that fires when type schema creation begins
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "SchemaName (parameter): {SchemaName}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "SchemaName (parameter): {SchemaName}")]
         public event EventHandler CreatingTypeSchemaStarted;
 
         /// <summary>
         /// The event that fires when type schema creation completes
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "SchemaName (parameter): {SchemaName}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "SchemaName (parameter): {SchemaName}")]
         public event EventHandler CreatingTypeSchemaFinished;
 
         /// <summary>
         /// The event that fires when dao schema creation begins
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "SchemaName (parameter || types.Md5() ): {SchemaName}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "SchemaName (parameter || types.Md5() ): {SchemaName}")]
         public event EventHandler WritingDaoSchemaStarted;
 
         /// <summary>
         /// The event that fires when dao schema creation completes
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "SchemaName (parameter || types.Md5() ): {SchemaName}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "SchemaName (parameter || types.Md5() ): {SchemaName}")]
         public event EventHandler WritingDaoSchemaFinished;
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace Bam.Net.Data.Repositories
         /// by whether a property has the KeyAttribute custom attribute or
         /// the name of "Id")
         /// </summary>
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "[{Instant}]:: KeyPropertyNotFound: {Message}\r\n")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "[{Instant}]:: KeyPropertyNotFound: {Message}\r\n")]
         public event EventHandler KeyPropertyNotFound;
 
         /// <summary>
@@ -359,7 +359,7 @@ namespace Bam.Net.Data.Repositories
         /// by whether a property has the KeyAttribute custom attribute or
         /// the name of "Id")
         /// </summary>
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "[{Instant}]:: ReferencingPropertyNotFound: {Message}\r\n")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "[{Instant}]:: ReferencingPropertyNotFound: {Message}\r\n")]
         public event EventHandler ReferencingPropertyNotFound;
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace Bam.Net.Data.Repositories
         /// the IEnumerable doesn't have a property of the parent Type to hold the instance of
         /// the parent.
         /// </summary>
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "[{Instant}]:: ChildParentPropertyNotFound: {Message}\r\n")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "[{Instant}]:: ChildParentPropertyNotFound: {Message}\r\n")]
         public event EventHandler ChildParentPropertyNotFound;
 
         /// <summary>

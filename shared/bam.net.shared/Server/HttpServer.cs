@@ -14,7 +14,7 @@ using System.Collections.Concurrent;
 
 namespace Bam.Net.Server
 {
-    public class HttpServer : IDisposable
+    public class HttpServer : Loggable, IDisposable
     {
         private static ConcurrentDictionary<HostPrefix, HttpServer> _listening = new ConcurrentDictionary<HostPrefix, HttpServer>();
         private readonly HttpListener _listener;
@@ -57,10 +57,21 @@ namespace Bam.Net.Server
             set;
         }
 
+        public event EventHandler Starting;
+        public event EventHandler Started;
+        public event EventHandler Stopping;
+        public event EventHandler Stopped;
+
+        public event EventHandler Usurping;
+
+        [Verbosity(VerbosityLevel.Information, EventArgsMessageFormat = "HostPrefixAdded: {HostPrefixString}")]
+        public event EventHandler HostPrefixAdded;
+
         public void Start()
         {
             Start(HostPrefixes);
         }
+
         public void Start(params HostPrefix[] hostPrefixes)
         {
             Start(Usurped, hostPrefixes);
@@ -83,7 +94,8 @@ namespace Bam.Net.Server
                     }
                     else if (usurped && _listening.ContainsKey(hp))
                     {
-                        _listening[hp].Stop();
+                        FireEvent(Usurping, new HttpServerEventArgs { HostPrefixes = new HostPrefix[] { hp } });
+                        _listening[hp].Stop();                        
                         _listening.TryRemove(hp, out HttpServer ignore);
                         AddHostPrefix(hp);
                     }
@@ -92,9 +104,11 @@ namespace Bam.Net.Server
                         _logger.AddEntry("HttpServer: Another HttpServer is already listening for host {0}", LogEventType.Warning, hp.ToString());
                     }
                 });
+                FireEvent(Starting, new HttpServerEventArgs { HostPrefixes = HostPrefixes });
                 _stopRequested = false;
                 _listener.Start();
                 _handlerThread.Start();
+                FireEvent(Started, new HttpServerEventArgs { HostPrefixes = HostPrefixes });
             }
         }
 
@@ -104,6 +118,7 @@ namespace Bam.Net.Server
             string path = hp.ToString();
             _logger.AddEntry("HttpServer: {0}", path);
             _listener.Prefixes.Add(path);
+            FireEvent(HostPrefixAdded, new HttpServerEventArgs { HostPrefixes = new HostPrefix[] { hp } });
         }
 
         public void Dispose()
@@ -136,7 +151,9 @@ namespace Bam.Net.Server
                     {
                         if (_listening.TryRemove(hp, out HttpServer server))
                         {
+                            FireEvent(Stopping, new HttpServerEventArgs { HostPrefixes = new HostPrefix[] { hp } });
                             server.Stop();
+                            FireEvent(Stopped, new HttpServerEventArgs { HostPrefixes = new HostPrefix[] { hp } });
                         }
                     }
                 }

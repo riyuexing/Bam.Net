@@ -176,10 +176,10 @@ namespace Bam.Net.Data
             public string Filter { get; set; }
             public string CurrentMethod { get; set; }
 
-            [Verbosity(VerbosityLevel.Information, MessageFormat = "Visiting::{CurrentMethod}: \r\n{Filter}")]
+            [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "Visiting::{CurrentMethod}: \r\n{Filter}")]
             public event EventHandler Visiting;
 
-            [Verbosity(VerbosityLevel.Information, MessageFormat = "Visited::{CurrentMethod}: \r\n{Filter}")]
+            [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "Visited::{CurrentMethod}: \r\n{Filter}")]
             public event EventHandler Visited;
 
             public void FireVisiting(string filter, string currentMethod)

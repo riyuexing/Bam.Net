@@ -133,7 +133,7 @@ namespace Bam.Net.Automation
             return result;
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat="JobName={Name}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat="JobName={Name}")]
         public event EventHandler JobStarted;
 
         protected void OnJobStarted()
@@ -141,7 +141,7 @@ namespace Bam.Net.Automation
             JobStarted?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat="JobName={Name}, Worker={CurrentWorkerName}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat="JobName={Name}, Worker={CurrentWorkerName}")]
         public event EventHandler WorkerQueued;
 
         protected void OnWorkerQueued()
@@ -149,7 +149,7 @@ namespace Bam.Net.Automation
             WorkerQueued?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "JobName={Name}")]
         public event EventHandler JobFinished;
 
         protected void OnJobFinished()
@@ -157,7 +157,7 @@ namespace Bam.Net.Automation
             JobFinished?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name},Worker={CurrentWorkerName}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "JobName={Name},Worker={CurrentWorkerName}")]
         public event EventHandler WorkerStarting;        
 
         protected void OnWorkerStarting()
@@ -165,7 +165,7 @@ namespace Bam.Net.Automation
             WorkerStarting?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name},Worker={CurrentWorkerName}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "JobName={Name},Worker={CurrentWorkerName}")]
         public event EventHandler WorkerFinished;
 
         protected void OnWorkerFinished()
@@ -173,7 +173,7 @@ namespace Bam.Net.Automation
             WorkerFinished?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
-        [Verbosity(LogEventType.Error, MessageFormat = "JobName={Name},Worker={CurrentWorkerName},Message={WorkStateMessage}")]
+        [Verbosity(LogEventType.Error, SenderMessageFormat = "JobName={Name},Worker={CurrentWorkerName},Message={WorkStateMessage}")]
         public event EventHandler WorkerException;
 
         protected void OnWorkerException()

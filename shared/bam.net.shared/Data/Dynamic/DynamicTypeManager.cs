@@ -139,7 +139,7 @@ namespace Bam.Net.Data.Dynamic
             });
         }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Multiple types found by the name of {TypeName}: {FoundTypes}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Multiple types found by the name of {TypeName}: {FoundTypes}")]
         public event EventHandler MultipleTypesFoundWarning;
 
         public DynamicTypeDescriptor GetTypeDescriptor(string typeName, string nameSpace = null)

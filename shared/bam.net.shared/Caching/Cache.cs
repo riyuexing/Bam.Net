@@ -406,7 +406,7 @@ namespace Bam.Net.Caching
             return results;
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat="Evicted ({LastEvictionCount}) items from cache named {Name}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat="Evicted ({LastEvictionCount}) items from cache named {Name}")]
 		public event EventHandler Evicted;
 
 		public int LastEvictionCount

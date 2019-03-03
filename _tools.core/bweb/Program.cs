@@ -28,16 +28,14 @@ namespace Bam.Net.Application
         static void Main(string[] args)
         {
             TryWritePid(true);
-            Initialize(args);
-
             IsolateMethodCalls = false;
-
 			Type type = typeof(Program);
             AddValidArgument("content", false, false, "The path to the content root directory");
 			AddSwitches(type);
 			DefaultMethod = type.GetMethod(nameof(Interactive));
+            Initialize(args);
 
-			if (Arguments.Length > 0)
+            if (Arguments.Length > 0)
 			{
 				ExecuteSwitches(Arguments, type, null, null);
 			}
@@ -63,7 +61,20 @@ namespace Bam.Net.Application
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             Server.Subscribe(logger);
             Server.Start();
-            logger.Info(Server.GetCurrentConf().ToJson(true));
+            BamConf conf = Server.GetCurrentConf();
+            StringBuilder configurationMessage = new StringBuilder();
+            configurationMessage.AppendLine("***");
+            foreach(AppConf appConfig in conf.AppConfigs)
+            {
+                configurationMessage.AppendLine(appConfig.Name);
+                foreach(HostPrefix hostPrefix in appConfig.Bindings)
+                {
+                    configurationMessage.AppendFormat("\t{0}\r\n", hostPrefix.ToString());
+                }
+                configurationMessage.AppendLine();
+            }
+            configurationMessage.AppendLine(new string('*', 40));
+            logger.AddEntry(configurationMessage.ToString());
 			Pause("Default server started");
         }
 

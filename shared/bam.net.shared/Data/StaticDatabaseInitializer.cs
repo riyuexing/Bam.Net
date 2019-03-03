@@ -28,7 +28,7 @@ namespace Bam.Net.Data
 
 		public string LastConnectionName { get; set; }
 
-		[Verbosity(VerbosityLevel.Information, MessageFormat="No database was added for the connection named {LastConnectionName}")]
+		[Verbosity(VerbosityLevel.Information, SenderMessageFormat="No database was added for the connection named {LastConnectionName}")]
 		public event EventHandler DatabaseNotFound;
 
 		#region IDatabaseInitializer Members

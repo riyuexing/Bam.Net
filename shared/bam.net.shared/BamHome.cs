@@ -1,6 +1,7 @@
 ﻿using Bam.Net;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Bam.Net
@@ -22,15 +23,23 @@ namespace Bam.Net
             }
         }
 
+        public static string ToolkitPath { get { return Path.Combine(ToolkitSegments); } }
+
         public static string[] ToolkitSegments
         {
             get
             {
-                List<string> segments = new List<string>(PathSegments)
-                {
-                    "toolkit"
-                };
-                return segments.ToArray();
+                return new List<string>(PathSegments) { "toolkit" }.ToArray();
+            }
+        }
+
+        public static string ContentPath { get { return Path.Combine(ContentSegments); } }
+
+        public static string[] ContentSegments
+        {
+            get
+            {
+                return new List<string>(PathSegments) { "content" }.ToArray();
             }
         }
     }

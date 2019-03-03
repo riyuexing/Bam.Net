@@ -42,10 +42,10 @@ namespace Bam.Net.Application
             }
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "StandardOut: {Message}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "StandardOut: {Message}")]
         public event EventHandler StandardOut;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "ErrorOut: {Message}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "ErrorOut: {Message}")]
         public event EventHandler ErrorOut;        
 
         string _name;

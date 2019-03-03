@@ -37,10 +37,10 @@ namespace Bam.Net.Server
             _paths.Add(path);
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "Handl(ING): CustomHandler: {Name}, Uri: {Uri}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "Handl(ING): CustomHandler: {Name}, Uri: {Uri}")]
         public event EventHandler Handling;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "Handl(ED): CustomHandler: {Name}, Uri: {Uri}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "Handl(ED): CustomHandler: {Name}, Uri: {Uri}")]
         public event EventHandler Handled;
 
         internal bool CheckPaths { get; set; }

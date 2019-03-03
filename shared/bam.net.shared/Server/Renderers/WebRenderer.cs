@@ -21,6 +21,12 @@ namespace Bam.Net.Server.Renderers
             this.OutputStream = new MemoryStream();
         }
 
+        public ContentResponder ContentResponder
+        {
+            get;
+            set;
+        }
+
         public string[] Extensions
         {
             get;

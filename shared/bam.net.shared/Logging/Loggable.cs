@@ -104,18 +104,21 @@ namespace Bam.Net.Logging
                             {
                                 eventInfo.AddEventHandler(this, (EventHandler)((s, a) =>
                                 {
-                                    string message = "";
+                                    string senderMessage = string.Empty;
+                                    string argsMessage = string.Empty;
                                     if (verbosity != null)
                                     {
-                                        if (!verbosity.TryGetMessage(s, out message))
-                                        {
-                                            verbosity.TryGetMessage(a, out message);
-                                        }
+                                        verbosity.TryGetSenderMessage(s, out senderMessage);
+                                        verbosity.TryGetEventArgsMessage(a, out argsMessage);
                                     }
 
-                                    if (!string.IsNullOrEmpty(message))
+                                    if (!string.IsNullOrEmpty(senderMessage))
                                     {
-                                        logger.AddEntry(message, (int)logEventType);
+                                        logger.AddEntry(senderMessage, (int)logEventType);
+                                    }
+                                    else if (!string.IsNullOrEmpty(argsMessage))
+                                    {
+                                        logger.AddEntry(argsMessage, (int)logEventType);
                                     }
                                     else
                                     {

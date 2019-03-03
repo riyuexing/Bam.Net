@@ -9,3 +9,6 @@ docker container rm bamsinstance
 
 # Run
 docker run -d -p 8080:80 --name bamsinstance bams
+
+# Push
+docker push bamapps/images:bams

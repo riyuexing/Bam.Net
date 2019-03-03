@@ -28,16 +28,36 @@ namespace Bam.Net.Logging
 		/// <summary>
 		/// The "NamedFormat" message format to use when outputting messages
 		/// </summary>
-        public string MessageFormat { get; set; }
+        public string SenderMessageFormat { get; set; }
+        public string EventArgsMessageFormat { get; set; }
 
-        [DebuggerStepThrough]
-        public bool TryGetMessage(object value, out string message)
+        public bool TryGetSenderMessage(object value, out string message)
+        {
+            if (string.IsNullOrEmpty(SenderMessageFormat))
+            {
+                message = string.Empty;
+                return false;
+            }
+            return TryGetMessage(value, SenderMessageFormat, out message);
+        }
+
+        public bool TryGetEventArgsMessage(EventArgs args, out string message)
+        {
+            if (string.IsNullOrEmpty(EventArgsMessageFormat))
+            {
+                message = string.Empty;
+                return false;
+            }
+            return TryGetMessage(args, EventArgsMessageFormat, out message);
+        }
+
+        public bool TryGetMessage(object value, string format, out string message)
         {
             try
             {
-                if (!string.IsNullOrEmpty(MessageFormat))
+                if (!string.IsNullOrEmpty(format))
                 {
-                    message = MessageFormat.NamedFormat(value);
+                    message = format.NamedFormat(value);
                 }
                 else
                 {

@@ -840,6 +840,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\RequestLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LogMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\WarningMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\HttpServerEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\Renderers\CommonHandlebarsRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\Secure\SecureSessionDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AppModuleAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ProxyCode.cs" />

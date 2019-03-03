@@ -31,7 +31,7 @@ namespace Bam.Net.Server
     public partial class ContentResponder : Responder, IInitialize<ContentResponder>
     {
         static string contentRootConfigKey = "ContentRoot";
-        static string defaultRoot = "C:\\bam\\content";
+        static string defaultRoot = BamHome.ContentPath;
         public const string IncludeFileName = "include.js";
         public const string LayoutFileExtension = ".layout";
         public const string HostAppMapFile = "hostAppMaps.json";

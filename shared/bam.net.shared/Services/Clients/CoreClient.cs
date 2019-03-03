@@ -125,16 +125,16 @@ namespace Bam.Net.Services.Clients
         /// </summary>
         public ApplicationRegistrationRepository LocalCoreRegistryRepository { get; set; }
         
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
         public event EventHandler Initializing;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializED")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{OrganizationName}:{ApplicationName} initializED")]
         public event EventHandler Initialized;
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "{OrganizationName}:{ApplicationName} initialization failed: {Message}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "{OrganizationName}:{ApplicationName} initialization failed: {Message}")]
         public event EventHandler InitializationFailed;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName}: {ApiKeyFilePath} saved")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{OrganizationName}:{ApplicationName}: {ApiKeyFilePath} saved")]
         public event EventHandler ApiKeyFileSaved;
         
         public string Message { get; set; } // used by InitializationFailed event
@@ -190,13 +190,13 @@ namespace Bam.Net.Services.Clients
             headers[CustomHeaders.KeyToken] = CreateKeyToken(stringToHash);
         }
         #endregion
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "ApiKeyFile {ApiKeyFilePath} was not found")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "ApiKeyFile {ApiKeyFilePath} was not found")]
         public event EventHandler ApiKeyFileNotFound;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "Writing ApiKeyFile {ApiKeyFilePath}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "Writing ApiKeyFile {ApiKeyFilePath}")]
         public event EventHandler WritingApiKeyFile;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "Wrote ApiKeyFile {ApiKeyFilePath}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "Wrote ApiKeyFile {ApiKeyFilePath}")]
         public event EventHandler WroteApiKeyFile;
         #region IApiKeyProvider
 

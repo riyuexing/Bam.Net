@@ -17,6 +17,7 @@ namespace Bam.Net.Server.Renderers
     /// The renderer used to render the results of a 
     /// common (server level) dust template provided a given object
     /// </summary>
+    [Obsolete("This class is deprecated, use CommonHandlebarsRenderer instead.")]
     public class CommonDustRenderer: WebRenderer, ITemplateManager
     {
         public CommonDustRenderer(ContentResponder content)
@@ -121,12 +122,6 @@ namespace Bam.Net.Server.Renderers
             }
         }
 
-        public ContentResponder ContentResponder
-        {
-            get;
-            set;
-        }
-        
         object _renderLock = new object();
         public override void Render(object toRender, Stream output)
         {

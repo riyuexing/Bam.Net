@@ -173,7 +173,7 @@ namespace Bam.Net.Data.Repositories
                 return _typeSchema;
 			}
 		}
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
         public event EventHandler SchemaWarning;
 
         Assembly _daoAssembly;

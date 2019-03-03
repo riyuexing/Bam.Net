@@ -15,7 +15,7 @@ namespace Bam.Net.Tests
     {
         class TestLoggable : Loggable
         {
-            [Verbosity(VerbosityLevel.Custom, MessageFormat = "Name={Name}")]
+            [Verbosity(VerbosityLevel.Custom, SenderMessageFormat = "Name={Name}")]
             public event EventHandler TestEvent;
 
             public string Name

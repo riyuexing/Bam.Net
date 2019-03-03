@@ -52,16 +52,16 @@ namespace Bam.Net.Server.Meta
             Initialized?.Invoke(this);
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName} initializ(ING)")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "WebBookInitializer:: {AppName} initializ(ING)")]
         public event EventHandler AppInitializing;
 
-        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName} initializ(ED)")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "WebBookInitializer:: {AppName} initializ(ED)")]
         public event EventHandler AppInitialized;
 
-        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName}: writ(ING) book for page {CurrentPage}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "WebBookInitializer:: {AppName}: writ(ING) book for page {CurrentPage}")]
         public event EventHandler WritingBook;
 
-        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName}: writ(ED)(wrote) book for page {CurrentPage}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "WebBookInitializer:: {AppName}: writ(ED)(wrote) book for page {CurrentPage}")]
         public event EventHandler WroteBook;
 
         public bool IsInitialized

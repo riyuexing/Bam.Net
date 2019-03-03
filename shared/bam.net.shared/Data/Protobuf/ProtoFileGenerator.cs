@@ -35,16 +35,16 @@ namespace Bam.Net.CoreServices.ProtoBuf
             PropertyFilter = propertyFilter ?? ((p) => true);
         }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "ProtoFileDirectory:{ProtoFileDirectory}: {Message}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "ProtoFileDirectory:{ProtoFileDirectory}: {Message}")]
         public event EventHandler Warning;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{Message}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{Message}")]
         public event EventHandler ProtoGenerationStarted;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{Message}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{Message}")]
         public event EventHandler ProtoGenerationComplete;
 
-        [Verbosity(VerbosityLevel.Error, MessageFormat = "{Message}")]
+        [Verbosity(VerbosityLevel.Error, SenderMessageFormat = "{Message}")]
         public event EventHandler ProtoGenerationError;
 
         public string Message { get; set; }

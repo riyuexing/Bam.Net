@@ -1,31 +1,25 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using Bam.Net;
+using Bam.Net.Configuration;
+using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
+using Bam.Net.Incubation;
+using Bam.Net.Logging;
+using Bam.Net.Presentation;
+using Bam.Net.Presentation.Html;
+using Bam.Net.Server.Listeners;
+using Bam.Net.ServiceProxy;
+using Bam.Net.UserAccounts;
+using Bam.Net.Web;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceProcess;
-using Bam.Net.Presentation.Html;
-using Bam.Net.Logging;
-using Bam.Net;
-using Bam.Net.Incubation;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
-using Bam.Net.Data;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.Web;
 using System.IO;
-using Bam.Net.UserAccounts;
-using Bam.Net.Server;
-using Bam.Net.Server.Listeners;
-using Bam.Net.Data.Repositories;
-using Bam.Net.ServiceProxy.Secure;
+using System.Linq;
+using System.Net;
 using System.Reflection;
-using Bam.Net.Server.Renderers;
-using Bam.Net.Presentation;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
@@ -214,6 +208,7 @@ namespace Bam.Net.Server
 
                 ConfigureHttpServer();
 
+
                 RegisterWorkspaceDaos();
 
                 OnInitialized();
@@ -349,7 +344,7 @@ namespace Bam.Net.Server
             }
         }
 
-        List<ILogger> _subscribers = new List<ILogger>();
+        HashSet<ILogger> _subscribers = new HashSet<ILogger>();
         object _subscriberLock = new object();
         public ILogger[] Subscribers
         {
@@ -357,7 +352,7 @@ namespace Bam.Net.Server
             {
                 if (_subscribers == null)
                 {
-                    _subscribers = new List<ILogger>();
+                    _subscribers = new HashSet<ILogger>();
                 }
                 lock (_subscriberLock)
                 {
@@ -388,38 +383,47 @@ namespace Bam.Net.Server
                     _subscribers.Add(logger);
                 }
                 string className = typeof(BamServer).Name;
+
                 this.Initializing += (s) =>
                 {
                     logger.AddEntry("{0}::Initializ(ING)", className);
                 };
+
                 this.Initialized += (s) =>
                 {
                     logger.AddEntry("{0}::Initializ(ED)", className);
                 };
+
                 this.LoadingConf += (s, c) =>
                 {
                     logger.AddEntry("{0}::Load(ING) configuration, current config: \r\n{1}", className, c.PropertiesToString());
                 };
+
                 this.LoadedConf += (s, c) =>
                 {
                     logger.AddEntry("{0}::Load(ED) configuration, current config: \r\n{1}", className, c.PropertiesToString());
                 };
+
                 this.SettingConf += (s, c) =>
                 {
                     logger.AddEntry("{0}::Sett(ING) configuration, current config: \r\n{1}", className, c.PropertiesToString());
                 };
+
                 this.SettedConf += (s, c) =>
                 {
                     logger.AddEntry("{0}::Sett(ED) configuration, current config: \r\n{1}", className, c.PropertiesToString());
                 };
+
                 this.SchemasInitializing += (s) =>
                 {
                     logger.AddEntry("{0}::Initializ(ING) schemas", className);
                 };
+
                 this.SchemasInitialized += (s) =>
                 {
                     logger.AddEntry("{0}::Initializ(ED) schemas", className);
                 };
+
                 this.Starting += (s) =>
                 {
                     logger.AddEntry("{0}::Start(ING)", className);
@@ -1170,33 +1174,21 @@ namespace Bam.Net.Server
 
         protected void OnStopping()
         {
-            if (Stopping != null)
-            {
-                Stopping(this);
-            }
+            Stopping?.Invoke(this);
         }
 
         protected void OnStopped()
         {
-            if (Stopped != null)
-            {
-                Stopped(this);
-            }
+            Stopped?.Invoke(this);
         }
         protected void OnStarting()
         {
-            if (Starting != null)
-            {
-                Starting(this);
-            }
+            Starting?.Invoke(this);
         }
 
         protected void OnStarted()
         {
-            if (Started != null)
-            {
-                Started(this);
-            }
+            Started?.Invoke(this);
         }
 
         protected internal bool IsRunning
@@ -1204,7 +1196,6 @@ namespace Bam.Net.Server
             get;
             private set;
         }
-
 
         private void HandlePostInitialization(BamServer server)
         {
@@ -1224,8 +1215,9 @@ namespace Bam.Net.Server
             _server = new HttpServer(MainLogger)
             {
                 HostPrefixes = GetHostPrefixes()
-            };
+            };            
             _server.ProcessRequest += ProcessRequest;
+            _subscribers.Each(l => _server.Subscribe(l));
         }
         
         private void ListenForDaoGenServices()
@@ -1253,5 +1245,4 @@ namespace Bam.Net.Server
             Directory.SetCurrentDirectory(_workspace);
         }
     }
-
 }

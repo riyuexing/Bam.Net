@@ -360,22 +360,22 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        [Verbosity(VerbosityLevel.Error, MessageFormat = "Failed to generate DaoAssembly for {SchemaName}:\r\n {Message}")]
+        [Verbosity(VerbosityLevel.Error, SenderMessageFormat = "Failed to generate DaoAssembly for {SchemaName}:\r\n {Message}")]
         public event EventHandler GenerateDaoAssemblyFailed;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{Message}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{Message}")]
         public event EventHandler GenerateDaoAssemblySucceeded;
 
         public string TempPath { get; set; }
 
         public string Message { get; set; }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Couldn't delete folder {TempPath}:\r\nMessage: {Message}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Couldn't delete folder {TempPath}:\r\nMessage: {Message}")]
         public event EventHandler DeleteDaoTempFailed;
 
         public Func<SchemaDefinition, TypeSchema, string> TypeSchemaTempPathProvider { get; set; }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "TypeSchema difference detected\r\n {OldInfoString} \r\n *** \r\n {NewInfoString}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "TypeSchema difference detected\r\n {OldInfoString} \r\n *** \r\n {NewInfoString}")]
         public event EventHandler SchemaDifferenceDetected;
         public string OldInfoString { get; set; }
         public string NewInfoString { get; set; }
@@ -387,7 +387,7 @@ namespace Bam.Net.Data.Repositories
             get; set;
         }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
         public event EventHandler SchemaWarning;
         
         protected internal void EmitWarnings()

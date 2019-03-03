@@ -101,23 +101,23 @@ namespace Bam.Net.Server.Streaming
             get { return new string[] { "Port", "MaxThreads", "ReadBufferSize" }; }
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "\r\nBinaryServer={Name};Port={Port};Started")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "\r\nBinaryServer={Name};Port={Port};Started")]
         public event EventHandler Starting;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "\r\nBinaryServer={Name};Port={Port};Started")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "\r\nBinaryServer={Name};Port={Port};Started")]
         public event EventHandler Started;
 
 
-		[Verbosity(VerbosityLevel.Information, MessageFormat = "\r\nBinaryServer={Name};Port={Port};Stopped")]
+		[Verbosity(VerbosityLevel.Information, SenderMessageFormat = "\r\nBinaryServer={Name};Port={Port};Stopped")]
         public event EventHandler Stopped;
 
-        [Verbosity(LogEventType.Error, MessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
+        [Verbosity(LogEventType.Error, SenderMessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
         public event EventHandler StartExceptionThrown;
 
-        [Verbosity(LogEventType.Error, MessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
+        [Verbosity(LogEventType.Error, SenderMessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
         public event EventHandler RequestExceptionThrown;
         
-        [Verbosity(LogEventType.Error, MessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
+        [Verbosity(LogEventType.Error, SenderMessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
         public event EventHandler InitializationException;             
 
         public void Dispose()

@@ -399,12 +399,12 @@ namespace Bam.Net.UserAccounts
         /// <summary>
         /// The event that is fired when someone logs in
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded")]
         public event EventHandler ForgotPasswordSucceeded;
         /// <summary>
         /// The event that is fired when a login fails
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded: {LastExceptionMessage}")]
         public event EventHandler ForgotPasswordFailed;
         public ForgotPasswordResponse ForgotPassword(string emailAddress)
         {
@@ -443,12 +443,12 @@ namespace Bam.Net.UserAccounts
         /// <summary>
         /// The vent that is fired when someone logs in
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: LoginSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: LoginSucceeded")]
         public event EventHandler LoginSucceeded;
         /// <summary>
         /// The event that is fired when a login fails
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: LoginFailed: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: LoginFailed: {LastExceptionMessage}")]
         public event EventHandler LoginFailed;
         public LoginResponse Login(string userName, string passHash)
         {
@@ -487,12 +487,12 @@ namespace Bam.Net.UserAccounts
         /// <summary>
         /// The event that is fired when someone signs up
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignUpSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: SignUpSucceeded")]
         public event EventHandler SignUpSucceeded;
         /// <summary>
         /// The event that is fired when a sign up fails
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignUpFailed: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: SignUpFailed: {LastExceptionMessage}")]
         public event EventHandler SignUpFailed;
         public SignUpResponse SignUp(string emailAddress, string userName, string passHash, bool sendConfirmationEmail)
         {
@@ -519,17 +519,17 @@ namespace Bam.Net.UserAccounts
         /// <summary>
         /// The vent that is fired when someone signs up
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignOutStarted")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: SignOutStarted")]
         public event EventHandler SignOutStarted;
         /// <summary>
         /// The vent that is fired when someone signs up
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignOutSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: SignOutSucceeded")]
         public event EventHandler SignOutSucceeded;
         /// <summary>
         /// The event that is fired when a sign up fails
         /// </summary>
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignOutFailed: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: SignOutFailed: {LastExceptionMessage}")]
         public event EventHandler SignOutFailed;
         public SignOutResponse SignOut()
         {
@@ -558,9 +558,9 @@ namespace Bam.Net.UserAccounts
             }
         }
         
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailSucceeded")]
         public event EventHandler RequestConfirmationEmailSucceeded;
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailFailed: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailFailed: {LastExceptionMessage}")]
         public event EventHandler RequestConfirmationEmailFailed;
 
         public SendEmailResponse RequestConfirmationEmail(string emailAddress, int accountIndex = 0)
@@ -609,9 +609,9 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ConfirmAccountSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: ConfirmAccountSucceeded")]
         public event EventHandler ConfirmAccountSucceeded;
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ConfirmAccountFailed: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: ConfirmAccountFailed: {LastExceptionMessage}")]
         public event EventHandler ConfirmAccountFailed;
 
         public ConfirmResponse ConfirmAccount(string token)
@@ -695,9 +695,9 @@ namespace Bam.Net.UserAccounts
             return response;
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailSucceeded")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailSucceeded")]
         public event EventHandler ResetPasswordSucceeded;
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailFailed: {LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailFailed: {LastExceptionMessage}")]
         public event EventHandler ResetPasswordFailed;
 
         public PasswordResetResponse ResetPassword(string passHash, string resetToken)

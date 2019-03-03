@@ -49,7 +49,7 @@ namespace Bam.Net.Caching
 
         public event EventHandler Evicted;
 
-        [Verbosity(LogEventType.Warning, MessageFormat = "Failed to get Cache for type {TypeName}")]
+        [Verbosity(LogEventType.Warning, SenderMessageFormat = "Failed to get Cache for type {TypeName}")]
         public event EventHandler GetCacheFailed;
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace Bam.Net.Caching
             Evicted?.Invoke(sender, args);
         }
 
-        [Verbosity(LogEventType.Information, MessageFormat = "Removed Cache for type {TypeName}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "Removed Cache for type {TypeName}")]
         public event EventHandler CacheRemoved;
-        [Verbosity(LogEventType.Information, MessageFormat = "Set Cache for type {TypeName}")]
+        [Verbosity(LogEventType.Information, SenderMessageFormat = "Set Cache for type {TypeName}")]
         public event EventHandler CacheSet;
 
         public Cache<CacheType> CacheFor<CacheType>(Func<Cache<CacheType>> cacheProvider) where CacheType : IMemorySize, new()

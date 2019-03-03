@@ -39,7 +39,7 @@ namespace Bam.Net.Data.Repositories
             set;
         }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Unable to delete temp source directory: {TempDir}\r\n{ExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Unable to delete temp source directory: {TempDir}\r\n{ExceptionMessage}")]
         public event EventHandler DeleteTempSourceDirectoryFailed;
 
         /// <summary>
