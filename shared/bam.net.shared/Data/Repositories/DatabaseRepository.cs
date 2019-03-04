@@ -45,8 +45,8 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        TypeSchemaPropertyManager _typeSchemaPropertyManager;
-        object _typeSchemaPropertyManagerLock = new object();
+        private TypeSchemaPropertyManager _typeSchemaPropertyManager;
+        private readonly object _typeSchemaPropertyManagerLock = new object();
         protected TypeSchemaPropertyManager TypeSchemaPropertyManager
         {
             get
@@ -69,8 +69,8 @@ namespace Bam.Net.Data.Repositories
             }                
         }
 
-        TypeInheritanceSqlWriter _insertWriter;
-        object _insertWriterLock = new object();
+        private TypeInheritanceSqlWriter _insertWriter;
+        private readonly object _insertWriterLock = new object();
         public TypeInheritanceSqlWriter SqlWriter
         {
             get
@@ -112,8 +112,6 @@ namespace Bam.Net.Data.Repositories
         }
 
         bool _ensured;
-
-        public event EventHandler GenerateDaoAssemblySucceeded;
 
         public void EnsureSchema()
         {

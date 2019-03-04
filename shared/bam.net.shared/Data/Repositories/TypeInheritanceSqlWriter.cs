@@ -9,7 +9,7 @@ namespace Bam.Net.Data.Repositories
     /// A class used to write sql statements that can be used
     /// to persist CLR types to a database.  This class
     /// assumes that the tables in the database are setup 
-    /// to recieve properties of object instances in their
+    /// to receive properties of object instances in their
     /// inheritance chain.  For example if a type A extends 
     /// type B then there will be tables in the database
     /// representing each.  This structure can be achieved
