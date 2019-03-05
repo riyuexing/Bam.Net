@@ -55,11 +55,19 @@ namespace Bam.Net.Application
             }
         }
         
+        [ConsoleAction]
+        public void Deleteme()
+        {
+            Includes i = ".\\test.yaml".FromYamlFile<Includes>();
+            OutLine(i.ToJson(true));
+        }
+
         [ConsoleAction("S", "Start default server")]
         public static void StartDefaultServer()
         {
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             Server.Subscribe(logger);
+            Log.Default = logger;
             Server.Start();
             BamConf conf = Server.GetCurrentConf();
             StringBuilder configurationMessage = new StringBuilder();

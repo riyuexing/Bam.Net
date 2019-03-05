@@ -79,7 +79,6 @@ namespace Bam.Net.Server
             }
         }
 
-
         protected internal void SetBody(LayoutModel layout, string[] pathSegments) 
         {
             Fs appRoot = AppConf.AppRoot;

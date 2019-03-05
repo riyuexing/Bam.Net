@@ -215,7 +215,7 @@ namespace Bam.Net
             }
         }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat="{Name}:Unable to acquire lock:{LastExceptionMessage}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat="{Name}:Unable to acquire lock:{LastExceptionMessage}")]
         public event EventHandler AcquireLockException;
       
         protected void OnAcquireLockException(Exception ex)
@@ -227,7 +227,7 @@ namespace Bam.Net
             }
         }
 
-		[Verbosity(VerbosityLevel.Warning, MessageFormat = "PID {CurrentLockerId} has lock on {Name}")]
+		[Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "PID {CurrentLockerId} has lock on {Name}")]
         public event EventHandler WaitingForLock;
 
         protected void OnWaitingForLock()

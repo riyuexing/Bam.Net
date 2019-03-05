@@ -21,7 +21,7 @@ namespace Bam.Net.Server.Renderers
             this.OutputStream = new MemoryStream();
         }
 
-        public ContentResponder ContentResponder
+        public virtual ContentResponder ContentResponder
         {
             get;
             set;

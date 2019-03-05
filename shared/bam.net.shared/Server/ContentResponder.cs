@@ -43,7 +43,7 @@ namespace Bam.Net.Server
             ContentRoot = conf?.ContentRoot ?? DefaultConfiguration.GetAppSetting(contentRootConfigKey, defaultRoot);
             ServerRoot = new Fs(ContentRoot);
             TemplateDirectoryNames = new List<string>(new string[] { "views", "templates" });
-            CommonTemplateManager = commonTemplateManager;// ?? conf?.Server?.LoadApplicationServiceRegistry()?.Result?.Construct(typeof(ITemplateManager), this)?.Cast<ITemplateManager>() ?? ApplicationServiceRegistry?.Construct(typeof(ITemplateManager), this)?.Cast<ITemplateManager>();
+            CommonTemplateManager = commonTemplateManager;
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMap>();            
             InitializeFileExtensions();
@@ -428,7 +428,7 @@ namespace Bam.Net.Server
                     {
                         SetContentType(response, path);
                         Etags.Set(response, request.Url.ToString(), content);
-                        SendResponse(response, content);
+                        WriteResponse(response, content);
                         OnResponded(context);
                     }
                     else

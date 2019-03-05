@@ -18,10 +18,32 @@ namespace Bam.Net.Server.Renderers
             AppContentResponder = appContent;
         }
 
+        AppContentResponder _appContentResponder;
         public AppContentResponder AppContentResponder
         {
-            get;
-            set;
+            get
+            {
+                return _appContentResponder;
+            }
+            set
+            {
+                _appContentResponder = value;
+                SetHandlebarsDirectories();
+            }
+        }
+
+        ContentResponder _contentResponder;
+        public override ContentResponder ContentResponder
+        {
+            get
+            {
+                return _contentResponder;
+            }
+            set
+            {
+                _contentResponder = value;
+                SetHandlebarsDirectories();
+            }
         }
 
         public string ApplicationName
@@ -34,11 +56,17 @@ namespace Bam.Net.Server.Renderers
 
         protected override void SetHandlebarsDirectories()
         {
-            base.SetHandlebarsDirectories();
-            foreach(string templateDirectoryName in AppContentResponder.TemplateDirectoryNames)
+            if(ContentResponder != null)
             {
-                string directoryPath = Path.Combine(AppContentResponder.AppRoot.Root, templateDirectoryName);
-                HandlebarsDirectories.Add(new HandlebarsDirectory(directoryPath));
+                base.SetHandlebarsDirectories();
+            }
+            if(AppContentResponder != null)
+            {
+                foreach (string templateDirectoryName in AppContentResponder.TemplateDirectoryNames)
+                {
+                    string directoryPath = Path.Combine(AppContentResponder.AppRoot.Root, templateDirectoryName);
+                    HandlebarsDirectories.Add(new HandlebarsDirectory(directoryPath));
+                }
             }
         }
     }

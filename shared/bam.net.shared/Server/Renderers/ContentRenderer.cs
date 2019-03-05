@@ -29,12 +29,5 @@ namespace Bam.Net.Server.Renderers
             get;
             set;
         }
-
-        protected ContentResponder ContentResponder
-        {
-            get;
-            set;
-        }
-
     }
 }

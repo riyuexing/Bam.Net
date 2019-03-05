@@ -39,7 +39,6 @@ namespace Bam.Net.Server
             ServerRoot = commonResponder.ServerRoot;
             AppConf = conf;
             AppRoot = AppConf.AppRoot;
-            //AppTemplateManager = commonResponder?.BamConf?.Server?.LoadApplicationServiceRegistry()?.Result?.Construct(typeof(IApplicationTemplateManager), this)?.Cast<IApplicationTemplateManager>() ?? ApplicationServiceRegistry?.Construct(typeof(IApplicationTemplateManager), this)?.Cast<IApplicationTemplateManager>();
             AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
             ContentHandlers = new Dictionary<string, ContentHandler>();
@@ -197,11 +196,20 @@ namespace Bam.Net.Server
             internal set;
         }
 
+        IApplicationTemplateManager _appTemplateManager;
         [Inject]
         public IApplicationTemplateManager AppTemplateManager
         {
-            get;
-            internal set;
+            get
+            {
+                return _appTemplateManager;
+            }
+            internal set
+            {
+                _appTemplateManager = value;
+                _appTemplateManager.AppContentResponder = this;
+                _appTemplateManager.ContentResponder = ContentResponder;
+            }
         }
 
         public AppConf AppConf
@@ -352,7 +360,7 @@ namespace Bam.Net.Server
                     SetContentDisposition(response, path);
                     Etags.Set(response, request.Url.ToString(), content);
                     SetResponseHeaders(response, path);
-                    SendResponse(response, content);
+                    WriteResponse(response, content);
                     OnResponded(context);
                 }
                 else

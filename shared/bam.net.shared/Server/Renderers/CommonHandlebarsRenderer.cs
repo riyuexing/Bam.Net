@@ -16,6 +16,7 @@ namespace Bam.Net.Server.Renderers
             : base("text/html", ".htm", ".html")
         {
             ContentResponder = contentResponder;
+            HandlebarsDirectories = new HashSet<HandlebarsDirectory>();
             SetHandlebarsDirectories();
             HandlebarsEmbeddedResources = new HandlebarsEmbeddedResources(Assembly.GetEntryAssembly());
         }
@@ -64,19 +65,25 @@ namespace Bam.Net.Server.Renderers
             CombinedHandlebarsDirectory().Render(templateName, toRender).WriteToStream(output);
         }
 
-        public void RenderLayout(LayoutModel toRender, Stream output)
+        public virtual void RenderLayout(LayoutModel toRender, Stream output)
         {
             string templateName = TemplateNameResolver.ResolveTemplateName(toRender);
 
-            CombinedHandlebarsDirectory().Render(toRender.LayoutName, toRender).WriteToStream(output);
+            HandlebarsDirectory combined = CombinedHandlebarsDirectory();
+            string rendered = combined.Render(toRender.LayoutName, toRender);
+            StreamWriter streamWriter = new StreamWriter(output);
+            streamWriter.Write(rendered);
         }
 
         protected virtual void SetHandlebarsDirectories()
         {
-            HashSet<HandlebarsDirectory> handlebarsDirectories = new HashSet<HandlebarsDirectory>();
-            foreach(string templateDirectory in ContentResponder.TemplateDirectoryNames)
+            HashSet<HandlebarsDirectory> handlebarsDirectories = new HashSet<HandlebarsDirectory>
             {
-                string directoryPath = Path.Combine(ContentRoot, templateDirectory);
+                new HandlebarsDirectory(Path.Combine(ContentRoot, "common", "views", "layouts"))
+            };
+            foreach (string templateDirectory in ContentResponder.TemplateDirectoryNames)
+            {
+                string directoryPath = Path.Combine(ContentRoot, "common", templateDirectory);
                 handlebarsDirectories.Add(new HandlebarsDirectory(directoryPath));
             }
             HandlebarsDirectories = handlebarsDirectories;

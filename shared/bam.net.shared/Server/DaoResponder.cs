@@ -175,7 +175,7 @@ namespace Bam.Net.Server
                 {
                     response.ContentType = GetContentTypeForExtension(".js");
                     string script = _dynamicResponders[method](appName, min);
-                    SendResponse(response, script);
+                    WriteResponse(response, script);
                     handled = true;
                     OnResponded(context);
                 }
@@ -223,7 +223,7 @@ namespace Bam.Net.Server
                     if (crudResponse.Success)
                     {
                         handled = true;
-                        SendResponse(response, crudResponse.ToJson());
+                        WriteResponse(response, crudResponse.ToJson());
                     }
                 }
             }

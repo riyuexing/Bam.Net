@@ -45,26 +45,6 @@ namespace Bam.Net.Services
 
         public static Action<ApplicationServiceRegistry> Configurer { get; set; }
 
-        //static ApplicationServiceRegistry _discoveredConfigured;
-        //static object _discoveredLock = new object();
-        //[ServiceRegistryLoader]
-        //public static ApplicationServiceRegistry Discover(Action<ApplicationServiceRegistry> configure)
-        //{
-        //    ApplicationServiceRegistry discovered = Discover();
-        //    if (_discoveredConfigured == null)
-        //    {
-        //        lock (_discoveredLock)
-        //        {
-        //            _discoveredConfigured = Configure(appRegistry =>
-        //            {
-        //                appRegistry.CombineWith(discovered);
-        //                configure(appRegistry);
-        //            });
-        //        }
-        //    }
-        //    return _discoveredConfigured;
-        //}
-
         public static ApplicationServiceRegistry Discover()
         {
             return Discover(Assembly.GetEntryAssembly().GetFileInfo().Directory.FullName);
@@ -73,6 +53,36 @@ namespace Bam.Net.Services
         public static ApplicationServiceRegistry Discover(string directoryPath)
         {
             return Discover(new DirectoryInfo(directoryPath));
+        }
+
+        public static ApplicationServiceRegistry ForApplication()
+        {
+            return ForApplication(DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName());
+        }
+
+        static Dictionary<string, ApplicationServiceRegistry> _appRegistries = new Dictionary<string, ApplicationServiceRegistry>();
+        public static ApplicationServiceRegistry ForApplication(string applicationName)
+        {
+            try
+            {
+                if (!_appRegistries.ContainsKey(applicationName))
+                {
+                    DirectoryInfo directoryInfo = Assembly.GetEntryAssembly().GetFileInfo().Directory;
+                    _appRegistries.Add(applicationName, Configure((appSvcReg) =>
+                    {
+                        ForEachAssemblyIn(directoryInfo, file => TryAddTypes(appSvcReg, file, (t) =>
+                        {
+                            return t.HasCustomAttributeOfType(out AppServiceAttribute attr) && (attr?.ApplicationName?.Equals(applicationName)).Value;
+                        }));
+                    }));
+                }
+                return _appRegistries[applicationName];
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Exception discovering application services: {0}", ex, ex.Message);
+            }
+            return Configure(a => { });
         }
 
         static object _discoverLock = new object();
@@ -85,25 +95,7 @@ namespace Bam.Net.Services
                 {
                     return Configure((appServiceRegistry) =>
                     {
-                        foreach (FileInfo file in directoryInfo.GetFiles().Where(file =>
-                        {
-                            return (file.Extension?.Equals(".dll", StringComparison.InvariantCultureIgnoreCase)).Value || (file.Extension?.Equals(".exe", StringComparison.InvariantCultureIgnoreCase)).Value;
-                        }))
-                        {
-                            try
-                            {
-                                Assembly assembly = Assembly.LoadFile(file.FullName);
-                                Type[] types = assembly.GetTypes();
-                                foreach (Type type in types.Where(t => t.HasCustomAttributeOfType<AppServiceAttribute>()))
-                                {
-                                    appServiceRegistry.Set(type, type);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Warn("Exception loading file for service discovery {0}: {1}", ex, file.FullName, ex.Message);
-                            }
-                        }
+                        ForEachAssemblyIn(directoryInfo, file => TryAddTypes(appServiceRegistry, file));
                     });
                 });                
             }
@@ -111,7 +103,7 @@ namespace Bam.Net.Services
             {
                 Log.Warn("Exception discovering services: {0}", ex, ex.Message);
             }
-            return Configure((a) => { });
+            return Configure(a => { });
         }
 
         [ServiceRegistryLoader]
@@ -130,6 +122,39 @@ namespace Bam.Net.Services
             appRegistry.CoreClient = appRegistry.Get<CoreClient>();
             Current = appRegistry;
             return appRegistry;
+        }
+
+        private static void ForEachAssemblyIn(DirectoryInfo directoryInfo, Action<FileInfo> action)
+        {
+            foreach (FileInfo file in directoryInfo.GetFiles().Where(file =>
+            {
+                return (file.Extension?.Equals(".dll", StringComparison.InvariantCultureIgnoreCase)).Value || (file.Extension?.Equals(".exe", StringComparison.InvariantCultureIgnoreCase)).Value;
+            }))
+            {
+                action(file);
+            }
+        }
+
+        private static void TryAddTypes(ApplicationServiceRegistry appServiceRegistry, FileInfo file)
+        {
+            TryAddTypes(appServiceRegistry, file, t => t.HasCustomAttributeOfType<AppServiceAttribute>());
+        }
+
+        private static void TryAddTypes(ApplicationServiceRegistry appServiceRegistry, FileInfo file, Func<Type, bool> predicate)
+        {
+            try
+            {
+                Assembly assembly = Assembly.LoadFile(file.FullName);
+                Type[] types = assembly.GetTypes();
+                foreach (Type type in types.Where(predicate))
+                {
+                    appServiceRegistry.Set(type, type);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Exception loading file for service discovery {0}: {1}", ex, file.FullName, ex.Message);
+            }
         }
     }
 }

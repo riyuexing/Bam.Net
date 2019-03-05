@@ -668,9 +668,9 @@ namespace Bam.Net.Server
         {
             get
             {
-                if (_contentResponder == null)
+                if(_contentResponder == null)
                 {
-                    SetContentResponder();
+                    return SetContentResponder();
                 }
                 return _contentResponder;
             }
@@ -932,9 +932,12 @@ namespace Bam.Net.Server
         /// <param name="responder"></param>
         public void AddResponder(Responder responder)
         {
-            _responders.Add(responder);
-            _respondersByName.AddMissing(responder.ResponderSignificantName, responder);
-            ResponderAdded?.Invoke(this, responder);
+            if (!_respondersByName.ContainsKey(responder.ResponderSignificantName))
+            {
+                _respondersByName.AddMissing(responder.ResponderSignificantName, responder);
+                _responders.Add(responder);
+                ResponderAdded?.Invoke(this, responder);
+            }
         }
 
         public void RemoveResponder(Responder responder)
@@ -1050,7 +1053,6 @@ namespace Bam.Net.Server
 
         private static void Respond(IResponse response)
         {
-            response.StatusCode = (int)HttpStatusCode.OK;
             response.OutputStream.Flush();
             response.OutputStream.Close();
         }
@@ -1191,12 +1193,14 @@ namespace Bam.Net.Server
         public event EventHandler FileUploading;
         public event EventHandler FileUploaded;
 
-        protected void SetContentResponder()
+        protected ContentResponder SetContentResponder()
         {
-            _contentResponder = new ContentResponder(GetCurrentConf(true), MainLogger);
-            _contentResponder.FileUploading += (o, a) => FileUploading?.Invoke(o, a);
-            _contentResponder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
-            AddResponder(_contentResponder);
+            ContentResponder responder = new ContentResponder(GetCurrentConf(true), MainLogger);
+            responder.FileUploading += (o, a) => FileUploading?.Invoke(o, a);
+            responder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
+            AddResponder(responder);
+            _contentResponder = responder;
+            return responder;
         }
 
         protected void OnStopping()

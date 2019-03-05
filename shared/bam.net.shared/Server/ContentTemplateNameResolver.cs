@@ -29,19 +29,19 @@ namespace Bam.Net.Server
             {
                 return attr.TemplateName;
             }
-            if(type.HasProperty("View", out PropertyInfo prop))
+            if(toBeTemplated.HasProperty("View", out PropertyInfo prop))
             {
                 return prop.GetValue(toBeTemplated)?.ToString();
             }
-            else if(type.HasProperty("Template", out PropertyInfo prop2))
+            else if(toBeTemplated.HasProperty("Template", out PropertyInfo prop2))
             {
                 return prop2.GetValue(toBeTemplated)?.ToString();
             }
-            else if(type.HasProperty("TemplateName", out PropertyInfo prop3))
+            else if(toBeTemplated.HasProperty("TemplateName", out PropertyInfo prop3))
             {
                 return prop3.GetValue(toBeTemplated)?.ToString();
             }
-            else if(type.HasProperty("LayoutName", out PropertyInfo prop4))
+            else if(toBeTemplated.HasProperty("LayoutName", out PropertyInfo prop4))
             {
                 return prop4.GetValue(toBeTemplated)?.ToString();
             }

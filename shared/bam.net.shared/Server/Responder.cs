@@ -343,7 +343,7 @@ namespace Bam.Net.Server
             return result;
         }
 
-        protected static void SendResponse(IResponse response, byte[] data)
+        protected static void WriteResponse(IResponse response, byte[] data)
         {
             using (BinaryWriter bw = new BinaryWriter(response.OutputStream))
             {
@@ -352,9 +352,9 @@ namespace Bam.Net.Server
             }
         }
 
-        protected static void SendResponse(IResponse response, string content)
+        protected static void WriteResponse(IResponse response, string content)
         {
-            SendResponse(response, Encoding.UTF8.GetBytes(content));
+            WriteResponse(response, Encoding.UTF8.GetBytes(content));
         }
 
         protected WebRendererFactory RendererFactory
