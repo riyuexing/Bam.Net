@@ -90,7 +90,6 @@ namespace Bam.Net
         /// throw an Exception
         /// </summary>
         /// <param name="actionThatThrowsException"></param>
-        /// <param name="catchDelegate"></param>
         /// <param name="message"></param>
         public static void Throws(Action actionThatThrowsException, string message = null)
         {

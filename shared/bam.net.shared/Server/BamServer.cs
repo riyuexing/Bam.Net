@@ -30,9 +30,9 @@ namespace Bam.Net.Server
     /// </summary>
     public partial class BamServer : IInitialize<BamServer>
     {
-        HashSet<IResponder> _responders;
-        Dictionary<string, IResponder> _respondersByName;
-        HttpServer _server;
+        private readonly HashSet<IResponder> _responders;
+        private readonly Dictionary<string, IResponder> _respondersByName;
+        private HttpServer _server;
 
         public BamServer(BamConf conf)
         {
@@ -53,7 +53,7 @@ namespace Bam.Net.Server
             LoadApplicationServiceRegistry();
         }
 
-        ApplicationServiceRegistry _appServiceRegistry;
+        private ApplicationServiceRegistry _appServiceRegistry;
 
         public async Task<ApplicationServiceRegistry> LoadApplicationServiceRegistry()
         {
