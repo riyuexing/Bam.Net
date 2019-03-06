@@ -489,13 +489,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\IComponentResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Components\SplitKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Handlebars\HandlebarsEmbeddedResources.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\HtmlTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\ParameterLayouts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\IApplicationTemplateManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\IHasCompiledTemplates.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\PageModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\BamWebPageModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\TemplateNameAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\ViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynCompiler.cs" />

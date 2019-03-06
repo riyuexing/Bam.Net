@@ -200,15 +200,11 @@ namespace Bam.Net.Presentation.Html
 
         public static string Render(this IHtmlContent content, HtmlEncoder encoder = null)
         {
-            encoder = encoder ?? HtmlEncoder.Default;
-            MemoryStream result = new MemoryStream();
-            using (TextWriter tw = new StreamWriter(result))
+            using (StringWriter sw = new StringWriter())
             {
-                content.WriteTo(tw, encoder);
+                content.WriteTo(sw, encoder ?? HtmlEncoder.Default);
+                return sw.ToString();
             }
-
-            result.Seek(0, SeekOrigin.Begin);
-            return result.ReadToEnd();
         }
 
         public static TagBuilder ChildIf(this TagBuilder tagBuilder, bool condition, string child)

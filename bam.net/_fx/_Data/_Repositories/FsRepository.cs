@@ -133,7 +133,7 @@ namespace Bam.Net.Data.Repositories
             return Query(typeof(T), query).CopyAs<T>();
         }
 
-        [Verbosity(VerbosityLevel.Warning, MessageFormat ="QueryFilter Query executed, FsRepository implementation uses LuceneIndex and may not respond as expected")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat ="QueryFilter Query executed, FsRepository implementation uses LuceneIndex and may not respond as expected")]
         public event EventHandler QueryFilterWarning;
         public override IEnumerable<object> Query(Type type, QueryFilter query)
         {

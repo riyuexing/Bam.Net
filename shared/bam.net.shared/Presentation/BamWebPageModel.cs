@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Presentation
 {
-    public class PageModel
+    public class BamWebPageModel
     {
         public string Name { get; set; }
         public LayoutModel LayoutModel { get; set; }

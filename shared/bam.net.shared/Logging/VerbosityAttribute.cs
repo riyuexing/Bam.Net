@@ -25,6 +25,18 @@ namespace Bam.Net.Logging
 
         public VerbosityLevel Value { get; set; }
 
+        public string MessageFormat
+        {
+            get
+            {
+                return SenderMessageFormat;
+            }
+            set
+            {
+                SenderMessageFormat = value;
+            }
+        }
+
 		/// <summary>
 		/// The "NamedFormat" message format to use when outputting messages
 		/// </summary>

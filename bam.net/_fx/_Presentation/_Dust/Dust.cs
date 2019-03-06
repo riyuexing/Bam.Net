@@ -156,7 +156,7 @@ namespace Bam.Net.Presentation.Dust
             return templateName;
         }
 
-        public static Tag RegisterDustTemplates(this UrlHelper helper)
+        public static Bam.Net.Presentation.Html.Tag RegisterDustTemplates(this UrlHelper helper)
         {
             return new JsTag(helper.Content("~/dust/templates"));
         }

@@ -403,6 +403,7 @@
     <Compile Include="_fx\_Data\_Schema\Table.cs" />
     <Compile Include="_fx\_Data\_Schema\TableTemplate.cs" />
     <Compile Include="_fx\_Data\_Schema\XrefInfo.cs" />
+    <Compile Include="_fx\_Presentation\_Html\Tag.cs" />
     <Compile Include="_fx\_Razor\RazorBaseTemplate.cs" />
     <Compile Include="_fx\_Razor\RazorParser.cs" />
     <Compile Include="_fx\_Razor\RazorRenderer.cs" />
@@ -621,7 +622,6 @@
     <Compile Include="_fx\_Presentation\_Html\Img.cs" />
     <Compile Include="_fx\_Presentation\_Html\InputFormBuilder.cs" />
     <Compile Include="_fx\_Presentation\_Html\JsTag.cs" />
-    <Compile Include="_fx\_Presentation\_Html\Tag.cs" />
     <Compile Include="_fx\_Presentation\_Html\_Js\DataSetTagBuilderExtensions.cs" />
     <Compile Include="_fx\_Presentation\_Html\MethodFormResult.cs" />
     <Compile Include="_fx\_Presentation\_Html\RadioList.cs" />

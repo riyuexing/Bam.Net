@@ -28,7 +28,7 @@ namespace Bam.Net.Server
             Scripts.Each(script =>
             {
                 Tag scr = new Tag("script").Attr("src", script).Attr("type", "text/javascript");
-                result.Append(scr.ToHtmlString(TagRenderMode.Normal));
+                result.Append(scr.ToHtmlString());
             });
 
             return MvcHtmlString.Create(result.ToString());
@@ -44,7 +44,7 @@ namespace Bam.Net.Server
             Css.Each(css =>
             {
                 Tag link = new Tag("link").Attr("rel", "stylesheet").Attr("href", css);
-                result.Append(link.ToHtmlString(TagRenderMode.SelfClosing));
+                result.Append(link.ToHtmlString());
             });
 
             return MvcHtmlString.Create(result.ToString());

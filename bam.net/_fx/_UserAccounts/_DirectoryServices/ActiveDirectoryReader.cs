@@ -80,10 +80,10 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             }
         }
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "User not found: UserName = {UserName}, Server = {Server}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "User not found: UserName = {UserName}, Server = {Server}")]
         public event EventHandler UserNotFound;
 
-        [Verbosity(VerbosityLevel.Information, MessageFormat = "User found: UserName = {UserName}, Server = {Server}")]
+        [Verbosity(VerbosityLevel.Information, SenderMessageFormat = "User found: UserName = {UserName}, Server = {Server}")]
         public event EventHandler UserFound;
 
         static readonly object _memberLock = new object();

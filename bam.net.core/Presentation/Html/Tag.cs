@@ -8,16 +8,17 @@ using System.Text;
 using System.Reflection;
 using System.Web;
 using Bam.Net.ServiceProxy;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Html;
 using System.IO;
 using System.Text.Encodings.Web;
-using System.Web.Mvc;
 
 namespace Bam.Net.Presentation.Html
 {
     public partial class Tag : HtmlString
     {
         TagBuilder _html;
-        public Tag(string tagName, object attributes = null):base(tagName)
+        public Tag(string tagName, object attributes = null) : base(tagName)
         {
             _html = new TagBuilder(tagName);
             Attrs(attributes);
@@ -28,9 +29,9 @@ namespace Bam.Net.Presentation.Html
             return e.ToString();
         }
 
-        public static implicit operator MvcHtmlString(Tag e)
+        public static Tag Of(string name, object attributes = null)
         {
-            return e.TagBuilder.ToMvcHtml();
+            return new Tag(name, attributes);
         }
 
         protected TagBuilder TagBuilder
@@ -43,7 +44,19 @@ namespace Bam.Net.Presentation.Html
 
         public override string ToString()
         {
-            return TagBuilder.ToString();
+            using(StringWriter sw = new StringWriter())
+            {
+                TagBuilder.WriteTo(sw, HtmlEncoder.Default);
+                return sw.ToString();
+            }
+        }
+
+        public static IEnumerable<HtmlString> ForEach<T>(T[] vals, Func<T, HtmlString> func)
+        {
+            foreach(T val in vals)
+            {
+                yield return func(val);
+            }
         }
 
         /// <summary>

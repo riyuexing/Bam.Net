@@ -25,7 +25,18 @@ namespace Bam.Net.Server
             Includes commonIncludes = reg.Get<IIncludesResolver>().ResolveCommonIncludes(conf.BamConf.ContentRoot);
             Includes appIncludes = reg.Get<IIncludesResolver>().ResolveApplicationIncludes(conf.Name, conf.BamConf.ContentRoot);
             Includes combined = commonIncludes.Combine(appIncludes);
+            
+            // TODO: test this
             // finish this
+            foreach(Tag scriptTag in Tag.ForEach(combined.Scripts, path => Tag.Of("script", new { src = path })))
+            {
+                layoutModel.ScriptTags += scriptTag.Render();
+            }
+            // <link rel="stylesheet" href="/css/fullcalendar/fullcalendar.css" />
+            foreach (Tag cssTag in Tag.ForEach(combined.Css, path => Tag.Of("link", new { rel = "stylesheet", href = path })))
+            {
+                layoutModel.StyleSheetLinkTags += cssTag.Render();
+            }
         }
     }
 }

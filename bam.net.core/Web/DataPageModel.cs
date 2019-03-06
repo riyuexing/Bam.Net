@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Bam.Net.Web
 {
-    public class DataPageModel : BamPageModel
+    public class DataPageModel : PageModel
     {
         public const string AppDataFolder = "AppData";
 
@@ -21,11 +21,12 @@ namespace Bam.Net.Web
         {
         }
 
-        public DataPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel appModel, params string[] extensionsToLoad) : base(hostingEnvironment, appModel)
+        public DataPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel appModel, params string[] extensionsToLoad) : base()
         {
             HostingEnvironment = hostingEnvironment;
             ExtensionsToLoad = new List<string>();
             ExtensionsToLoad.AddRange(extensionsToLoad);
+            ApplicationModel = appModel;
             Files = new Dictionary<string, string>();
             JsonFiles = new Dictionary<string, string>();
             YamlFiles = new Dictionary<string, string>();
@@ -34,6 +35,9 @@ namespace Bam.Net.Web
             SetFileContents(YamlFiles, "yaml");
         }
 
+        public string Message { get; set; }
+        public ApplicationModel ApplicationModel { get; set; }
+        public IHostingEnvironment HostingEnvironment { get; set; }
 
         public virtual ActionResult OnGet()
         {

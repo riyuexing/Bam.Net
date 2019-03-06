@@ -209,7 +209,7 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// Occurs when [write object failed].
         /// </summary>
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "IpcMessage Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "IpcMessage Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler WriteObjectFailed;
 
         /// <summary>
@@ -427,13 +427,13 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// Occurs when [write object properties failed].
         /// </summary>
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler WriteObjectPropertiesFailed;
 
         /// <summary>
         /// Occurs when [delete failed].
         /// </summary>
-        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
+        [Verbosity(VerbosityLevel.Warning, SenderMessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler DeleteFailed;
 
         /// <summary>
